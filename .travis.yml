@@ -26,13 +26,13 @@ script:
 
 after_success:
   - coveralls
-  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-  - export REPO=asakatida/norns
+  - docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+  - export REPO="$DOCKER_USER/norns"
   - export REPO_REFERENCE="$REPO:$DOCKER_COMMIT"
-  - docker build -f Dockerfile -t $REPO_REFERENCE .
-  - docker tag $REPO_REFERENCE $REPO:latest
-  - docker tag $REPO_REFERENCE $REPO:travis-$TRAVIS_BUILD_NUMBER
-  - docker push $REPO
+  - docker build -f Dockerfile -t "$REPO_REFERENCE" .
+  - docker tag "$REPO_REFERENCE" "$REPO:latest"
+  - docker tag "$REPO_REFERENCE" "$REPO:travis-$TRAVIS_BUILD_NUMBER"
+  - docker push "$REPO"
 
 notifications:
   email: false

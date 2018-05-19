@@ -1,12 +1,19 @@
 FROM python:alpine
 
+LABEL \
+  maintainer="github@holomaplefeline.net" \
+  name="norns" \
+  version="0.1.0" \
+  description="\
+90s text game service\
+"
+
 EXPOSE 8000
 
 WORKDIR /usr/src/app
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
-
 COPY . .
 
-CMD [ "python", "./norns/manage.py", "runserver" ]
+RUN ./.docker/build.sh
+
+CMD [ "./.docker/run.sh" ]

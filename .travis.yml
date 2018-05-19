@@ -26,13 +26,18 @@ script:
 
 after_success:
   - coveralls
-  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-  - export REPO=grandquista/norns
-  - export REPO_REFERENCE="$REPO:$DOCKER_COMMIT"
-  - docker build -f Dockerfile -t $REPO_REFERENCE .
-  - docker tag $REPO_REFERENCE $REPO:latest
-  - docker tag $REPO_REFERENCE $REPO:travis-$TRAVIS_BUILD_NUMBER
-  - docker push $REPO
+  - |
+    if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
+      if [ "${DOCKER_USER}" != "" ]; then
+        docker login -u $DOCKER_USER -p $DOCKER_PASS
+        export REPO=thenorns/norns
+        export REPO_REFERENCE=$REPO:$DOCKER_COMMIT
+        docker build -f Dockerfile -t $REPO_REFERENCE .
+        docker tag $REPO_REFERENCE $REPO:latest
+        docker tag $REPO_REFERENCE $REPO:travis-$TRAVIS_BUILD_NUMBER
+        docker push $REPO
+      fi
+    fi
 
 notifications:
   email: false

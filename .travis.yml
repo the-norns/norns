@@ -26,7 +26,8 @@ script:
 
 after_success:
   - coveralls
-  - if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
+  - |
+    if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
       if [ "${DOCKER_USER}" != "" ]; then
         docker login -u $DOCKER_USER -p $DOCKER_PASS
         export REPO=thenorns/norns

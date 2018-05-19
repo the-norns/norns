@@ -9,6 +9,8 @@ before_script:
   - psql -c "create database norns;" -U postgres
 
 env:
+  global:
+    - DOCKER_COMMIT=${TRAVIS_COMMIT::8}
   - SECRET_KEY='Norns' DEBUG='True' DB_NAME='norns' DB_HOST='localhost'
 
 install:
@@ -21,6 +23,13 @@ script:
 
 after_success:
   - coveralls
+  master:
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+    - export REPO=asakatida/norns
+    - docker build -f Dockerfile -t $REPO:$COMMIT .
+    - docker tag $REPO:$COMMIT $REPO:latest
+    - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+    - docker push $REPO
 
 notifications:
   email: false

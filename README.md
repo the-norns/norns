@@ -43,6 +43,7 @@ export DB_HOST='localhost'
 TBD
 
 ## Change Log
+19 May 2018 - Project Initialized
 
 ## Resources
 - Django

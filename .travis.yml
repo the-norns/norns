@@ -43,5 +43,6 @@ deploy:
   region: us-west-1
   app: norns
   env: norns-dev
+  bucket_name: elasticbeanstalk-us-west-1-097216211972
   on:
     repo: the-norns/norns

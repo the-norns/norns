@@ -8,7 +8,7 @@ LABEL \
 90s text game service\
 "
 
-EXPOSE 80 443
+EXPOSE 8000
 
 WORKDIR /usr/src/app
 

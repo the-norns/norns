@@ -1,6 +1,7 @@
 language: python
 python:
 - '3.6'
+cache: pip
 services:
 - postgresql
 before_script:
@@ -31,8 +32,7 @@ after_success:
       docker tag $REPO_REFERENCE $REPO:latest
       docker tag $REPO_REFERENCE $REPO:travis-$TRAVIS_BUILD_NUMBER
       docker push $REPO
-      pip install --user awscli
-      export PATH=$PATH:$HOME/.local/bin
+      pip install awscli
       eval $(aws ecr get-login --no-include-email --region us-west-1)
       docker tag $REPO_REFERENCE $AWS_REPOSITORY_URI/norns:latest
       docker push $AWS_REPOSITORY_URI/norns:latest

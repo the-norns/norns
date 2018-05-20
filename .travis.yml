@@ -1,44 +1,47 @@
 language: python
 python:
-  - "3.6"
-
+- '3.6'
 services:
-  - postgresql
-
+- postgresql
 before_script:
-  - psql -c "create database norns;" -U postgres
-
+- psql -c "create database norns;" -U postgres
 env:
   global:
-    - DOCKER_COMMIT=${TRAVIS_COMMIT::8}
-    - SECRET_KEY='Norns'
-    - DEBUG='True'
-    - DB_NAME='norns'
-    - DB_HOST='localhost'
-
+  - DOCKER_COMMIT=${TRAVIS_COMMIT::8}
+  - SECRET_KEY='Norns'
+  - DEBUG='True'
+  - DB_NAME='norns'
+  - DB_HOST='localhost'
 install:
-  - pip install -r requirements.txt
-  - pip install coveralls
-
+- pip install -r requirements.txt
+- pip install coveralls
 script:
-  - python norns/manage.py migrate
-  - coverage run norns/manage.py test norns
-
+- python norns/manage.py migrate
+- coverage run norns/manage.py test norns
 after_success:
-  - coveralls
-  - |
-    if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
-      if [ "${DOCKER_USER}" != "" ]; then
-        git clean -dfx
-        docker login -u $DOCKER_USER -p $DOCKER_PASS
-        export REPO=thenorns/norns
-        export REPO_REFERENCE=$REPO:$DOCKER_COMMIT
-        docker build -f Dockerfile -t $REPO_REFERENCE .
-        docker tag $REPO_REFERENCE $REPO:latest
-        docker tag $REPO_REFERENCE $REPO:travis-$TRAVIS_BUILD_NUMBER
-        docker push $REPO
-      fi
+- coveralls
+- |
+  if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
+    if [ "${DOCKER_USER}" != "" ]; then
+      git clean -dfx
+      docker login -u $DOCKER_USER -p $DOCKER_PASS
+      export REPO=thenorns/norns
+      export REPO_REFERENCE=$REPO:$DOCKER_COMMIT
+      docker build -f Dockerfile -t $REPO_REFERENCE .
+      docker tag $REPO_REFERENCE $REPO:latest
+      docker tag $REPO_REFERENCE $REPO:travis-$TRAVIS_BUILD_NUMBER
+      docker push $REPO
     fi
-
+  fi
 notifications:
   email: false
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: AKIAJCOHOUBXRSUCL6BA
+  secret_access_key:
+    secure: G/qjPqkxjuPNqGDtE4nzuJ9SiCPV5EoggFEkTwkhfzIUxbpMex6dIH+iErFl4tBeZalrdQK6fv1Dfd4/74SY8/kvauzEIA/+HoY3SoKBH8ql6aEiELDp+VcFX40kJsU3eGlFIZbn1Hy5fhbpPaR6iVJTThHf4dSt66oX7a1CM0csS9lxeEz1dBPbgVraBpo9C/9Tp2AaoSaqr5mJJ9S6Y7JlYy79nnE1y62K6pKLYf+iPLOLtrdlnL+tbdnnHrQ7KcblT2w5czXe0mNoIhXWDY7RWQ4M3EE4K55TcDt4t6C8xQ/IM12+zoe/TzFTTbdMuSyhZtlgRPNlg4qiKxUQlmmb6RLoZD6P6/WTb1aHu8R4vvhqyd6GkftEvrFIY+RwoxvZEwZl4hfyGhmh2oJnGbLAA+wwF5yCp4B33oSYeOdVpKV93sikEho0N1lmXv/UJLf1ms1cPr5n2nSE8wNyL6DYppgl2DdgptOEfiqFy4hLUp44T3gL0364lxV5CUIMMV1QiKRU76bs3v6PhDuiEPmNFCeaZZKzqhmi2Ur7vI3fRq9NSjkg4x8p+0OAE4IrVFicPN1pxO9MYT3G2rnODXRi6BmrDir9GdSNls03/FM9NRdrn1CtHNogq8r66kqZOzsy1JxqevWnB8j4EYZIBzqhNAc5IsS9l8HE3DkQ78k=
+  region: us-west-1
+  app: norns
+  env: norns-dev
+  on:
+    repo: the-norns/norns

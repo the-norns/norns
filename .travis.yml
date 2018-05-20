@@ -29,6 +29,7 @@ after_success:
   - |
     if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
       if [ "${DOCKER_USER}" != "" ]; then
+        git clean -dfx
         docker login -u $DOCKER_USER -p $DOCKER_PASS
         export REPO=thenorns/norns
         export REPO_REFERENCE=$REPO:$DOCKER_COMMIT

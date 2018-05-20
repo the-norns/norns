@@ -31,6 +31,11 @@ after_success:
       docker tag $REPO_REFERENCE $REPO:latest
       docker tag $REPO_REFERENCE $REPO:travis-$TRAVIS_BUILD_NUMBER
       docker push $REPO
+      pip install --user awscli
+      export PATH=$PATH:$HOME/.local/bin
+      eval $(aws ecr get-login --no-include-email --region us-west-1)
+      docker tag $REPO_REFERENCE $AWS_REPOSITORY_URI/norns:latest
+      docker push $AWS_REPOSITORY_URI/norns:latest
     fi
   fi
 notifications:

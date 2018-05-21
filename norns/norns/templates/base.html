@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>The Norns</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static "styles/base/normalize.css" %}">
+  <link rel="stylesheet" href="{% static "styles/base/base.css" %}">
+  <link rel="stylesheet" href="{% static "styles/layout/layout.css" %}">
+  <link rel="stylesheet" href="{% static "styles/modules/nav.css" %}">
+  <link rel="stylesheet" href="{% static "styles/modules/modules.css" %}">
+</head>
+<body>
+  <header>
+    <nav role="navigation">
+      <div class="logo">
+        <img src="{% static "assets/norns5.png" %}" />
+      </div>
+      <div id="menuToggle">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <span></span>
+        <ul id="menu">
+          <li><a href="{% url "home" %}">Home</a></li>
+          <li><a href="{% url "store" %}">Store</a></li>
+          <li><a href="{% url "about" %}">About</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+    <main>
+    {% block content %}
+    <h3>No Content</h3>
+    {% endblock content%}
+  </main>
+    <footer>
+    <div class="hitCounter">
+      <p>Visitors</p>
+      <a href="http://semenaxcaps.com"><img src="http://semenaxcaps.com/count.php?c_style=13&id=1526772180" border="0" alt="semenaxcaps.com"></a><br>
+    </div>
+  </footer>
+</body>
+</html>

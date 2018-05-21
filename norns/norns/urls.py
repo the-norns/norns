@@ -1,6 +1,13 @@
+"""
+Norns URL Configuration.
+"""
+
 from django.contrib import admin
-from django.urls import path, include
-from .views import home_view, store_view, about_view
+from django.urls import include, path
+
+from .views import about_view, home_view, store_view
+
+__all__ = ('urlpatterns', )
 
 urlpatterns = [
     path('admin/', admin.site.urls),

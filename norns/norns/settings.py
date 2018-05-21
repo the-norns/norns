@@ -10,22 +10,22 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
-import os
+from os import environ, path
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Build paths inside the project like this: path.join(BASE_DIR, ...)
+BASE_DIR = path.dirname(path.dirname(path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', None)
+SECRET_KEY = environ.get('SECRET_KEY', None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'false').strip().lower() not in ('', 'false')
+DEBUG = environ.get('DEBUG', 'false').strip().lower() not in ('', 'false')
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split()
+ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS', '').split()
 
 
 # Application definition
@@ -37,14 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'norns',
-    'room',
-    'player',
+    # Third party
+    'rest_framework.authtoken',
+    'rest_framework',
+    # Local apps
     'enemy',
     'gear',
+    'norns',
+    'player',
+    'room',
     'status',
-    'rest_framework',
-    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -84,10 +86,10 @@ WSGI_APPLICATION = 'norns.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', ''),
-        'USER': os.environ.get('DB_USER', ''),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', ''),
+        'NAME': environ.get('DB_NAME', ''),
+        'USER': environ.get('DB_USER', ''),
+        'PASSWORD': environ.get('DB_PASSWORD', ''),
+        'HOST': environ.get('DB_HOST', ''),
         'PORT': 5432,
         'TEST': {'NAME': 'norns_test'},
     }
@@ -96,7 +98,7 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
-#
+
 AUTH_PASSWORD_VALIDATORS = []
 
 
@@ -124,10 +126,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'MEDIA')
+MEDIA_ROOT = path.join(BASE_DIR, 'MEDIA')
 
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',

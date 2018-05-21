@@ -5,6 +5,7 @@ omit =
   norns/norns/wsgi.py
   **/__init__.py
   **/test_*.py
+  **/test.py
   **/site-packages/{**,}/*.py
 
 [report]

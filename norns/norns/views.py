@@ -1,3 +1,7 @@
+"""
+Core views.
+"""
+
 from django.shortcuts import render
 
 

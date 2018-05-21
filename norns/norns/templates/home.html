@@ -2,6 +2,9 @@
 {% load static %}
 {% block content %}
 <div class="game">
+  {% if message %}
+  <p>{{ message }}</p>
+  {% endif %}
       <div class="minimap">
         <p>minimap</p>
       </div>

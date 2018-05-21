@@ -1,12 +1,21 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.conf import settings
 import stripe
 
 
-def home_view(request):
-    """Return home view."""
-    return render(request, 'home.html')
+class HomeView(TemplateView):
+    """View class for the homepage."""
+
+    template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+        """Get request for homepage class view."""
+        context = super().get_context_data(**kwargs)
+        # import pdb; pdb.set_trace()
+        return context
 
 
 class StoreView(TemplateView):
@@ -15,13 +24,15 @@ class StoreView(TemplateView):
     template_name = 'store.html'
 
     def get_context_data(self, **kwargs):
-        """Get request for homepage class view."""
+        """Get request for store class view."""
         context = super().get_context_data(**kwargs)
         return context
 
     def post(self, *args, **kwargs):
         """Handle post request for order form."""
-        stripe.api_key = "sk_test_bDdZgeBXWJOYecXwD7W2ta0n"
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        # import pdb; pdb.set_trace()
 
         token = self.request.POST['stripeToken']
 
@@ -31,7 +42,7 @@ class StoreView(TemplateView):
             description='Example charge',
             source=token,
         )
-        return render(self.request, 'store.html', {'message': 'Thanks for your money, sucker!'})
+        return redirect('home')
 
 
 def about_view(request):

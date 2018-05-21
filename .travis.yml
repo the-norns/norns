@@ -24,7 +24,7 @@ install:
 before_script:
 - psql -c "create database norns;" -U postgres
 - wget http://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip
-- mkdir $HOME/usr/bin
+- mkdir -p $HOME/usr/bin
 - export PATH=$PATH:$HOME/usr/bin
 - unzip chromedriver_linux64.zip -d $HOME/usr/bin
 - export CHROME_BIN=chromium-browser

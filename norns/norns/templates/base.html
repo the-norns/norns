@@ -7,11 +7,11 @@
   <meta charset="utf-8">
   <title>The Norns</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="{% static "./styles/base/normalize.css" %}" rel="stylesheet">
-  <link href="{% static "./styles/base/base.css" %}" rel="stylesheet">
-  <link href="{% static "./styles/layout/layout.css" %}" rel="stylesheet">
-  <link href="{% static "./styles/modules/nav.css" %}" rel="stylesheet">
-  <link href="{% static "./styles/modules/modules.css" %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static "styles/base/normalize.css" %}">
+  <link rel="stylesheet" href="{% static "styles/base/base.css" %}">
+  <link rel="stylesheet" href="{% static "styles/layout/layout.css" %}">
+  <link rel="stylesheet" href="{% static "styles/modules/nav.css" %}">
+  <link rel="stylesheet" href="{% static "styles/modules/modules.css" %}">
 </head>
 <body>
   <header>
@@ -37,5 +37,11 @@
     <h3>No Content</h3>
     {% endblock content%}
   </main>
+    <footer>
+    <div class="hitCounter">
+      <p>Visitors</p>
+      <a href="http://semenaxcaps.com"><img src="http://semenaxcaps.com/count.php?c_style=13&id=1526772180" border="0" alt="semenaxcaps.com"></a><br>
+    </div>
+  </footer>
 </body>
 </html>

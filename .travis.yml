@@ -1,26 +1,42 @@
 language: python
 python:
-  - "3.6"
-
+- '3.6'
+cache: pip
 services:
-  - postgresql
-
+- postgresql
 before_script:
-  - psql -c "create database norns;" -U postgres
-
+- psql -c "create database norns;" -U postgres
 env:
-  - SECRET_KEY='Norns' DEBUG='True' DB_NAME='norns' DB_HOST='localhost'
-
+  global:
+  - DOCKER_COMMIT=${TRAVIS_COMMIT::8}
+  - SECRET_KEY='Norns'
+  - DEBUG='True'
+  - DB_NAME='norns'
+  - DB_HOST='localhost'
 install:
-  - pip install -r requirements.txt
-  - pip install coveralls
-
+- pip install -r requirements.txt
+- pip install coveralls
 script:
-  - python norns/manage.py migrate
-  - coverage run norns/manage.py test norns
-
+- python norns/manage.py migrate
+- coverage run norns/manage.py test norns
 after_success:
-  - coveralls
-
+- coveralls
+- |
+  if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
+    if [ "${DOCKER_USER}" != "" ]; then
+      git clean -dfx
+      docker login -u $DOCKER_USER -p $DOCKER_PASS
+      export REPO=thenorns/norns
+      export REPO_REFERENCE=$REPO:$DOCKER_COMMIT
+      docker build -f .docker/Dockerfile -t $REPO_REFERENCE .
+      docker tag $REPO_REFERENCE $REPO:latest
+      docker tag $REPO_REFERENCE $REPO:travis-$TRAVIS_BUILD_NUMBER
+      docker push $REPO
+      pip install awscli
+      eval $(aws ecr get-login --no-include-email --region us-west-1)
+      docker tag $REPO_REFERENCE $AWS_REPOSITORY_URI/norns:latest
+      docker push $AWS_REPOSITORY_URI/norns:latest
+    fi
+  fi
 notifications:
   email: false

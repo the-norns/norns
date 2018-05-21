@@ -24,7 +24,8 @@ install:
 before_script:
 - psql -c "create database norns;" -U postgres
 - wget http://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip
-- unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python3.6/bin/
+- unzip chromedriver_linux64.zip -d $HOME/usr/bin
+- export PATH=$PATH:$HOME/usr/bin
 - export CHROME_BIN=chromium-browser
 script:
 - python norns/manage.py migrate

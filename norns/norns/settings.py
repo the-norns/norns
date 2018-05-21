@@ -28,8 +28,8 @@ DEBUG = os.environ.get('DEBUG', 'false').strip().lower() not in ('', 'false')
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split()
 
 # Stripe keys
-PINAX_STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "test public key")
-PINAX_STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "test secret key")
+STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
 
 
 # Application definition

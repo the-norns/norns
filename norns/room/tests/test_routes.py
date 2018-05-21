@@ -28,6 +28,5 @@ class TestRoutes(TestCase):
         # import pdb; pdb.set_trace()
         response = self.client.post(
             reverse_lazy('room', args=[self.room.id]), data=data)
-        import pdb; pdb.set_trace()
-        self.assertContains(response, 'a tile.')
-        self.assertContains(response, 'sword')
+        self.assertContains(response.data, 'a tile.')
+        self.assertContains(response.data, 'sword')

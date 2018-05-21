@@ -37,14 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'norns',
-    'room',
-    'player',
+    # Third party
+    'rest_framework.authtoken',
+    'rest_framework',
+    # Local apps
     'enemy',
     'gear',
+    'norns',
+    'player',
+    'room',
     'status',
-    'rest_framework',
-    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [

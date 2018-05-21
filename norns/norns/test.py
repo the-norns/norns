@@ -5,6 +5,7 @@ Core app tests.
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import TestCase
 from django.urls import reverse_lazy
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 
@@ -35,7 +36,9 @@ class LiveServerTests(StaticLiveServerTestCase):
         Initialize a selenium driver.
         """
         super().setUpClass()
-        cls.selenium = WebDriver()
+        options = Options()
+        options.headless = True
+        cls.selenium = WebDriver(options=options)
         cls.selenium.implicitly_wait(10)
 
     @classmethod
@@ -51,4 +54,4 @@ class LiveServerTests(StaticLiveServerTestCase):
         """
         Test a browser rendering of home page.
         """
-        self.selenium.get('%s%s' % (self.live_server_url, '/'))
+        self.selenium.get(f'{ self.live_server_url }/')

@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# OS Files
+.DS_STORE
+
 # Distribution / packaging
 .Python
 build/
@@ -102,3 +105,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

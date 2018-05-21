@@ -36,6 +36,7 @@ class Room(models.Model):
 class Tile(models.Model):
     """Tile model."""
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    looked = models.BooleanField(default=False)
     x_coord = models.IntegerField()
     y_coord = models.IntegerField()
     desc = models.TextField(blank=True)

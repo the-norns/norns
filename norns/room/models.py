@@ -8,24 +8,28 @@ class Room(models.Model):
         blank=True,
         related_name='to_south',
         on_delete=models.CASCADE,
+        null=True,
     )
     room_east = models.ForeignKey(
         'self',
         blank=True,
         related_name='to_west',
         on_delete=models.CASCADE,
+        null=True,
     )
     room_south = models.ForeignKey(
         'self',
         blank=True,
         related_name='to_north',
         on_delete=models.CASCADE,
+        null=True,
     )
     room_west = models.ForeignKey(
         'self',
         blank=True,
         related_name='to_east',
         on_delete=models.CASCADE,
+        null=True,
     )
 
 
@@ -34,3 +38,4 @@ class Tile(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     x_coord = models.IntegerField()
     y_coord = models.IntegerField()
+    desc = models.TextField(blank=True)

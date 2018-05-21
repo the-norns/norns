@@ -8,4 +8,5 @@ urlpatterns = [
     path('store/', store_view, name='store'),
     path('about/', about_view, name='about'),
     path('api/v1/room/', include('room.urls')),
+    path('api/v1/gear/', include('gear.urls')),
 ]

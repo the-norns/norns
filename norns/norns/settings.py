@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Third party
+    'oauth2_provider',
     'rest_framework.authtoken',
     'rest_framework',
     # Local apps
@@ -107,6 +108,7 @@ AUTH_PASSWORD_VALIDATORS = []
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
         'rest_framework.authentication.TokenAuthentication',
     )
 }

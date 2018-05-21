@@ -7,11 +7,11 @@
   <meta charset="utf-8">
   <title>The Norns</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="{% static "styles/base/normalize.css" %}" rel="stylesheet">
-  <link href="{% static "styles/base/base.css" %}" rel="stylesheet">
-  <link href="{% static "styles/layout/layout.css" %}" rel="stylesheet">
-  <link href="{% static "styles/modules/nav.css" %}" rel="stylesheet">
-  <link href="{% static "styles/modules/modules.css" %}" rel="stylesheet">
+  <link href="{% static "./styles/base/normalize.css" %}" rel="stylesheet">
+  <link href="{% static "./styles/base/base.css" %}" rel="stylesheet">
+  <link href="{% static "./styles/layout/layout.css" %}" rel="stylesheet">
+  <link href="{% static "./styles/modules/nav.css" %}" rel="stylesheet">
+  <link href="{% static "./styles/modules/modules.css" %}" rel="stylesheet">
 </head>
 <body>
   <header>
@@ -26,7 +26,6 @@
         <span></span>
         <ul id="menu">
           <li><a href="{% url "home" %}">Home</a></li>
-          <li><a href="{% url "join" %}">Join a Game</a></li>
           <li><a href="{% url "store" %}">Store</a></li>
           <li><a href="{% url "about" %}">About</a></li>
         </ul>

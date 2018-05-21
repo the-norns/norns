@@ -27,6 +27,10 @@ DEBUG = os.environ.get('DEBUG', 'false').strip().lower() not in ('', 'false')
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split()
 
+# Stripe keys
+STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+
 
 # Application definition
 
@@ -35,11 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'norns',
     'rest_framework',
     'rest_framework.authtoken',
+    'pinax.stripe',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +60,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'norns.urls'
 
+SITE_ID = 1
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -65,14 +73,16 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
+            ], 
         },
     },
 ]
 
 WSGI_APPLICATION = 'norns.wsgi.application'
 
-
+# sg-072cc9f0683a6dc6e
+# sg-072cc9f0683a6dc6e
+# 34R-9zu-xf9-fnq
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
@@ -87,7 +97,6 @@ DATABASES = {
         'TEST': {'NAME': 'norns_test'},
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

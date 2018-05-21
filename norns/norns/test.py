@@ -68,16 +68,16 @@ class LiveServerTests(StaticLiveServerTestCase):
         """
         Test a browser rendering of about page.
         """
-        self.selenium.get(f'{ self.live_server_url }/about')
+        self.selenium.get('{}/about'.format(self.live_server_url))
 
     def test_home(self):
         """
         Test a browser rendering of home page.
         """
-        self.selenium.get(f'{ self.live_server_url }/')
+        self.selenium.get('{}/'.format(self.live_server_url))
 
     def test_store(self):
         """
         Test a browser rendering of store page.
         """
-        self.selenium.get(f'{ self.live_server_url }/store')
+        self.selenium.get('{}/store'.format(self.live_server_url))

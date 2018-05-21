@@ -38,6 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'norns',
+    'room',
+    'player',
+    'enemy',
+    'gear',
+    'status',
     'rest_framework',
     'rest_framework.authtoken',
 ]

@@ -1,0 +1,76 @@
+.game {
+  position: relative;
+  width: 1000px;
+  height: 500px;
+  background-color: grey;
+  margin-left: 18vw;
+  margin-top: 5vw;
+  margin-bottom: 7vw;
+}
+
+.game div {
+  border: 1px solid red;
+}
+
+.minimap {
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: white;
+}
+
+.chat {
+  width: 200px;
+  height: 100%;
+  float: right;
+  background-color: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.actions {
+  width: 100%;
+  height: 30px;
+  position: absolute;
+  bottom: 0;
+  background-color: white;
+}
+
+.store {
+  position: absolute;
+  bottom: 30px;
+  right: 200px;
+  background-color: white;
+}
+
+.hitCounter {
+  text-align: center;
+}
+
+.banner {
+  position: relative;
+}
+
+.banner h1 {
+  font-size: 100px;
+  color: white;
+  position: absolute;
+  top: 3vw;
+  left: 40vw;
+}
+
+.storeItems, .about {
+  margin-left: 11vw;
+}
+
+.items li {
+  display: inline-block;
+  list-style-type: none;
+  background-color: grey;
+  margin-left: 3vw;
+  width: 300px;
+  height: 400px;
+}

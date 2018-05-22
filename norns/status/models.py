@@ -1,4 +1,4 @@
-from django.db.models import CharField, IntegerField, Model, Q
+from django.db import models
 from django.http import HttpResponseBadRequest
 
 
@@ -32,7 +32,7 @@ class Action:
             (short_name, subc.__name__)
             for short_name, subc in cls.actions.items())
         max_length = max(map(len, cls.actions.keys()))
-        return CharField(
+        return models.CharField(
             max_length=max_length,
             choices=choices)
 
@@ -47,7 +47,6 @@ class Potion:
         """
         Use potion on player.
         """
-        player.abilities.remove(ability)
         setattr(target, cls.stat, getattr(target, cls.stat) + cls.quantity)
 
 
@@ -60,13 +59,13 @@ class MinorHealPotion(Potion, Action, short_name='MH'):
     quantity = 5
 
 
-class Ability(Model):
+class Ability(models.Model):
     """
     Generic ability.
     """
 
-    name = CharField(max_length=255, blank=True, null=True)
-    range = IntegerField(default=0)
+    name = models.CharField(max_length=255, blank=True, null=True)
+    range = models.IntegerField(default=0)
     action = Action.get_model_field()
 
     def use_ability(self, player, target):
@@ -75,7 +74,7 @@ class Ability(Model):
         """
         player_tile = player.tile
         target_tile = player_tile.room.tiles.filter(
-            Q(enemies=target) | Q(player=target))
+            models.Q(enemies=target) | models.Q(player=target))
         if not target_tile:
             return HttpResponseBadRequest()
         distance = (

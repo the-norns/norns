@@ -17,7 +17,6 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         """Get request for homepage class view."""
         context = super().get_context_data(**kwargs)
-        # import pdb; pdb.set_trace()
         return context
 
 
@@ -34,8 +33,6 @@ class StoreView(TemplateView):
     def post(self, *args, **kwargs):
         """Handle post request for order form."""
         stripe.api_key = settings.STRIPE_SECRET_KEY
-
-        # import pdb; pdb.set_trace()
 
         token = self.request.POST['stripeToken']
 

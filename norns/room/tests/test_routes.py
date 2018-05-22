@@ -27,7 +27,6 @@ class TestRoutes(TestCase):
 #          and the description on that tile.
 #          """
 #          data = {'verb': 'look', 'tile_id': self.tile.id}
-#          import pdb; pdb.set_trace()
 #          response = self.client.post(
 #              reverse_lazy('room', args=[self.room.id]), data=data)
 #          # self.assertContains(response.data, 'a tile.')

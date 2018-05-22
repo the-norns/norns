@@ -25,19 +25,28 @@
         <span></span>
         <span></span>
         <ul id="menu">
-          <li><a href="{% url "home" %}">Home</a></li>
           <li><a href="{% url "store" %}">Store</a></li>
+          <li><a href="{% url "home" %}">Home</a></li>
+          {% if user.is_authenticated %}
+          {% if user.is_superuser %}
+          <li><a href="{% url "admin:index" %}">Admin</a></li>
+          {% endif %}
+          <li><a href="{% url "auth_logout" %}">Logout</a></li>
+          {% else %}
+          <li><a href="{% url "registration_register" %}">Signup</a></li>
+          <li><a href="{% url "auth_login" %}">Signin</a></li>
+          {% endif %}
           <li><a href="{% url "about" %}">About</a></li>
         </ul>
       </div>
     </nav>
   </header>
-    <main>
+  <main>
     {% block content %}
     <h3>No Content</h3>
     {% endblock content%}
   </main>
-    <footer>
+  <footer>
     <div class="hitCounter">
       <p>Visitors</p>
       <a href="http://semenaxcaps.com"><img src="http://semenaxcaps.com/count.php?c_style=13&id=1526772180" border="0" alt="semenaxcaps.com"></a><br>

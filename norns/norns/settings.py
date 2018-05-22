@@ -79,7 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ], 
+            ],
         },
     },
 ]
@@ -140,3 +140,20 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
+
+# Django Registration Settings
+
+ACCOUNT_ACTIVATION_DAYS = 1
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+DEFAULT_FROM_EMAIL = environ.get('EMAIL_HOST_USER', None)
+EMAIL_HOST = environ.get('EMAIL_HOST', None)
+EMAIL_HOST_PASSWORD = environ.get('EMAIL_HOST_PASSWORD', None)
+EMAIL_HOST_USER = environ.get('EMAIL_HOST_USER', None)
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.{}.EmailBackend'.format(
+    'console' if DEBUG else 'smtp')

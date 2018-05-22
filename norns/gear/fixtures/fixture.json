@@ -1,0 +1,83 @@
+[
+  {
+    "model": "gear.weapon",
+    "pk": 1,
+    "fields": {
+      "name": "Steel Broadsword",
+      "strength": 15,
+      "agility": 3
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 2,
+    "fields": {
+      "name": "Small Steel Knives",
+      "strength": 5,
+      "agility": 9
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 3,
+    "fields": {
+      "name": "Steel Shortsword",
+      "strength": 8,
+      "agility": 5
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 4,
+    "fields": {
+      "name": "Maple Bow",
+      "strength": 6,
+      "agility": 6
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 5,
+    "fields": {
+      "name": "Crossbow",
+      "strength": 7,
+      "agility": 5
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 6,
+    "fields": {
+      "name": "Quarterstaff",
+      "strength": 9,
+      "agility": 5
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 7,
+    "fields": {
+      "name": "Iron Mace",
+      "strength": 13,
+      "agility": 4
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 8,
+    "fields": {
+      "name": "Polearm",
+      "strength": 12,
+      "agility": 5
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 9,
+    "fields": {
+      "name": "Lance",
+      "strength": 12,
+      "agility": 5
+    }
+  }
+]

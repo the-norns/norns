@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.urls import reverse_lazy
-from gear.models import Weapon
-from ..models import Room, Tile
 from model_mommy import mommy
+
+from gear.models import Weapon
+
+from ..models import Room, Tile
 
 
 class TestRoutes(TestCase):

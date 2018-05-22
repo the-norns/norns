@@ -1,6 +1,7 @@
 from rest_framework import generics
-from .serializers import WeaponSerializer
+
 from .models import Weapon
+from .serializers import WeaponSerializer
 
 
 class WeaponView(generics.CreateAPIView, generics.RetrieveAPIView,

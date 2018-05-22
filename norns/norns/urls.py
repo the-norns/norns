@@ -12,10 +12,11 @@ __all__ = ('urlpatterns', )
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name='home'),
-    path('store/', StoreView.as_view(), name='store'),
     path('about/', about_view, name='about'),
-    path('api/v1/room/', include('room.urls')),
+    path('accounts/', include('registration.backends.hmac.urls')),
+    path('admin/', admin.site.urls),
     path('api/v1/gear/', include('gear.urls')),
+    path('api/v1/room/', include('room.urls')),
+    path('store/', StoreView.as_view(), name='store'),
 ]

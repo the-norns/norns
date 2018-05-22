@@ -1,0 +1,62 @@
+[
+  {
+    "model": "enemy.enemy",
+    "pk": 1,
+    "fields": {
+      "name": "Dwarf",
+      "abilities": null,
+      "loot": 0,
+      "tiles": null
+    }
+  },
+  {
+    "model": "enemy.enemy",
+    "pk": 2,
+    "fields": {
+      "name": "Troll",
+      "abilities": null,
+      "loot": 0,
+      "tiles": null
+    }
+  },
+  {
+    "model": "enemy.enemy",
+    "pk": 3,
+    "fields": {
+      "name": "Draugr",
+      "abilities": null,
+      "loot": 0,
+      "tiles": null
+    }
+  },
+  {
+    "model": "enemy.enemy",
+    "pk": 4,
+    "fields": {
+      "name": "Jotunn",
+      "abilities": null,
+      "loot": 0,
+      "tiles": null
+    }
+  },
+  {
+    "model": "enemy.enemy",
+    "pk": 5,
+    "fields": {
+      "name": "Elf",
+      "abilities": null,
+      "loot": 0,
+      "tiles": null
+    }
+  },
+  {
+    "model": "enemy.enemy",
+    "pk": 6,
+    "fields": {
+      "name": "Warg",
+      "abilities": null,
+      "loot": 0,
+      "tiles": null
+    }
+  }
+]

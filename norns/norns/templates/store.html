@@ -7,10 +7,46 @@
       <h1>STORE</h1>
     </div>
     <div class="storeItems">
+      {% if message %}
+      <h2>{{ message }}</h2>
+      {% endif %}
       <ul class="items">
-        <li><div><p>Item One</p></div></li>
-        <li><div><p>Item Two</p></div></li>
-        <li><div><p>Item Three</p></div></li>
+        <li><div><p>Thor</p><form action="{% url "store" %}" method="POST">
+          {% csrf_token %}
+          <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="pk_test_OO9CRAads4tmdugzqQIrga8M"
+            data-amount="2000"
+            data-name="Norns"
+            data-description="Thor ($20.00)"
+            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+            data-locale="auto">
+          </script>
+        </form></div></li>
+        <li><div><p>Orichalcum Walker of Speed</p><form action="{% url "store" %}" method="POST">
+          {% csrf_token %}
+          <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="pk_test_OO9CRAads4tmdugzqQIrga8M"
+            data-amount="200"
+            data-name="Norns"
+            data-description="Orichalcum Walker of Speed ($2.00)"
+            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+            data-locale="auto">
+          </script>
+        </form></div></li>
+        <li><div><p>Safe Room</p><form action="{% url "store" %}" method="POST">
+          {% csrf_token %}
+          <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="pk_test_OO9CRAads4tmdugzqQIrga8M"
+            data-amount="99"
+            data-name="Norns"
+            data-description="Safe Room ($0.99)"
+            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+            data-locale="auto">
+          </script>
+        </form></div></li>
       </ul>
     </div>
 {% endblock %}

@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models
-from status.models import Ability
+
 from gear.models import Weapon
 from room.models import Tile
+from status.models import Ability
 
 
 class Player(models.Model):

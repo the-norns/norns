@@ -73,7 +73,7 @@ class Ability(models.Model):
         Validate and dispatch action.
         """
         player_tile = player.tile
-        target_tile = player_tile.room.tiles.filter(
+        target_tile = player_tile.room.tile_set.filter(
             models.Q(enemies=target) | models.Q(player=target))
         if not target_tile:
             return HttpResponseBadRequest()

@@ -64,46 +64,46 @@ class Player(models.Model):
         Change player tile.
         """
         if direction == 'north':
-            queryset = self.tile.room.tiles.filter(
+            queryset = self.tile.room.tile_set.filter(
                 models.Q(y_coord=self.tile.y_coord - 1) &
                 models.Q(x_coord=self.tile.x_coord))
             if queryset.count():
                 self.tile = queryset.first()
             else:
                 room = self.tile.room.go_north()
-                self.tile = room.tiles.filter(
+                self.tile = room.tile_set.filter(
                     models.Q(y_coord=self.tile.room.grid_size - 1) &
                     models.Q(x_coord=self.tile.x_coord))
         elif direction == 'east':
-            queryset = self.tile.room.tiles.filter(
+            queryset = self.tile.room.tile_set.filter(
                 models.Q(y_coord=self.tile.y_coord) &
                 models.Q(x_coord=self.tile.x_coord + 1))
             if queryset.count():
                 self.tile = queryset.first()
             else:
                 room = self.tile.room.go_east()
-                self.tile = room.tiles.filter(
+                self.tile = room.tile_set.filter(
                     models.Q(y_coord=self.tile.y_coord) &
                     models.Q(x_coord=0))
         elif direction == 'south':
-            queryset = self.tile.room.tiles.filter(
+            queryset = self.tile.room.tile_set.filter(
                 models.Q(y_coord=self.tile.y_coord + 1) &
                 models.Q(x_coord=self.tile.x_coord))
             if queryset.count():
                 self.tile = queryset.first()
             else:
                 room = self.tile.room.go_south()
-                self.tile = room.tiles.filter(
+                self.tile = room.tile_set.filter(
                     models.Q(y_coord=0) &
                     models.Q(x_coord=self.tile.x_coord))
         elif direction == 'west':
-            queryset = self.tile.room.tiles.filter(
+            queryset = self.tile.room.tile_set.filter(
                 models.Q(y_coord=self.tile.y_coord) &
                 models.Q(x_coord=self.tile.x_coord - 1))
             if queryset.count():
                 self.tile = queryset.first()
             else:
                 room = self.tile.room.go_west()
-                self.tile = room.tiles.filter(
+                self.tile = room.tile_set.filter(
                     models.Q(y_coord=self.tile.y_coord) &
                     models.Q(x_coord=self.tile.room.grid_size - 1))

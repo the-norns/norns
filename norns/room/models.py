@@ -32,8 +32,8 @@ class Room(models.Model):
         Get or generate north room.
         """
         if not self.room_north:
-            room = Room.create(grid_size=self.grid_size)
-            room.room_south = self
+            room = Room(grid_size=self.grid_size)
+            self.room_north = room
             room.save()
         return self.room_north
 
@@ -42,7 +42,7 @@ class Room(models.Model):
         Get or generate south room.
         """
         if not self.room_south:
-            room = Room.create(grid_size=self.grid_size)
+            room = Room(grid_size=self.grid_size)
             room.room_north = self
             room.save()
         return self.room_south
@@ -52,8 +52,8 @@ class Room(models.Model):
         Get or generate east room.
         """
         if not self.room_east:
-            room = Room.create(grid_size=self.grid_size)
-            room.room_west = self
+            room = Room(grid_size=self.grid_size)
+            self.room_east = room
             room.save()
         return self.room_east
 
@@ -62,7 +62,7 @@ class Room(models.Model):
         Get or generate west room.
         """
         if not self.room_west:
-            room = Room.create(grid_size=self.grid_size)
+            room = Room(grid_size=self.grid_size)
             room.room_east = self
             room.save()
         return self.room_west
@@ -108,5 +108,5 @@ def populate_tiles(sender, created=False, instance=None, **kwargs):
     if created:
         for x in range(instance.grid_size):
             for y in range(instance.grid_size):
-                tile = Tile.create(x_coord=x, y_coord=y, room=instance)
+                tile = Tile(x_coord=x, y_coord=y, room=instance)
                 tile.save()

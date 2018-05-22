@@ -9,13 +9,6 @@ class Action:
 
     actions = {}
 
-    def __init_subclass__(cls, **kwargs):
-        """
-        Register subclasses.
-        """
-        super().__init_subclass__(**kwargs)
-        cls.actions[cls.short_name] = cls
-
     @classmethod
     def run(cls, ability, player, target, distance):
         """
@@ -45,6 +38,10 @@ class MinorHeal(Action):
     short_name = 'MH'
     stat = 'health'
     quantity = 5
+
+
+for action in (MinorHeal,):
+    action.actions[action.short_name] = action
 
 
 class Ability(models.Model):

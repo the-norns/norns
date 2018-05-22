@@ -1,9 +1,17 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Q
-from gear.models import Weapon, Inventory
-from room.models import Tile
-from status.models import Ability
+
+
+class Group(models.Model):
+    """
+    Instance group model.
+    """
+
+    owner = models.OneToOneField('Player', on_delete=models.CASCADE)
+    black_list = models.ManyToManyField(
+        'Player', related_name='black_lists', blank=True)
+    white_list = models.ManyToManyField(
+        'Player', related_name='white_lists', blank=True)
 
 
 class Player(models.Model):
@@ -15,19 +23,26 @@ class Player(models.Model):
         User, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=255, default='Unnamed')
     health = models.IntegerField(default=10)
-    abilities = models.ManyToManyField(Ability, blank=True)
-    weapon = models.ForeignKey(
-        Weapon, blank=True, on_delete=models.CASCADE, null=True)
-    tile = models.ForeignKey(
-        Tile, blank=True, on_delete=models.CASCADE, null=True)
+
+    abilities = models.ManyToManyField('status.Ability', blank=True)
     inventory = models.OneToOneField(
-        Inventory,
+        'gear.Inventory',
         blank=True,
-        null=True,
-        related_name='player',
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE,
+        null=True)
+    tile = models.ForeignKey(
+        'room.Tile', blank=True, on_delete=models.SET_NULL, null=True)
+    weapon = models.ForeignKey(
+        'gear.Weapon',
+        blank=True,
+        related_name='equiped_set',
+        on_delete=models.SET_NULL,
+        null=True)
 
     def handle_user_input(self, user_input):
+        """
+        Handle input.
+        """
         verb = user_input[0]
         if verb == 'go':
             self.move(user_input[1])
@@ -49,62 +64,46 @@ class Player(models.Model):
         Change player tile.
         """
         if direction == 'north':
-            queryset = Tile.objects.filter(
-                Q(y_coord=self.tile.y_coord - 1) &
-                Q(x_coord=self.tile.x_coord) &
-                Q(room=self.tile.room))
+            queryset = self.tile.room.tile_set.filter(
+                models.Q(y_coord=self.tile.y_coord - 1) &
+                models.Q(x_coord=self.tile.x_coord))
             if queryset.count():
                 self.tile = queryset.first()
             else:
-                room = self.tile.room.room_north
-                if not room:
-                    room = self.tile.room.roll_room(direction)
-                self.tile = Tile.objects.filter(
-                    Q(y_coord=self.tile.room.grid_size - 1) &
-                    Q(x_coord=self.tile.x_coord) &
-                    Q(room=room))
+                room = self.tile.room.go_north()
+                self.tile = room.tile_set.filter(
+                    models.Q(y_coord=self.tile.room.grid_size - 1) &
+                    models.Q(x_coord=self.tile.x_coord))
         elif direction == 'east':
-            queryset = Tile.objects.filter(
-                Q(y_coord=self.tile.y_coord) &
-                Q(x_coord=self.tile.x_coord + 1) &
-                Q(room=self.tile.room))
+            queryset = self.tile.room.tile_set.filter(
+                models.Q(y_coord=self.tile.y_coord) &
+                models.Q(x_coord=self.tile.x_coord + 1))
             if queryset.count():
                 self.tile = queryset.first()
             else:
-                room = self.tile.room.room_east
-                if not room:
-                    room = self.tile.room.roll_room(direction)
-                self.tile = Tile.objects.filter(
-                    Q(y_coord=self.tile.y_coord) &
-                    Q(x_coord=0) &
-                    Q(room=room))
+                room = self.tile.room.go_east()
+                self.tile = room.tile_set.filter(
+                    models.Q(y_coord=self.tile.y_coord) &
+                    models.Q(x_coord=0))
         elif direction == 'south':
-            queryset = Tile.objects.filter(
-                Q(y_coord=self.tile.y_coord + 1) &
-                Q(x_coord=self.tile.x_coord) &
-                Q(room=self.tile.room))
+            queryset = self.tile.room.tile_set.filter(
+                models.Q(y_coord=self.tile.y_coord + 1) &
+                models.Q(x_coord=self.tile.x_coord))
             if queryset.count():
                 self.tile = queryset.first()
             else:
-                room = self.tile.room.room_south
-                if not room:
-                    room = self.tile.room.roll_room(direction)
-                self.tile = Tile.objects.filter(
-                    Q(y_coord=0) &
-                    Q(x_coord=self.tile.x_coord) &
-                    Q(room=room))
+                room = self.tile.room.go_south()
+                self.tile = room.tile_set.filter(
+                    models.Q(y_coord=0) &
+                    models.Q(x_coord=self.tile.x_coord))
         elif direction == 'west':
-            queryset = Tile.objects.filter(
-                Q(y_coord=self.tile.y_coord) &
-                Q(x_coord=self.tile.x_coord - 1) &
-                Q(room=self.tile.room))
+            queryset = self.tile.room.tile_set.filter(
+                models.Q(y_coord=self.tile.y_coord) &
+                models.Q(x_coord=self.tile.x_coord - 1))
             if queryset.count():
                 self.tile = queryset.first()
             else:
-                room = self.tile.room.room_west
-                if not room:
-                    room = self.tile.room.roll_room(direction)
-                self.tile = Tile.objects.filter(
-                    Q(y_coord=self.tile.y_coord) &
-                    Q(x_coord=self.tile.room.grid_size - 1) &
-                    Q(room=room))
+                room = self.tile.room.go_west()
+                self.tile = room.tile_set.filter(
+                    models.Q(y_coord=self.tile.y_coord) &
+                    models.Q(x_coord=self.tile.room.grid_size - 1))

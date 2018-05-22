@@ -15,6 +15,11 @@ class Weapon(models.Model):
     tiles = models.ManyToManyField(
         Tile, related_name='weapons', blank=True)
 
+#    def attack(self, enemy):
+#        """
+#        Attempt to damage enemy.
+#        """
+
 
 class Inventory(models.Model):
     """

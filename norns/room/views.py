@@ -1,34 +1,52 @@
-from rest_framework import generics
-from django.shortcuts import get_object_or_404
-from .serializers import RoomSerializer
-from gear.models import Weapon
-from player.models import Player
-from enemy.models import Enemy
-from .models import Room, Tile
 from random import randint
 
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
+from rest_framework.generics import (
+    CreateAPIView, RetrieveAPIView, UpdateAPIView)
 
-class RoomView(generics.CreateAPIView, generics.RetrieveAPIView,
-               generics.UpdateAPIView):
-    """Parse form data and relevant room state."""
+from enemy.models import Enemy
+from gear.models import Weapon
+from player.models import Player
+
+from .models import Room, Tile
+from .serializers import RoomSerializer
+
+
+class RoomView(CreateAPIView, RetrieveAPIView, UpdateAPIView):
+    """
+    Parse form data and relevant room state.
+    """
+
     serializer_class = RoomSerializer
     grid_size = 5
 
-    def roll_tile(self, tile):
+    @staticmethod
+    def roll_tile(tile):
+        """
+        Create disapointment.
+        """
         roll = randint(0, 10)
         if roll < 2:
             Weapon.order_by('?').first().tiles.add(tile)
 
     def roll_room(self, direction, prev_room):
+        """
+        Generate room.
+        """
         room = Room.create()
         if direction == 'north':
-            room.room_south == prev_room
+            room.room_south = prev_room
+            prev_room.room_north = room
         if direction == 'east':
-            room.room_west == prev_room
+            room.room_west = prev_room
+            prev_room.room_east = room
         if direction == 'south':
-            room.room_north == prev_room
+            room.room_north = prev_room
+            prev_room.room_south = room
         if direction == 'west':
-            room.room_east == prev_room
+            room.room_east = prev_room
+            prev_room.room_west = room
         room.save()
 
         for x in range(self.grid_size):
@@ -41,43 +59,80 @@ class RoomView(generics.CreateAPIView, generics.RetrieveAPIView,
         return room
 
     def move_player(self, player, direction):
+        """
+        Change player tile.
+        """
         if direction == 'north':
             queryset = Tile.objects.filter(
-                y_coord=player.tile.y_coord - 1).filter(
-                x_coord=player.tile.x_coord)
-            player.tile = queryset.first() if queryset.count() else \
-                Tile.objects.filter(
-                        y_coord=self.grid_size - 1).filter(
-                        x_coord=player.tile.x_coord)
-        if direction == 'east':
+                Q(y_coord=player.tile.y_coord - 1) &
+                Q(x_coord=player.tile.x_coord) &
+                Q(room=player.tile.room))
+            if queryset.count():
+                player.tile = queryset.first()
+            else:
+                room = player.tile.room.room_north
+                if not room:
+                    room = self.roll_room(direction, player.tile.room)
+                player.tile = Tile.objects.filter(
+                    Q(y_coord=self.grid_size - 1) &
+                    Q(x_coord=player.tile.x_coord) &
+                    Q(room=room))
+        elif direction == 'east':
             queryset = Tile.objects.filter(
-                y_coord=player.tile.y_coord).filter(
-                x_coord=player.tile.x_coord + 1)
-            player.tile = queryset.first() if queryset.count() else \
-                Tile.objects.filter(
-                        y_coord=player.tile.y_coord).filter(
-                        x_coord=0)
-        if direction == 'south':
+                Q(y_coord=player.tile.y_coord) &
+                Q(x_coord=player.tile.x_coord + 1) &
+                Q(room=player.tile.room))
+            if queryset.count():
+                player.tile = queryset.first()
+            else:
+                room = player.tile.room.room_east
+                if not room:
+                    room = self.roll_room(direction, player.tile.room)
+                player.tile = Tile.objects.filter(
+                    Q(y_coord=player.tile.y_coord) &
+                    Q(x_coord=0) &
+                    Q(room=room))
+        elif direction == 'south':
             queryset = Tile.objects.filter(
-                y_coord=player.tile.y_coord + 1).filter(
-                x_coord=player.tile.x_coord)
-            player.tile = queryset.first() if queryset.count() else \
-                Tile.objects.filter(
-                        y_coord=0).filter(
-                        x_coord=player.tile.x_coord)
-        if direction == 'west':
+                Q(y_coord=player.tile.y_coord + 1) &
+                Q(x_coord=player.tile.x_coord) &
+                Q(room=player.tile.room))
+            if queryset.count():
+                player.tile = queryset.first()
+            else:
+                room = player.tile.room.room_south
+                if not room:
+                    room = self.roll_room(direction, player.tile.room)
+                player.tile = Tile.objects.filter(
+                    Q(y_coord=0) &
+                    Q(x_coord=player.tile.x_coord) &
+                    Q(room=room))
+        elif direction == 'west':
             queryset = Tile.objects.filter(
-                y_coord=player.tile.y_coord).filter(
-                x_coord=player.tile.x_coord - 1)
-            player.tile = queryset.first() if queryset.count() else \
-                Tile.objects.filter(
-                        y_coord=player.tile.y_coord).filter(
-                        x_coord=self.grid_size - 1)
+                Q(y_coord=player.tile.y_coord) &
+                Q(x_coord=player.tile.x_coord - 1) &
+                Q(room=player.tile.room))
+            if queryset.count():
+                player.tile = queryset.first()
+            else:
+                room = player.tile.room.room_west
+                if not room:
+                    room = self.roll_room(direction, player.tile.room)
+                player.tile = Tile.objects.filter(
+                    Q(y_coord=player.tile.y_coord) &
+                    Q(x_coord=self.grid_size - 1) &
+                    Q(room=room))
 
     def get_queryset(self):
+        """
+        Get object for primary key.
+        """
         return Room.objects.filter(id=self.kwargs['pk'])
 
-    def post(self, request, format=None):
+    def post(self, request, _format=None):
+        """
+        Response to action post.
+        """
         player = get_object_or_404(Player, user=request.user)
         user_input = self.request.data['user_input'].split()
         if 'pk' in self.kwargs:

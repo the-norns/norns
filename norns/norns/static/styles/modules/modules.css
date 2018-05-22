@@ -1,4 +1,4 @@
-.game {
+.game, .container {
   position: relative;
   width: 1000px;
   height: 500px;
@@ -6,6 +6,14 @@
   margin-left: 18vw;
   margin-top: 5vw;
   margin-bottom: 7vw;
+}
+
+.auth-list li label {
+  left: 0;
+}
+
+.auth-list li input {
+  right: 0;
 }
 
 .game div {

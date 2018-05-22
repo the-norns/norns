@@ -47,7 +47,7 @@ class Player(models.Model):
         if verb == 'go':
             self.move(user_input[1])
         if verb == 'attack':
-            self.weapon.attack(user_input[1])
+            self.weapon.attack(self, user_input[1])
         if verb == 'equip':
             self.equip(user_input[1])
 

@@ -43,7 +43,6 @@ class Player(models.Model):
         """
         Handle input.
         """
-
         verb = user_input[0]
         if verb == 'go':
             self.move(user_input[1])

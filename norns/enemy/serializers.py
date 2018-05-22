@@ -10,4 +10,4 @@ class EnemySerializer(serializers.ModelSerializer):
         """Meta class for model fields."""
 
         model = Enemy
-        fields = ('name', 'abilities', 'loot')
+        fields = ('name', 'health')

@@ -1,62 +1,50 @@
 [
   {
     "model": "enemy.enemy",
-    "pk": 1,
+    "pk": 11,
     "fields": {
       "name": "Dwarf",
-      "abilities": null,
-      "loot": 0,
-      "tiles": null
+      "health": 150
     }
   },
   {
     "model": "enemy.enemy",
-    "pk": 2,
+    "pk": 12,
     "fields": {
       "name": "Troll",
-      "abilities": null,
-      "loot": 0,
-      "tiles": null
+      "health": 500
     }
   },
   {
     "model": "enemy.enemy",
-    "pk": 3,
+    "pk": 13,
     "fields": {
       "name": "Draugr",
-      "abilities": null,
-      "loot": 0,
-      "tiles": null
+      "health": 200
     }
   },
   {
     "model": "enemy.enemy",
-    "pk": 4,
+    "pk": 14,
     "fields": {
       "name": "Jotunn",
-      "abilities": null,
-      "loot": 0,
-      "tiles": null
+      "health": 700
     }
   },
   {
     "model": "enemy.enemy",
-    "pk": 5,
+    "pk": 15,
     "fields": {
       "name": "Elf",
-      "abilities": null,
-      "loot": 0,
-      "tiles": null
+      "health": 200
     }
   },
   {
     "model": "enemy.enemy",
-    "pk": 6,
+    "pk": 16,
     "fields": {
       "name": "Warg",
-      "abilities": null,
-      "loot": 0,
-      "tiles": null
+      "health": 300
     }
   }
 ]

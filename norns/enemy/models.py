@@ -3,6 +3,7 @@ from random import randint
 from django.db import models
 from django.db.models import Q
 from django.dispatch import receiver
+from django.db.models import Q
 
 
 class EnemyType(models.Model):
@@ -47,6 +48,18 @@ class Enemy(models.Model):
         queryset = self.tile.room.tiles.filter(
             Q(y_coord=self.tile.y_coord + rand_y) &
             Q(x_coord=self.tile.x_coord + rand_x))
+        if queryset.count():
+            self.tile = queryset.first()
+
+    def wander(self):
+        """
+        Possibly move enemy tile.
+        """
+        rand_x = randint(-1, 1)
+        rand_y = randint(-1, 1)
+        queryset = self.tile.room.tiles.filter(
+            models.Q(y_coord=self.tile.y_coord + rand_y) &
+            models.Q(x_coord=self.tile.x_coord + rand_x))
         if queryset.count():
             self.tile = queryset.first()
 

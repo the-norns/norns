@@ -5,7 +5,8 @@
     "fields": {
       "name": "Steel Broadsword",
       "strength": 15,
-      "agility": 3
+      "agility": 3,
+      "reach": 3
     }
   },
   {
@@ -14,7 +15,8 @@
     "fields": {
       "name": "Small Steel Knives",
       "strength": 5,
-      "agility": 9
+      "agility": 9,
+      "reach": 1
     }
   },
   {
@@ -23,7 +25,8 @@
     "fields": {
       "name": "Steel Shortsword",
       "strength": 8,
-      "agility": 5
+      "agility": 5,
+      "reach": 2
     }
   },
   {
@@ -32,7 +35,8 @@
     "fields": {
       "name": "Maple Bow",
       "strength": 6,
-      "agility": 6
+      "agility": 6,
+      "reach": 10
     }
   },
   {
@@ -41,7 +45,8 @@
     "fields": {
       "name": "Crossbow",
       "strength": 7,
-      "agility": 5
+      "agility": 5,
+      "reach": 10
     }
   },
   {
@@ -50,7 +55,8 @@
     "fields": {
       "name": "Quarterstaff",
       "strength": 9,
-      "agility": 5
+      "agility": 5,
+      "reach": 2
     }
   },
   {
@@ -59,7 +65,8 @@
     "fields": {
       "name": "Iron Mace",
       "strength": 13,
-      "agility": 4
+      "agility": 4,
+      "reach": 2
     }
   },
   {
@@ -68,7 +75,8 @@
     "fields": {
       "name": "Polearm",
       "strength": 12,
-      "agility": 5
+      "agility": 5,
+      "reach": 4
     }
   },
   {
@@ -77,7 +85,8 @@
     "fields": {
       "name": "Lance",
       "strength": 12,
-      "agility": 5
+      "agility": 5,
+      "reach": 4
     }
   }
 ]

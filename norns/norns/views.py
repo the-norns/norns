@@ -2,12 +2,11 @@
 Core views.
 """
 
-from django.shortcuts import render
-from django.views.generic import TemplateView
-from django.http import HttpResponse
-from django.shortcuts import redirect
-from django.conf import settings
 import stripe
+from django.conf import settings
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+from django.views.generic import TemplateView
 
 
 class HomeView(TemplateView):

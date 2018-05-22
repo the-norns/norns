@@ -11,6 +11,7 @@ class Weapon(models.Model):
     name = models.CharField(max_length=255, default='Untitled')
     strength = models.IntegerField(default=0)
     agility = models.IntegerField(default=0)
+    reach = models.IntegerField(default=0)
     tiles = models.ManyToManyField(
         Tile, related_name='weapons', blank=True)
 

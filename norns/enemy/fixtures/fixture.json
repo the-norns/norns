@@ -1,0 +1,50 @@
+[
+  {
+    "model": "enemy.enemy",
+    "pk": 11,
+    "fields": {
+      "name": "Dwarf",
+      "health": 150
+    }
+  },
+  {
+    "model": "enemy.enemy",
+    "pk": 12,
+    "fields": {
+      "name": "Troll",
+      "health": 500
+    }
+  },
+  {
+    "model": "enemy.enemy",
+    "pk": 13,
+    "fields": {
+      "name": "Draugr",
+      "health": 200
+    }
+  },
+  {
+    "model": "enemy.enemy",
+    "pk": 14,
+    "fields": {
+      "name": "Jotunn",
+      "health": 700
+    }
+  },
+  {
+    "model": "enemy.enemy",
+    "pk": 15,
+    "fields": {
+      "name": "Elf",
+      "health": 200
+    }
+  },
+  {
+    "model": "enemy.enemy",
+    "pk": 16,
+    "fields": {
+      "name": "Warg",
+      "health": 300
+    }
+  }
+]

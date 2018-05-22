@@ -1,0 +1,65 @@
+[
+  {
+    "model": "status.ability",
+    "pk": 1,
+    "fields": {
+      "name": "Bash"
+    }
+  },
+  {
+    "model": "status.ability",
+    "pk": 2,
+    "fields": {
+      "name": "Poison Cloud"
+    }
+  },
+  {
+    "model": "status.ability",
+    "pk": 3,
+    "fields": {
+      "name": "Ice Block"
+    }
+  },
+  {
+    "model": "status.ability",
+    "pk": 4,
+    "fields": {
+      "name": "Scatter Arrow"
+    }
+  },
+  {
+    "model": "status.ability",
+    "pk": 5,
+    "fields": {
+      "name": "Sleep"
+    }
+  },
+  {
+    "model": "status.ability",
+    "pk": 6,
+    "fields": {
+      "name": "Fire Strike"
+    }
+  },
+  {
+    "model": "status.ability",
+    "pk": 7,
+    "fields": {
+      "name": "Iron Mace"
+    }
+  },
+  {
+    "model": "status.ability",
+    "pk": 8,
+    "fields": {
+      "name": "Polearm"
+    }
+  },
+  {
+    "model": "status.ability",
+    "pk": 9,
+    "fields": {
+      "name": "Lance"
+    }
+  }
+]

@@ -9,7 +9,9 @@ class Player(models.Model):
     """Player model."""
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, blank=True, null=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, default='Unnamed')
     abilities = models.ManyToManyField(Ability, blank=True)
-    weapon = models.ForeignKey(Weapon, blank=True, on_delete=models.CASCADE)
-    tile = models.ForeignKey(Tile, blank=True, on_delete=models.CASCADE)
+    weapon = models.ForeignKey(
+        Weapon, blank=True, on_delete=models.CASCADE, null=True)
+    tile = models.ForeignKey(
+        Tile, blank=True, on_delete=models.CASCADE, null=True)

@@ -1,21 +1,28 @@
 {% extends 'base.html' %}
-{% load static %}
+
 {% block content %}
+{% if user.is_authenticated %}
 <div class="game">
   {% if message %}
   <p>{{ message }}</p>
   {% endif %}
-      <div class="minimap">
-        <p>minimap</p>
-      </div>
-      <div class="actions">
-        <p>actions</p>
-      </div>
-      <div class="chat">
-        <p>chat</p>
-      </div>
-      <div class="store">
-        <p>store</p>
-      </div>
+  <div class="minimap">
+    <p>minimap</p>
+  </div>
+  <div class="actions">
+    <p>actions</p>
+  </div>
+  <div class="chat">
+    <p>chat</p>
+  </div>
+  <div class="store">
+    <p>store</p>
+  </div>
 </div>
-{% endblock %}
+{% else %}
+<div class="game">
+  <h2>Story so far</h2>
+  <p>Lorem ipsum dolor sit amet, nec sale nusquam conclusionemque id, luptatum sapientem mea ad, platonem persequeris ad pri. An tibique expetenda cum, constituam scribentur no mei, mel id ponderum mandamus theophrastus.</p></div>
+</div>
+{% endif %}
+{% endblock content%}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="login-container container">
+  <h2>Login to a Norns account</h2>
+  <form method="post">
+    <ul class="auth-list">
+    {{ form.as_ul }}
+    </ul>
+    {% csrf_token %}
+    <input type="submit" value="Submit" />
+  </form>
+</div>
+{% endblock %}

@@ -9,19 +9,19 @@ class Action:
 
     actions = {}
 
-    def __init_subclass__(cls, short_name, **kwargs):
+    def __init_subclass__(cls, **kwargs):
         """
         Register subclasses.
         """
         super().__init_subclass__(**kwargs)
-        cls.actions[short_name] = cls
+        cls.actions[cls.short_name] = cls
 
     @classmethod
-    def run(cls, *args, **kwargs):
+    def run(cls, ability, player, target, distance):
         """
-        Fail action.
+        Use potion on player.
         """
-        raise NotImplementedError
+        setattr(target, cls.stat, getattr(target, cls.stat) + cls.quantity)
 
     @classmethod
     def get_model_field(cls):
@@ -37,24 +37,12 @@ class Action:
             choices=choices)
 
 
-class Potion:
-    """
-    Potion to consume on target.
-    """
-
-    @classmethod
-    def run(cls, ability, player, target, distance):
-        """
-        Use potion on player.
-        """
-        setattr(target, cls.stat, getattr(target, cls.stat) + cls.quantity)
-
-
-class MinorHealPotion(Potion, Action, short_name='MH'):
+class MinorHeal(Action):
     """
     Heal target for 5.
     """
 
+    short_name = 'MH'
     stat = 'health'
     quantity = 5
 

@@ -41,7 +41,7 @@ class Room(models.Model):
     )
     grid_size = models.IntegerField(default=5)
 
-    def roll_room(self, direction):
+    def roll_room(self, direction=None):
         """
         Create a new room.
         """

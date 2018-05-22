@@ -7,7 +7,10 @@ from status.models import Ability
 
 
 class Player(models.Model):
-    """Player model."""
+    """
+    Player model.
+    """
+
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=255, default='Unnamed')
@@ -21,11 +24,25 @@ class Player(models.Model):
         Inventory,
         blank=True,
         null=True,
+        related_name='player',
         on_delete=models.CASCADE)
 
     def handle_user_input(self, user_input):
-        if user_input[0] == 'go':
+        verb = user_input[0]
+        if verb == 'go':
             self.move(user_input[1])
+        if verb == 'attack':
+            self.weapon.attack(user_input[1])
+        if verb == 'equip':
+            self.equip(user_input[1])
+
+    def equip(self, item):
+        """
+        Equip inventory item.
+        """
+        weapon = self.inventory.weapons.get(name=item)
+        self.weapon = weapon
+        self.inventory.weapons.remove(weapon)
 
     def move(self, direction):
         """

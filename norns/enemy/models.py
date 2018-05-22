@@ -16,10 +16,10 @@ class Enemy(models.Model):
     name = models.CharField(max_length=255, default='Unnamed')
     health = models.IntegerField(default=10)
     abilities = models.ManyToManyField(Ability, blank=True)
-    inventory = models.ForeignKey(
+    inventory = models.OneToOneField(
         Inventory,
         blank=True,
-        related_name='enemies',
+        related_name='enemy',
         on_delete=models.CASCADE,
         null=True)
     weapon = models.ForeignKey(

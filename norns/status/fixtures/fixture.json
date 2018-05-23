@@ -61,5 +61,14 @@
     "fields": {
       "name": "Lance"
     }
+  },
+  {
+    "model": "status.ability",
+    "pk": 10,
+    "fields": {
+      "name": "Minor Heal",
+      "range": 3,
+      "action": "MH"
+    }
   }
 ]

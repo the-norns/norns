@@ -88,5 +88,21 @@
       "agility": 5,
       "reach": 4
     }
+  },
+  {
+    "model": "gear.consumable",
+    "pk": 1,
+    "fields": {
+      "name": "Mashed Potatoes",
+      "ability": 10
+    }
+  },
+  {
+    "model": "gear.consumable",
+    "pk": 2,
+    "fields": {
+      "name": "Orange Juice",
+      "ability": 10
+    }
   }
 ]

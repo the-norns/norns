@@ -45,10 +45,10 @@ class Weapon(models.Model):
                and abs(player.tile.y_coord - etile.y_coord) <= self.reach:
                 roll = sum([randint(0, 6) for _ in range(self.strength)])
                 enemy.health -= roll
-                message += f'You struck for {roll} damage!'
+                message += 'You struck for {} damage!'.format(roll)
 
             if enemy.health <= 0:
-                message += f' {enemy} was slain!'
+                message += ' {} was slain!'.format(enemy)
                 for weapon in enemy.inventory.weapons.all():
                     weapon.tiles.add(etile)
                 enemy.tiles.remove(etile)

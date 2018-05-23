@@ -9,10 +9,16 @@ class TestModels(TestCase):
     """
 
     def setUp(self):
+        """
+        Create items.
+        """
         for _ in range(5):
             mommy.make(Weapon)
 
     def tearDown(self):
+        """
+        Destroy items.
+        """
         Weapon.objects.all().delete()
 
     def test_weapon_exists(self):

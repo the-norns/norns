@@ -12,7 +12,7 @@ canvasElement.appendTo($(".game"));
 function Tile(x, y, consumables, enemies, players, weapons) {
     this.x = x;
     this.y = y;
-    this.color = "#00A";
+    this.color = "#7c5b51";
     this.enemies = enemies;
     this.players = players;
     this.weapons = weapons;
@@ -33,6 +33,7 @@ function newGame() {
         roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
     })
   })
+    .then(console.log(roomTiles))
     .then(() => draw(roomTiles))
 }
 
@@ -44,6 +45,7 @@ function action(event) {
     event.preventDefault()
     console.log(event.target.action.value)
     $.post(`${__API_URL__}room`, function(data){
+        console.log(data)
         data.tiles.forEach(function(tile){
             roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
         })

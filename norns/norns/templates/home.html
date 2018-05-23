@@ -10,8 +10,8 @@
     <p class="messages"></p>
   </div>
   <div class="actions">
-    <form class=action-form>
-    <input name="action" class="action-input" type=text>
+    <form class=action-form action="{% url "room" %}" method="POST">
+    <input class="action-input" type=text>
     <button type="submit">Enter</button>
   </form>
   </div>

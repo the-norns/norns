@@ -38,6 +38,26 @@ class TestRoutes(TestCase):
         self.assertEqual(response.data['message'], 'Welcome to Hel.')
         self.assertTrue(response.data['tiles'][0])
 
+
+class TestRoutesWithData(TestCase):
+    """
+    Integration tests.
+    """
+
+    fixtures = ['fixture']
+
+    def setUp(self):
+        """
+        Set up.
+        """
+        self.user = mommy.make(User)
+
+    def tearDown(self):
+        """
+        Tear down.
+        """
+        Player.objects.all().delete()
+
     def test_look_returns_weapon(self):
         """
         Look at tile for data.
@@ -45,13 +65,21 @@ class TestRoutes(TestCase):
         Validate that looking on a tile returns the weapon on that tile
         and the description on that tile.
         """
+        self.client.force_login(self.user)
+        response = self.client.post(reverse_lazy('new_room'))
         player = Player.get_active_player(self.user)
         weapon = mommy.make(Weapon, name='sword')
         weapon.save()
         player.tile.desc = 'a tile.'
         player.tile.weapons.add(weapon)
+        player.tile.save()
         data = {'user_input': 'look'}
-        self.client.force_login(self.user)
         response = self.client.post(reverse_lazy('room'), data=data)
-        self.assertContains(response.data, 'a tile.')
-        self.assertContains(response.data, 'sword')
+        self.client.logout()
+        self.assertContains(response, 'message')
+        self.assertContains(response, 'tiles')
+        for tile in response.data['tiles']:
+            self.assertIsNotNone(tile)
+            self.assertIn('x_coord', tile)
+            self.assertIn('y_coord', tile)
+            self.assertIn('weapons', tile)

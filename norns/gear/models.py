@@ -51,7 +51,7 @@ class Weapon(models.Model):
                 for weapon in enemy.inventory.weapons.all():
                     weapon.tiles.add(etile)
                 enemy.tiles.remove(etile)
-        return {'message': message, 'tiles': etiles.all()}
+        return message
 
 
 class Consumable(models.Model):

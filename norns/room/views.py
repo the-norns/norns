@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import (CreateAPIView, RetrieveAPIView,
                                      UpdateAPIView)
@@ -6,15 +5,15 @@ from rest_framework.response import Response
 
 from player.models import Player
 
-from .models import Room
-from .serializers import RoomSerializer, TileSerializer
+from .serializers import TileSerializer
 
 
 def _serialize(response, **kwargs):
     return Response(
         {
             'message': response.get('message', None),
-            'tiles': TileSerializer(response.get('tiles', []), many=True)},
+            'tiles': TileSerializer(
+                response.get('tiles', []), many=True).data},
         **kwargs)
 
 

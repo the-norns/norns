@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import (
     CreateAPIView, RetrieveAPIView, UpdateAPIView)
+from rest_framework.response import Response
 from django.db.models import Q
 from gear.models import Weapon
 from player.models import Player
@@ -32,7 +33,18 @@ class RoomView(CreateAPIView, RetrieveAPIView, UpdateAPIView):
         if verb == 'look':
             if not player.tile.looked:
                 player.tile.roll_tile()
-            return super().retrieve(request, self.kwargs['pk'])
+            return Response({
+                'tiles': [
+                    {
+                        'x_coord': player.tile.x_coord,
+                        'y_coord': player.tile.y_coord,
+                        'contents': {
+                            'weapons': [
+                                w.name for w in player.tile.weapons.all()]
+                        },
+                    }],
+            })
+
         if verb == 'take':
             weapon = Weapon.objects.filter(
                 Q(tiles=player.tile) &
@@ -41,4 +53,31 @@ class RoomView(CreateAPIView, RetrieveAPIView, UpdateAPIView):
                 player.inventory.weapons.add(weapon)
                 weapon.tiles.remove(player.tile)
 
-        player.handle_user_input(user_input)
+        return player.handle_user_input(user_input)
+
+
+class NewRoomView(CreateAPIView):
+    """
+    Create a new game.
+    """
+
+    def post(self, request, _format=None):
+        """
+        Response to create room post.
+        """
+        player = Player.create(user=request.user)
+        room = Room.roll_room()
+        player.tile = room.tiles.order_by('?').first()
+        return Response({
+            'message': 'Welcome to Hel.',
+            'tiles': [
+                {
+                    'x_coord': tile.x_coord,
+                    'y_coord': tile.y_coord,
+                    'contents': {
+                        'enemies': [(en.type.name, en.name)
+                                    for en in tile.enemies.all()],
+                        'players': [player.get(tile=tile).name],
+                    },
+                } for tile in room.tiles.all()],
+        })

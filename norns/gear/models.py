@@ -116,13 +116,13 @@ def create_enemy_inventory(sender, instance=None, **kwargs):
         instance.inventory = inventory
 
 
-@receiver(models.signals.pre_save, sender=Consumable)
-def create_consumable_ability(sender, instance=None, **kwargs):
-    """
-    Create an ability for a consumable.
-    """
-    from status.models import Ability
-
-    if not instance.ability:
-        ability = Ability.objects.order_by('?').first()
-        instance.ability = ability
+#@receiver(models.signals.pre_save, sender=Consumable)
+#def create_consumable_ability(sender, instance=None, **kwargs):
+#    """
+#    Create an ability for a consumable.
+#    """
+#    from status.models import Ability
+#
+#    if not instance.ability:
+#        ability = Ability.objects.order_by('?').first()
+#        instance.ability = ability

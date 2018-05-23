@@ -6,6 +6,7 @@ from .models import Room, Tile
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
+        fields = '__all__'
 
 
 class TileSerializer(serializers.ModelSerializer):

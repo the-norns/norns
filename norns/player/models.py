@@ -1,18 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.dispatch import receiver
-
-
-class Group(models.Model):
-    """
-    Instance group model.
-    """
-
-    owner = models.OneToOneField('Player', on_delete=models.CASCADE)
-    black_list = models.ManyToManyField(
-        'Player', related_name='black_lists', blank=True)
-    white_list = models.ManyToManyField(
-        'Player', related_name='white_lists', blank=True)
+from rest_framework.authtoken.models import Token
 
 
 class Player(models.Model):
@@ -20,8 +9,7 @@ class Player(models.Model):
     Player model.
     """
 
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     active = models.BooleanField(default=False)
     name = models.CharField(max_length=255, default='Unnamed')
     health = models.IntegerField(default=10)
@@ -41,18 +29,6 @@ class Player(models.Model):
         related_name='equiped_set',
         on_delete=models.SET_NULL,
         null=True)
-
-    @classmethod
-    def get_active_player(cls, user):
-        """
-        Get active player character.
-        """
-        player = cls.objects.filter(user=user, active=True).first()
-        if player:
-            return player
-        player = cls.objects.filter(user=user).first()
-        player.active = True
-        return player
 
     def handle_user_input(self, user_input):
         """
@@ -151,6 +127,18 @@ class Player(models.Model):
                 models.Q(x_coord=self.tile.room.grid_size - 1)).first()
 
 
+class Group(models.Model):
+    """
+    Instance group model.
+    """
+
+    owner = models.OneToOneField(Player, on_delete=models.CASCADE)
+    black_list = models.ManyToManyField(
+        Player, related_name='black_lists', blank=True)
+    white_list = models.ManyToManyField(
+        Player, related_name='white_lists', blank=True)
+
+
 @receiver(models.signals.post_save, sender=User)
 def create_new_player(sender, created=False, instance=None, **kwargs):
     """
@@ -158,3 +146,4 @@ def create_new_player(sender, created=False, instance=None, **kwargs):
     """
     if created:
         Player(user=instance, active=True).save()
+        Token(user=instance).save()

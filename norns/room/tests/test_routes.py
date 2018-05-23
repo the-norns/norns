@@ -30,4 +30,4 @@ class TestRoutes(TestCase):
         self.client.logout()
         #  import pdb; pdb.set_trace()
         self.assertEqual(response.data['message'], 'Welcome to Hel.')
-        self.assertTrue(response.data['tiles'][0]['room'])
+        self.assertTrue(response.data['tiles'][0])

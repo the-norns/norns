@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from ..views import about_view, HomeView, StoreView
+from ..views import HomeView, StoreView, about_view
 
 
 class TestViews(TestCase):

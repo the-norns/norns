@@ -20,8 +20,8 @@ class Weapon(models.Model):
         """
         Attempt to damage target.
         """
-        if not target.name:
-            return 'You can\'t attack {}.'.format(target.name)
+        if not target.name or target.tile.room is not source.tile.room:
+            return {'message': 'You can\'t attack that.'}
 
         message = ''
         if abs(source.tile.x_coord - target.tile.x_coord) <= self.reach \
@@ -32,6 +32,8 @@ class Weapon(models.Model):
                 message += 'Crit!\n'
             message += '{} hit {} for {} damage.\n'.format(
                 source.name, target.name, roll)
+        else:
+            return {'message': '{} is out of range.'.format(target.name)}
 
         if target.health <= 0:
             message += ' {} was slain!\n'.format(target.name)
@@ -114,15 +116,3 @@ def create_enemy_inventory(sender, instance=None, **kwargs):
         inventory = Inventory()
         inventory.save()
         instance.inventory = inventory
-
-
-#@receiver(models.signals.pre_save, sender=Consumable)
-#def create_consumable_ability(sender, instance=None, **kwargs):
-#    """
-#    Create an ability for a consumable.
-#    """
-#    from status.models import Ability
-#
-#    if not instance.ability:
-#        ability = Ability.objects.order_by('?').first()
-#        instance.ability = ability

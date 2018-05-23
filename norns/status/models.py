@@ -1,3 +1,4 @@
+from django.dispatch import receiver
 from django.db import models
 from django.http import HttpResponseBadRequest
 
@@ -70,3 +71,15 @@ class Ability(models.Model):
 
         Action.actions[self.action].run(self, player, target, distance)
         return {}
+
+
+# @receiver(models.signals.pre_save, sender='gear.Consumable')
+# def create_consumable_ability(sender, instance=None, **kwargs):
+#     """
+#     Create an ability for a consumable.
+#     """
+# 
+#     #if not hasattr(instance, 'ability'):
+#         #pass
+#         #ability = Ability.objects.order_by('?').first()
+#         #instance.ability = ability

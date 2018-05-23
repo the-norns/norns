@@ -62,7 +62,7 @@ class NewRoomView(CreateAPIView):
         for player in Player.objects.filter(
                 user=request.user, active=True).all():
             player.active = False
-        player = get_object_or_404(Player, user=request.user, active=True)
+        player = Player.objects.create(user=request.user, active=True)
         player.tile = player.tile.room.tile_set.order_by('?').first()
         return _serialize(player, 'Welcome to Hel.', status=201)
 

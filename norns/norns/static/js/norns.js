@@ -1,4 +1,4 @@
-let CANVAS_WIDTH = 800;
+let CANVAS_WIDTH = 600;
 let CANVAS_HEIGHT = 470;
 let roomTiles = [];
 const __API_URL__ = 'http://localhost:8000/api/v1/'
@@ -27,12 +27,12 @@ function draw(tiles) {
 }
 
 function newGame() {
+    $(".start-game").remove()
     $.post(`${__API_URL__}room/new`, function (data) {
     data.tiles.forEach(function(tile){
         roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
     })
   })
-    .then(console.log(roomTiles))
     .then(() => draw(roomTiles))
 }
 
@@ -40,4 +40,16 @@ function clearCanvas() {
     canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
-$(".start-game").on( "click", newGame );
+function action(event) {
+    event.preventDefault()
+    console.log(event.target.action.value)
+    $.post(`${__API_URL__}room`, function(data){
+        data.tiles.forEach(function(tile){
+            roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
+        })
+    })
+    .then(() => draw(roomTiles))
+}
+
+$(".start-game").on("click", newGame);
+$(".action-form").on("submit", action);

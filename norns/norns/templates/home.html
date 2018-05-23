@@ -4,13 +4,17 @@
 {% if user.is_authenticated %}
 <div class="game">
   <div class="start-game">
-    <button>Start Game</button>
+    <form>
+      {% csrf_token %}
+    <button type="submit">Start Game</button>
+  </form>
   </div>
   <div class="messages-container">
     <p class="messages"></p>
   </div>
   <div class="actions">
     <form class=action-form action="{% url "room" %}" method="POST">
+      {% csrf_token %}
     <input class="action-input" type=text>
     <button type="submit">Enter</button>
   </form>

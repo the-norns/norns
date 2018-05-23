@@ -84,56 +84,77 @@ class Player(models.Model):
         """
         Change player tile.
         """
-        directions = ['north', 'east', 'south', 'west']
-        if direction not in directions:
+        move_direction = {
+            'east': self.move_east,
+            'north': self.move_north,
+            'south': self.move_south,
+            'west': self.move_west}.get(direction, None)
+        if not move_direction:
             return {'message': 'You can\'t move {}.'.format(direction)}
 
         tiles = {self.tile}
-        if direction == 'north':
-            queryset = self.tile.room.tile_set.filter(
-                models.Q(y_coord=self.tile.y_coord - 1) &
-                models.Q(x_coord=self.tile.x_coord))
-            if queryset.count():
-                self.tile = queryset.first()
-            else:
-                room = self.tile.room.go_north()
-                self.tile = room.tile_set.filter(
-                    models.Q(y_coord=self.tile.room.grid_size - 1) &
-                    models.Q(x_coord=self.tile.x_coord)).first()
-        elif direction == 'east':
-            queryset = self.tile.room.tile_set.filter(
-                models.Q(y_coord=self.tile.y_coord) &
-                models.Q(x_coord=self.tile.x_coord + 1))
-            if queryset.count():
-                self.tile = queryset.first()
-            else:
-                room = self.tile.room.go_east()
-                self.tile = room.tile_set.filter(
-                    models.Q(y_coord=self.tile.y_coord) &
-                    models.Q(x_coord=0)).first()
-        elif direction == 'south':
-            queryset = self.tile.room.tile_set.filter(
-                models.Q(y_coord=self.tile.y_coord + 1) &
-                models.Q(x_coord=self.tile.x_coord))
-            if queryset.count():
-                self.tile = queryset.first()
-            else:
-                room = self.tile.room.go_south()
-                self.tile = room.tile_set.filter(
-                    models.Q(y_coord=0) &
-                    models.Q(x_coord=self.tile.x_coord)).first()
-        elif direction == 'west':
-            queryset = self.tile.room.tile_set.filter(
-                models.Q(y_coord=self.tile.y_coord) &
-                models.Q(x_coord=self.tile.x_coord - 1))
-            if queryset.count():
-                self.tile = queryset.first()
-            else:
-                room = self.tile.room.go_west()
-                self.tile = room.tile_set.filter(
-                    models.Q(y_coord=self.tile.y_coord) &
-                    models.Q(x_coord=self.tile.room.grid_size - 1)).first()
+        move_direction()
         return {'tiles': tiles | {self.tile}}
+
+    def move_north(self):
+        """
+        Change player tile north.
+        """
+        queryset = self.tile.room.tile_set.filter(
+            models.Q(y_coord=self.tile.y_coord - 1) &
+            models.Q(x_coord=self.tile.x_coord))
+        if queryset.count():
+            self.tile = queryset.first()
+        else:
+            room = self.tile.room.go_north()
+            self.tile = room.tile_set.filter(
+                models.Q(y_coord=self.tile.room.grid_size - 1) &
+                models.Q(x_coord=self.tile.x_coord)).first()
+
+    def move_east(self):
+        """
+        Change player tile east.
+        """
+        queryset = self.tile.room.tile_set.filter(
+            models.Q(y_coord=self.tile.y_coord) &
+            models.Q(x_coord=self.tile.x_coord + 1))
+        if queryset.count():
+            self.tile = queryset.first()
+        else:
+            room = self.tile.room.go_east()
+            self.tile = room.tile_set.filter(
+                models.Q(y_coord=self.tile.y_coord) &
+                models.Q(x_coord=0)).first()
+
+    def move_south(self):
+        """
+        Change player tile south.
+        """
+        queryset = self.tile.room.tile_set.filter(
+            models.Q(y_coord=self.tile.y_coord + 1) &
+            models.Q(x_coord=self.tile.x_coord))
+        if queryset.count():
+            self.tile = queryset.first()
+        else:
+            room = self.tile.room.go_south()
+            self.tile = room.tile_set.filter(
+                models.Q(y_coord=0) &
+                models.Q(x_coord=self.tile.x_coord)).first()
+
+    def move_west(self):
+        """
+        Change player tile west.
+        """
+        queryset = self.tile.room.tile_set.filter(
+            models.Q(y_coord=self.tile.y_coord) &
+            models.Q(x_coord=self.tile.x_coord - 1))
+        if queryset.count():
+            self.tile = queryset.first()
+        else:
+            room = self.tile.room.go_west()
+            self.tile = room.tile_set.filter(
+                models.Q(y_coord=self.tile.y_coord) &
+                models.Q(x_coord=self.tile.room.grid_size - 1)).first()
 
 
 @receiver(models.signals.post_save, sender=User)

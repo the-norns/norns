@@ -7,7 +7,11 @@ from .serializers import WeaponSerializer
 class WeaponView(generics.CreateAPIView, generics.RetrieveAPIView,
                  generics.UpdateAPIView):
     """Return JSON of weapon."""
+
     serializer_class = WeaponSerializer
 
     def get_object(self):
+        """
+        Get object.
+        """
         return Weapon.objects.get(id=self.kwargs['pk'])

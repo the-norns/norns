@@ -1,6 +1,7 @@
 from django.test import TestCase
-from ..models import Weapon
 from model_mommy import mommy
+
+from ..models import Weapon
 
 
 class TestModels(TestCase):

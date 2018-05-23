@@ -11,31 +11,40 @@ class TestModels(TestCase):
     """
 
     def setUp(self):
+        """
+        Create enemy models.
+        """
         self.tile1 = mommy.make(Tile)
         self.tile2 = mommy.make(Tile)
+        Enemy.objects.all().delete()
+        Weapon.objects.all().delete()
         self.loot = mommy.make(Weapon)
-        self.enemy = mommy.make(Enemy)
-        self.enemy.tiles.add(self.tile1)
-        self.enemy.tiles.add(self.tile2)
-        self.enemy.loot = self.loot
+        self.enemy1 = mommy.make(Enemy)
+        self.enemy2 = mommy.make(Enemy)
+        self.enemy1.tile = self.tile1
+        self.enemy2.tile = self.tile2
+        self.enemy1.loot = self.loot
 
     def tearDown(self):
+        """
+        Destroy enemy models.
+        """
         Enemy.objects.all().delete()
 
     def test_enemy_exists(self):
         """
         Validate enemy created.
         """
-        self.assertTrue(Enemy.objects.count() == 1)
+        self.assertEqual(Enemy.objects.count(), 2)
 
     def test_enemy_has_tile(self):
         """
         Validate enemy has a tile.
         """
-        self.assertTrue(self.enemy.tiles.count() == 2)
+        self.assertEqual(self.enemy1.tile, self.tile1)
 
     def test_enemy_has_loot(self):
         """
         Validate enemy has loot.
         """
-        self.assertTrue(self.enemy.loot is self.loot)
+        self.assertEqual(self.enemy1.loot, self.loot)

@@ -1,9 +1,9 @@
 from random import randint
 
 from django.db import models
+from django.dispatch import receiver
 
-import gear
-import enemy
+from gear.models import Consumable, Weapon
 
 
 class Room(models.Model):
@@ -11,61 +11,61 @@ class Room(models.Model):
     Room model.
     """
 
-    room_north = models.ForeignKey(
-        'self',
+    room_north = models.OneToOneField(
+        'Room',
         blank=True,
-        related_name='to_south',
-        on_delete=models.CASCADE,
+        related_name='room_south',
+        on_delete=models.SET_NULL,
         null=True,
     )
-    room_east = models.ForeignKey(
-        'self',
+    room_east = models.OneToOneField(
+        'Room',
         blank=True,
-        related_name='to_west',
-        on_delete=models.CASCADE,
-        null=True,
-    )
-    room_south = models.ForeignKey(
-        'self',
-        blank=True,
-        related_name='to_north',
-        on_delete=models.CASCADE,
-        null=True,
-    )
-    room_west = models.ForeignKey(
-        'self',
-        blank=True,
-        related_name='to_east',
-        on_delete=models.CASCADE,
+        related_name='room_west',
+        on_delete=models.SET_NULL,
         null=True,
     )
     grid_size = models.IntegerField(default=5)
 
-    def roll_room(self, direction=None):
+    def go_north(self):
         """
-        Create a new room.
+        Get or generate north room.
         """
-        room = Room.create()
-        if direction == 'north':
-            room.room_south = self
+        if not self.room_north:
+            room = Room(grid_size=self.grid_size)
             self.room_north = room
-        if direction == 'east':
-            room.room_west = self
-            self.room_east = room
-        if direction == 'south':
-            room.room_north = self
-            self.room_south = room
-        if direction == 'west':
-            room.room_east = self
-            self.room_west = room
+            room.save()
+        return self.room_north
 
-        for x in range(self.grid_size):
-            for y in range(self.grid_size):
-                tile = Tile.create(x_coord=x, y_coord=y, room=room)
-                roll = randint(0, 10)
-                if roll == 1:
-                    enemy.models.Enemy.order_by('?').first().tiles.add(tile)
-        return room
+    def go_south(self):
+        """
+        Get or generate south room.
+        """
+        if not self.room_south:
+            room = Room(grid_size=self.grid_size)
+            room.room_north = self
+            room.save()
+        return self.room_south
+
+    def go_east(self):
+        """
+        Get or generate east room.
+        """
+        if not self.room_east:
+            room = Room(grid_size=self.grid_size)
+            self.room_east = room
+            room.save()
+        return self.room_east
+
+    def go_west(self):
+        """
+        Get or generate west room.
+        """
+        if not self.room_west:
+            room = Room(grid_size=self.grid_size)
+            room.room_east = self
+            room.save()
+        return self.room_west
 
 
 class Tile(models.Model):
@@ -73,17 +73,40 @@ class Tile(models.Model):
     Tile model.
     """
 
-    room = models.ForeignKey(
-        Room, related_name='tiles', on_delete=models.CASCADE)
     looked = models.BooleanField(default=False)
     x_coord = models.IntegerField()
     y_coord = models.IntegerField()
     desc = models.TextField(blank=True)
 
-    def roll_tile(self):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+
+    consumables = models.ManyToManyField(Consumable, blank=True)
+    weapons = models.ManyToManyField(Weapon, blank=True)
+
+    def look(self):
         """
         Create disappointment.
         """
-        roll = randint(0, 10)
-        if roll < 2:
-            gear.models.Weapon.order_by('?').first().tiles.add(self)
+        if not self.looked:
+            self.looked = True
+            roll = randint(0, 10)
+            if roll >= 2:
+                return
+            consumable = Consumable.objects.order_by('?').first()
+            self.consumables.append(consumable)
+            consumable.save()
+            weapon = Weapon.objects.order_by('?').first()
+            self.weapons.append(weapon)
+            weapon.save()
+
+
+@receiver(models.signals.post_save, sender=Room)
+def populate_tiles(sender, created=False, instance=None, **kwargs):
+    """
+    Create disappointment.
+    """
+    if created:
+        for x in range(instance.grid_size):
+            for y in range(instance.grid_size):
+                tile = Tile(x_coord=x, y_coord=y, room=instance)
+                tile.save()

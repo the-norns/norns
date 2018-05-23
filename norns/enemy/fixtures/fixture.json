@@ -1,9 +1,17 @@
 [
   {
+    "model": "enemy.EnemyType",
+    "pk": 1,
+    "fields": {
+      "name": "Dwarf"
+    }
+  },
+  {
     "model": "enemy.enemy",
     "pk": 11,
     "fields": {
       "name": "Dwarf",
+      "enemy_type": 1,
       "health": 150
     }
   },
@@ -12,6 +20,7 @@
     "pk": 12,
     "fields": {
       "name": "Troll",
+      "enemy_type": 1,
       "health": 500
     }
   },
@@ -20,6 +29,7 @@
     "pk": 13,
     "fields": {
       "name": "Draugr",
+      "enemy_type": 1,
       "health": 200
     }
   },
@@ -28,6 +38,7 @@
     "pk": 14,
     "fields": {
       "name": "Jotunn",
+      "enemy_type": 1,
       "health": 700
     }
   },
@@ -36,6 +47,7 @@
     "pk": 15,
     "fields": {
       "name": "Elf",
+      "enemy_type": 1,
       "health": 200
     }
   },
@@ -44,6 +56,7 @@
     "pk": 16,
     "fields": {
       "name": "Warg",
+      "enemy_type": 1,
       "health": 300
     }
   }

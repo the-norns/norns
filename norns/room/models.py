@@ -86,14 +86,15 @@ class Tile(models.Model):
         if not self.looked:
             self.looked = True
             roll = randint(0, 10)
-            if roll >= 2:
+            if roll > 2:
                 return
+            if roll > 1:
+                weapon = Weapon.objects.order_by('?').first()
+                weapon.save()
+                self.weapons.add(weapon)
             consumable = Consumable.objects.order_by('?').first()
-            self.consumables.append(consumable)
             consumable.save()
-            weapon = Weapon.objects.order_by('?').first()
-            self.weapons.append(weapon)
-            weapon.save()
+            self.consumables.add(consumable)
 
 
 @receiver(models.signals.pre_save, sender='player.Player')

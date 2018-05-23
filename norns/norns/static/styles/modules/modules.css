@@ -50,7 +50,7 @@
 .store {
   position: absolute;
   bottom: 30px;
-  right: 200px;
+  right: 0;
   background-color: white;
 }
 

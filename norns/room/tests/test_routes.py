@@ -33,10 +33,10 @@ class TestRoutes(TestCase):
         Validate that new room route creates a new room.
         """
         self.client.force_login(self.user)
-        # response = self.client.post(reverse_lazy('new_room'))
-        # self.client.logout()
-        # self.assertEqual(response.data['message'], 'Welcome to Hel.')
-        # self.assertTrue(response.data['tiles'][0])
+        response = self.client.post(reverse_lazy('new_room'))
+        self.client.logout()
+        self.assertEqual(response.data['message'], 'Welcome to Hel.')
+        self.assertTrue(response.data['tiles'][0])
 
     def test_look_returns_weapon(self):
         """
@@ -50,8 +50,8 @@ class TestRoutes(TestCase):
         weapon.save()
         player.tile.desc = 'a tile.'
         player.tile.weapons.add(weapon)
-        # data = {'user_input': 'look'}
-        # self.client.force_login(self.user)
-        # response = self.client.post(reverse_lazy('room'))
-        # self.assertContains(response.data, 'a tile.')
-        # self.assertContains(response.data, 'sword')
+        data = {'user_input': 'look'}
+        self.client.force_login(self.user)
+        response = self.client.post(reverse_lazy('room'))
+        self.assertContains(response.data, 'a tile.')
+        self.assertContains(response.data, 'sword')

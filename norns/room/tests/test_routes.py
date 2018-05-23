@@ -52,6 +52,6 @@ class TestRoutes(TestCase):
         player.tile.weapons.add(weapon)
         data = {'user_input': 'look'}
         self.client.force_login(self.user)
-        response = self.client.post(reverse_lazy('room'))
+        response = self.client.post(reverse_lazy('room'), data=data)
         self.assertContains(response.data, 'a tile.')
         self.assertContains(response.data, 'sword')

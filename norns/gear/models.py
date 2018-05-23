@@ -21,7 +21,7 @@ class Weapon(models.Model):
         Attempt to damage target.
         """
         if not target.name:
-            return {'message': 'You can\'t attack that.'}
+            return 'You can\'t attack {}.'.format(target.name)
 
         message = ''
         if abs(source.tile.x_coord - target.tile.x_coord) <= self.reach \
@@ -47,7 +47,7 @@ class Weapon(models.Model):
             else:
                 target.delete()
 
-        return {'message': message}
+        return message
 
 
 class Consumable(models.Model):

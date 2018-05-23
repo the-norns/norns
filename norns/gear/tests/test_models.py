@@ -66,8 +66,7 @@ class TestModels(TestCase):
         """
         self.enemy.tile = self.player.tile
         initial_health = self.enemy.health
-        message = \
-            self.weapon.attack(self.player, self.enemy)['message'].split()
+        message = self.weapon.attack(self.player, self.enemy).split()
         damage = int(message[5]) if message[0] == 'Crit!' else int(message[4])
         self.assertEqual(self.enemy.health, initial_health - damage)
 
@@ -86,8 +85,7 @@ class TestModels(TestCase):
         """
         self.enemy.tile = self.player.tile
         initial_health = self.player.health
-        message = \
-            self.weapon.attack(self.enemy, self.player)['message'].split()
+        message = self.weapon.attack(self.enemy, self.player).split()
         damage = int(message[5]) if message[0] == 'Crit!' else int(message[4])
         self.assertEqual(self.player.health, initial_health - damage)
 
@@ -97,6 +95,5 @@ class TestModels(TestCase):
         """
         self.enemy.tile = self.player.tile
         while self.player.health > 0:
-            message = \
-                self.weapon.attack(self.enemy, self.player)['message'].split()
+            message = self.weapon.attack(self.enemy, self.player).split()
         self.assertEqual(message[-1], 'died.')

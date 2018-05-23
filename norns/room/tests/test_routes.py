@@ -12,18 +12,7 @@ from ..models import Room, Tile
 class TestRoutes(TestCase):
     """Integration tests."""
     def setUp(self):
-        User.objects.create_user(
-            username='bob',
-            email='bob@bob.com',
-        )
-        self.user = User.objects.first()
-        self.user.password = 'bob'
-        self.user.save()
-        #import pdb; pdb.set_trace()
-        #self.user = mommy.make(User)
-        #self.player = mommy.make(Player, user=self.user)
-        #weapon = mommy.make(Weapon)
-        #player.tile.weapons.add(weapon)
+        self.user = mommy.make(User)
 
     def tearDown(self):
         Player.objects.all().delete()
@@ -39,4 +28,5 @@ class TestRoutes(TestCase):
         self.client.force_login(self.user)
         response = self.client.post(reverse_lazy('new_room'))
         self.client.logout()
-        self.assertContains(response.body, 'Welcome to Hel.')
+        self.assertEqual(response.data['message'], 'Welcome to Hel.')
+        self.assertTrue(response.data['tiles'][0]['room'])

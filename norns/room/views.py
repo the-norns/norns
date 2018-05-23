@@ -65,12 +65,13 @@ class NewRoomView(CreateAPIView):
         Response to create room post.
         """
         player = Player.objects.create()
-        player.user = User.objects.filter(username=request.user.username).first()
+        player.user = User.objects.filter(
+            username=request.user.username).first()
         player.save()
         return Response({
             'message': 'Welcome to Hel.',
-            'tiles': [tile.id for tile in player.tile.room.tiles.all()],
-        })
+            'tiles': TileSerializer(player.tile.room.tile_set, many=True).data
+        }, status=201)
 
 
 class TileView(RetrieveAPIView):

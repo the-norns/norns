@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
 from model_mommy import mommy
 
@@ -41,3 +42,38 @@ class TestModels(TestCase):
         """Validate tiles have room."""
         self.assertIs(self.tile1.room, self.room)
         self.assertIs(self.tile2.room, self.room)
+
+
+class TestModelsWithData(TestCase):
+    """
+    Test Room and Tile models.
+    """
+
+    fixtures = ['fixture']
+
+    def setUp(self):
+        """
+        Create room models.
+        """
+        self.room = mommy.make(Room)
+
+    def tearDown(self):
+        """
+        Destroy room models.
+        """
+        Room.objects.all().delete()
+
+    def test_room_has_tiles(self):
+        """
+        Validate room has tiles.
+        """
+        self.assertEqual(self.room.tile_set.count(), self.room.grid_size ** 2)
+
+    def test_tiles_can_reveal(self):
+        """
+        Validate tiles look.
+        """
+        for tile in self.room.tile_set.all():
+            self.assertFalse(tile.looked)
+            tile.look()
+            self.assertTrue(tile.looked)

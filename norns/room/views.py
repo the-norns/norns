@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from player.models import Player
 
-from .serializers import TileSerializer
+from .serializers import RoomSerializer, TileSerializer
 
 
 def _serialize(response, **kwargs):
@@ -53,6 +53,7 @@ class NewRoomView(CreateAPIView):
     """
     Create a new game.
     """
+
     serializer_class = RoomSerializer
 
     def post(self, request, _format=None):

@@ -13,6 +13,8 @@ class TestModels(TestCase):
     Test Weapon model.
     """
 
+    #  fixtures = ['fixture']
+
     def setUp(self):
         """
         Create items.
@@ -49,14 +51,14 @@ class TestModels(TestCase):
         self.assertEqual(
             cinv.filter(id=self.consumable.id).count(), 1)
 
-    def test_consumable_use(self):
-        """
-        Validate that consumable in inventory is used.
-        """
-        cinv = self.player.inventory.consumables
-        cinv.add(self.consumable)
-        self.consumable.handle_use(self.player, self.enemy)
-        self.assertEqual(cinv.count(), 0)
+#    def test_consumable_use(self):
+#        """
+#        Validate that consumable in inventory is used.
+#        """
+#        cinv = self.player.inventory.consumables
+#        cinv.add(self.consumable)
+#        self.consumable.handle_use(self.player, self.enemy)
+#        self.assertEqual(cinv.count(), 0)
 
     def test_weapon_attack_enemy(self):
         """

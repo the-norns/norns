@@ -56,7 +56,7 @@ class Player(models.Model):
         """
         Equip inventory item.
         """
-        weapon = self.inventory.weapons.get(name=item)
+        weapon = self.inventory.weapons.filter(name=item).first()
         self.weapon = weapon
         self.inventory.weapons.remove(weapon)
         return {'message': f'Equipped {self.name}'}

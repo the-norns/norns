@@ -22,6 +22,7 @@ class Player(models.Model):
 
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, blank=True, null=True)
+    active = models.BooleanField(default=False)
     name = models.CharField(max_length=255, default='Unnamed')
     health = models.IntegerField(default=10)
 
@@ -31,6 +32,7 @@ class Player(models.Model):
         blank=True,
         on_delete=models.CASCADE,
         null=True)
+    origin = models.ForeignKey('room.Room', on_delete=models.CASCADE)
     tile = models.ForeignKey(
         'room.Tile', blank=True, on_delete=models.SET_NULL, null=True)
     weapon = models.ForeignKey(
@@ -40,17 +42,32 @@ class Player(models.Model):
         on_delete=models.SET_NULL,
         null=True)
 
+    @classmethod
+    def get_active_player(cls, user):
+        """
+        Get active player character.
+        """
+        player = cls.objects.filter(user=user, active=True).first()
+        if player:
+            return player
+        player = cls.objects.filter(user=user).first()
+        player.active = True
+        return player
+
     def handle_user_input(self, user_input):
         """
         Handle input.
         """
         verb = user_input[0]
         if verb == 'go':
-            self.move(user_input[1])
+            return self.move(user_input[1])
         if verb == 'attack':
-            self.weapon.attack(self, user_input[1])
+            return self.weapon.attack(self, user_input[1])
         if verb == 'equip':
-            self.equip(user_input[1])
+            return self.equip(user_input[1])
+        return {
+            'message': 'could not take action {}'.format(
+                ' '.join(user_input))}
 
     def equip(self, item):
         """
@@ -59,11 +76,13 @@ class Player(models.Model):
         weapon = self.inventory.weapons.filter(name=item).first()
         self.weapon = weapon
         self.inventory.weapons.remove(weapon)
+        return {'tiles': [self.tile]}
 
     def move(self, direction):
         """
         Change player tile.
         """
+        tiles = {self.tile}
         if direction == 'north':
             queryset = self.tile.room.tile_set.filter(
                 models.Q(y_coord=self.tile.y_coord - 1) &
@@ -108,6 +127,7 @@ class Player(models.Model):
                 self.tile = room.tile_set.filter(
                     models.Q(y_coord=self.tile.y_coord) &
                     models.Q(x_coord=self.tile.room.grid_size - 1)).first()
+        return {'tiles': tiles | {self.tile}}
 
 
 @receiver(models.signals.post_save, sender=User)

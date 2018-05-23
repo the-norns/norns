@@ -28,7 +28,10 @@ class RoomView(CreateAPIView, RetrieveAPIView, UpdateAPIView):
         Response to action post.
         """
         player = get_object_or_404(Player, user=request.user)
+        player = Player.get_active_player(request.user)
         user_input = self.request.data['user_input'].split()
+        if not user_input:
+            return {'message': 'no user input'}
         verb = user_input[0]
         if verb == 'look':
             if not player.tile.looked:
@@ -65,7 +68,7 @@ class NewRoomView(CreateAPIView):
         """
         Response to create room post.
         """
-        player = Player.create(user=request.user)
+        player = Player.create(user=request.user, active=True)
         room = Room.roll_room()
         player.tile = room.tiles.order_by('?').first()
         return Response({

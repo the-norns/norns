@@ -28,6 +28,6 @@ class TestRoutes(TestCase):
         self.client.force_login(self.user)
         response = self.client.post(reverse_lazy('new_room'))
         self.client.logout()
-        # import pdb; pdb.set_trace()
+        #  import pdb; pdb.set_trace()
         self.assertEqual(response.data['message'], 'Welcome to Hel.')
-        self.assertTrue(response.data['tiles'][0]['room'])
+        self.assertTrue(response.data['tiles'][0])

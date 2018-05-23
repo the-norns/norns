@@ -13,12 +13,12 @@ class TileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tile
-        fields = '__all__'
-#        fields = (
-#            'x_coord',
-#            'y_coord',
-#            'consumables_set'
-#            'weapons',
-#            'players',
-#            'enemies',
-#        )
+        fields = (
+            'x_coord',
+            'y_coord',
+            'consumables',
+            'weapons',
+            'player_set',
+            'enemy_set',
+        )
+        depth = 1

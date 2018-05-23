@@ -105,6 +105,7 @@ def create_start_room(sender, instance=None, **kwargs):
     if not instance.tile:
         room = Room()
         room.save()
+        instance.origin = room
         instance.tile = room.tile_set.first()
 
 

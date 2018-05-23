@@ -1,8 +1,10 @@
 from django.test import TestCase
-from room.models import Tile
-from gear.models import Weapon
-from ..models import Enemy
 from model_mommy import mommy
+
+from gear.models import Weapon
+from room.models import Tile
+
+from ..models import Enemy
 
 
 class TestModels(TestCase):

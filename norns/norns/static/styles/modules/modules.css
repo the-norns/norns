@@ -86,3 +86,9 @@ canvas {
   border: 1px solid red;
   background-color: black;
 }
+
+.start-game {
+  position: absolute;
+  top: 50%;
+  left: 32%;
+}

@@ -53,6 +53,7 @@ class NewRoomView(CreateAPIView):
     """
     Create a new game.
     """
+    serializer_class = RoomSerializer
 
     def post(self, request, _format=None):
         """

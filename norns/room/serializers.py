@@ -14,6 +14,7 @@ class RoomSerializer(serializers.ModelSerializer):
         """
 
         model = Room
+        fields = '__all__'
 
 
 class TileSerializer(serializers.ModelSerializer):

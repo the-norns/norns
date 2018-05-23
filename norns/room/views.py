@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import (
     CreateAPIView, RetrieveAPIView, UpdateAPIView)
@@ -7,7 +8,7 @@ from gear.models import Weapon
 from player.models import Player
 
 from .models import Room
-from .serializers import RoomSerializer
+from .serializers import RoomSerializer, TileSerializer
 
 
 class RoomView(CreateAPIView, RetrieveAPIView, UpdateAPIView):
@@ -36,16 +37,10 @@ class RoomView(CreateAPIView, RetrieveAPIView, UpdateAPIView):
         if verb == 'look':
             if not player.tile.looked:
                 player.tile.roll_tile()
+            message = 'You see...'  # implement message output.
             return Response({
-                'tiles': [
-                    {
-                        'x_coord': player.tile.x_coord,
-                        'y_coord': player.tile.y_coord,
-                        'contents': {
-                            'weapons': [
-                                w.name for w in player.tile.weapons.all()]
-                        },
-                    }],
+                'message': message,
+                'tiles': [player.tile.id],
             })
 
         if verb == 'take':
@@ -55,6 +50,10 @@ class RoomView(CreateAPIView, RetrieveAPIView, UpdateAPIView):
             if weapon:
                 player.inventory.weapons.add(weapon)
                 weapon.tiles.remove(player.tile)
+                return Response({
+                    'message': 'You picked up {}'.format(weapon.name),
+                    'tiles': [player.tile.id],
+                })
 
         return player.handle_user_input(user_input)
 
@@ -68,19 +67,16 @@ class NewRoomView(CreateAPIView):
         """
         Response to create room post.
         """
-        player = Player.create(user=request.user, active=True)
-        room = Room.roll_room()
-        player.tile = room.tiles.order_by('?').first()
+        player = Player.objects.create(user=request.user, active=True)
+        player.tile = player.tile.room.tile_set.order_by('?').first()
         return Response({
             'message': 'Welcome to Hel.',
-            'tiles': [
-                {
-                    'x_coord': tile.x_coord,
-                    'y_coord': tile.y_coord,
-                    'contents': {
-                        'enemies': [(en.type.name, en.name)
-                                    for en in tile.enemies.all()],
-                        'players': [player.get(tile=tile).name],
-                    },
-                } for tile in room.tiles.all()],
-        })
+            'tiles': TileSerializer(player.tile.room.tile_set, many=True).data
+        }, status=201)
+
+
+class TileView(RetrieveAPIView):
+    """
+    Get tile data.
+    """
+    serializer_class = TileSerializer

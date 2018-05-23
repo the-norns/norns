@@ -20,10 +20,8 @@ class Weapon(models.Model):
         """
         Attempt to damage enemy.
         """
-        from room.models import Tile
-
         enemy = player.tile.room.tiles.enemies.filter(name=enemy)
-        etiles = Tile.filter(
+        etiles = player.tile.room.tiles.filter(
             models.Q(enemies=enemy) &
             models.Q(room=player.tile.room))
 
@@ -41,15 +39,19 @@ class Weapon(models.Model):
                         dx = tile_dx
                         dy = tile_dy
 
+            message = ''
             if abs(player.tile.x_coord - etile.x_coord) <= self.reach \
                and abs(player.tile.y_coord - etile.y_coord) <= self.reach:
                 roll = sum([randint(0, 6) for _ in range(self.strength)])
                 enemy.health -= roll
+                message += 'You struck for {} damage!'.format(roll)
+
             if enemy.health <= 0:
+                message += ' {} was slain!'.format(enemy)
                 for weapon in enemy.inventory.weapons.all():
                     weapon.tiles.add(etile)
                 enemy.tiles.remove(etile)
-        return {'tiles': etiles.all()}
+        return {'message': message, 'tiles': etiles.all()}
 
 
 class Consumable(models.Model):

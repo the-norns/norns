@@ -76,12 +76,18 @@ class Player(models.Model):
         weapon = self.inventory.weapons.filter(name=item).first()
         self.weapon = weapon
         self.inventory.weapons.remove(weapon)
-        return {'tiles': [self.tile]}
+        return {
+            'message': 'Equipped {}'.format(self.name),
+            'tiles': [self.tile]}
 
     def move(self, direction):
         """
         Change player tile.
         """
+        directions = ['north', 'east', 'south', 'west']
+        if direction not in directions:
+            return {'message': 'You can\'t move {}.'.format(direction)}
+
         tiles = {self.tile}
         if direction == 'north':
             queryset = self.tile.room.tile_set.filter(

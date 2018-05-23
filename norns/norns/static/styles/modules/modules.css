@@ -1,9 +1,8 @@
 .game, .container {
   position: relative;
-  width: 1000px;
+  width: 800px;
   height: 500px;
-/*  background-color: grey;*/
-  margin-left: 18vw;
+  margin-left: 24vw;
   margin-top: 5vw;
   margin-bottom: 7vw;
 }
@@ -29,7 +28,7 @@
   background-color: white;
 }
 
-.chat {
+.messages-container {
   width: 200px;
   height: 100%;
   float: right;
@@ -85,5 +84,5 @@
 
 canvas {
   border: 1px solid red;
-  background-color: white;
+  background-color: black;
 }

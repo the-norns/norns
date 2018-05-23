@@ -1,12 +1,9 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 {% if user.is_authenticated %}
 <div class="game">
-  {% if message %}
-  <p>{{ message }}</p>
-  {% endif %}
-  <div class="minimap">
+ <!--  <div class="minimap">
     <p>minimap</p>
   </div>
   <div class="actions">
@@ -17,7 +14,7 @@
   </div>
   <div class="store">
     <p>store</p>
-  </div>
+  </div> -->
 </div>
 {% else %}
 <div class="game">
@@ -25,4 +22,6 @@
   <p>Lorem ipsum dolor sit amet, nec sale nusquam conclusionemque id, luptatum sapientem mea ad, platonem persequeris ad pri. An tibique expetenda cum, constituam scribentur no mei, mel id ponderum mandamus theophrastus.</p></div>
 </div>
 {% endif %}
-{% endblock content%}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="{% static "./js/norns.js" %}" type="text/javascript"></script>
+{% endblock content %}

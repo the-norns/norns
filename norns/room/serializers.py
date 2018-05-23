@@ -9,6 +9,8 @@ class RoomSerializer(serializers.ModelSerializer):
 
 
 class TileSerializer(serializers.ModelSerializer):
+    # players = tile.players
+
     class Meta:
         model = Tile
         fields = '__all__'

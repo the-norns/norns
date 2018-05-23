@@ -1,5 +1,5 @@
-let CANVAS_WIDTH = 480;
-let CANVAS_HEIGHT = 320;
+let CANVAS_WIDTH = 1000;
+let CANVAS_HEIGHT = 470;
 let tileX = 50;
 let tileY = 50;
 const FPS = 60;

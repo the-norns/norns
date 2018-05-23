@@ -1,7 +1,7 @@
 from random import randint
 
 from django.db import models
-from django.db.models import Q
+from django.dispatch import receiver
 
 
 class Weapon(models.Model):
@@ -20,10 +20,12 @@ class Weapon(models.Model):
         """
         Attempt to damage enemy.
         """
+        from room.models import Tile
+
         enemy = player.tile.room.tiles.enemies.filter(name=enemy)
         etiles = Tile.filter(
-            Q(enemies=enemy) &
-            Q(room=player.tile.room))
+            models.Q(enemies=enemy) &
+            models.Q(room=player.tile.room))
 
         if etiles.count():
             etile = etiles.first()
@@ -80,3 +82,14 @@ class Inventory(models.Model):
 
     weapons = models.ManyToManyField(Weapon, blank=True)
     consumables = models.ManyToManyField(Consumable, blank=True)
+
+
+@receiver(models.signals.pre_save, sender='player.Player')
+def create_start_room(sender, instance=None, **kwargs):
+    """
+    Create initial inventory.
+    """
+    if not instance.inventory:
+        inventory = Inventory()
+        inventory.save()
+        instance.inventory = inventory

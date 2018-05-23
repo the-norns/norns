@@ -74,7 +74,7 @@ class Player(models.Model):
                 room = self.tile.room.go_north()
                 self.tile = room.tile_set.filter(
                     models.Q(y_coord=self.tile.room.grid_size - 1) &
-                    models.Q(x_coord=self.tile.x_coord))
+                    models.Q(x_coord=self.tile.x_coord)).first()
         elif direction == 'east':
             queryset = self.tile.room.tile_set.filter(
                 models.Q(y_coord=self.tile.y_coord) &
@@ -85,7 +85,7 @@ class Player(models.Model):
                 room = self.tile.room.go_east()
                 self.tile = room.tile_set.filter(
                     models.Q(y_coord=self.tile.y_coord) &
-                    models.Q(x_coord=0))
+                    models.Q(x_coord=0)).first()
         elif direction == 'south':
             queryset = self.tile.room.tile_set.filter(
                 models.Q(y_coord=self.tile.y_coord + 1) &
@@ -96,7 +96,7 @@ class Player(models.Model):
                 room = self.tile.room.go_south()
                 self.tile = room.tile_set.filter(
                     models.Q(y_coord=0) &
-                    models.Q(x_coord=self.tile.x_coord))
+                    models.Q(x_coord=self.tile.x_coord)).first()
         elif direction == 'west':
             queryset = self.tile.room.tile_set.filter(
                 models.Q(y_coord=self.tile.y_coord) &
@@ -107,7 +107,7 @@ class Player(models.Model):
                 room = self.tile.room.go_west()
                 self.tile = room.tile_set.filter(
                     models.Q(y_coord=self.tile.y_coord) &
-                    models.Q(x_coord=self.tile.room.grid_size - 1))
+                    models.Q(x_coord=self.tile.room.grid_size - 1)).first()
 
 
 @receiver(models.signals.post_save, sender=User)

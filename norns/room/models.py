@@ -96,8 +96,7 @@ class Tile(models.Model):
             consumable = Consumable.objects.order_by('?').first()
             consumable.save()
             self.consumables.add(consumable)
-            return {'message': message, 'tiles': [self]}
-        return {'message': message}
+        return message
 
 
 @receiver(models.signals.pre_save, sender='player.Player')

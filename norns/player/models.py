@@ -65,9 +65,7 @@ class Player(models.Model):
             return self.weapon.attack(self, user_input[1])
         if verb == 'equip':
             return self.equip(user_input[1])
-        return {
-            'message': 'could not take action {}'.format(
-                ' '.join(user_input))}
+        return 'could not take action {}'.format(' '.join(user_input))
 
     def equip(self, item):
         """
@@ -76,9 +74,7 @@ class Player(models.Model):
         weapon = self.inventory.weapons.filter(name=item).first()
         self.weapon = weapon
         self.inventory.weapons.remove(weapon)
-        return {
-            'message': 'Equipped {}'.format(self.name),
-            'tiles': [self.tile]}
+        return 'Equipped {}'.format(self.name)
 
     def move(self, direction):
         """
@@ -90,11 +86,9 @@ class Player(models.Model):
             'south': self.move_south,
             'west': self.move_west}.get(direction, None)
         if not move_direction:
-            return {'message': 'You can\'t move {}.'.format(direction)}
+            return 'You can\'t move {}.'.format(direction)
 
-        tiles = {self.tile}
-        move_direction()
-        return {'tiles': tiles | {self.tile}}
+        return move_direction() or ''
 
     def move_north(self):
         """
@@ -163,4 +157,4 @@ def create_new_player(sender, created=False, instance=None, **kwargs):
     Create disappointment.
     """
     if created:
-        Player(user=instance).save()
+        Player(user=instance, active=True).save()

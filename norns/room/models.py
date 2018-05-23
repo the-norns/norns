@@ -41,7 +41,7 @@ class Room(models.Model):
         """
         Get or generate south room.
         """
-        if not self.room_south:
+        if not hasattr(self, 'room_south'):
             Room(grid_size=self.grid_size, room_north=self).save()
         return self.room_south
 
@@ -59,7 +59,7 @@ class Room(models.Model):
         """
         Get or generate west room.
         """
-        if not self.room_west:
+        if not hasattr(self, 'room_west'):
             Room(grid_size=self.grid_size, room_east=self).save()
         return self.room_west
 
@@ -96,24 +96,22 @@ class Tile(models.Model):
             weapon.save()
 
 
-@receiver(models.signals.post_save, sender='player.Player')
-def create_start_room(sender, created=False, instance=None, **kwargs):
+@receiver(models.signals.pre_save, sender='player.Player')
+def create_start_room(sender, instance=None, **kwargs):
     """
     Create initial room.
     """
-    if created:
+    if not instance.tile:
         room = Room()
-        instance.room = room
         room.save()
+        instance.tile = room.tile_set.first()
 
 
 @receiver(models.signals.post_save, sender=Room)
-def populate_tiles(sender, created=False, instance=None, **kwargs):
+def populate_tiles(sender, instance=None, **kwargs):
     """
     Create disappointment.
     """
-    if created:
-        for x in range(instance.grid_size):
-            for y in range(instance.grid_size):
-                tile = Tile(x_coord=x, y_coord=y, room=instance)
-                tile.save()
+    for x in range(instance.grid_size):
+        for y in range(instance.grid_size):
+            Tile(x_coord=x, y_coord=y, room=instance).save()

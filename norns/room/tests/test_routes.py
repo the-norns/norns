@@ -1,8 +1,10 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse_lazy
 from model_mommy import mommy
 
-from gear.models import Weapon
+from player.models import Player
+from gear.models import Weapon, Consumable
 
 from ..models import Room, Tile
 
@@ -10,24 +12,22 @@ from ..models import Room, Tile
 class TestRoutes(TestCase):
     """Integration tests."""
     def setUp(self):
-        self.room = mommy.make(Room)
-        self.tile = mommy.make(Tile, room=self.room, desc='a tile.')
-        self.weapon = mommy.make(Weapon, name='sword')
-        self.weapon.tiles.add(self.tile)
-        self.weapon.save()
+        self.user = mommy.make(User)
 
     def tearDown(self):
+        Player.objects.all().delete()
         Room.objects.all().delete()
         Tile.objects.all().delete()
         Weapon.objects.all().delete()
+        Consumable.objects.all().delete()
 
-#      def test_look_returns_weapon(self):
-#          """
-#          Validate that looking on a tile returns the weapon on that tile
-#          and the description on that tile.
-#          """
-#          data = {'verb': 'look', 'tile_id': self.tile.id}
-#          response = self.client.post(
-#              reverse_lazy('room', args=[self.room.id]), data=data)
-#          # self.assertContains(response.data, 'a tile.')
-#          self.assertContains(response.data, 'sword')
+    def test_new_room_route_makes_new_room(self):
+        """
+        Validate that new room route creates a new room.
+        """
+        self.client.force_login(self.user)
+        response = self.client.post(reverse_lazy('new_room'))
+        self.client.logout()
+        # import pdb; pdb.set_trace()
+        self.assertEqual(response.data['message'], 'Welcome to Hel.')
+        self.assertTrue(response.data['tiles'][0]['room'])

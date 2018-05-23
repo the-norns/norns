@@ -46,11 +46,11 @@ class Player(models.Model):
         """
         verb = user_input[0]
         if verb == 'go':
-            self.move(user_input[1])
+            return self.move(user_input[1])
         if verb == 'attack':
-            self.weapon.attack(self, user_input[1])
+            return self.weapon.attack(self, user_input[1])
         if verb == 'equip':
-            self.equip(user_input[1])
+            return self.equip(user_input[1])
 
     def equip(self, item):
         """
@@ -59,11 +59,17 @@ class Player(models.Model):
         weapon = self.inventory.weapons.filter(name=item).first()
         self.weapon = weapon
         self.inventory.weapons.remove(weapon)
+        return {'message': 'Equipped {}'.format(self.name)}
 
     def move(self, direction):
         """
         Change player tile.
         """
+        directions = ['north', 'east', 'south', 'west']
+        if direction not in directions:
+            return {'message': 'You can\'t move that way.'}
+
+        tiles = [self.tile]
         if direction == 'north':
             queryset = self.tile.room.tile_set.filter(
                 models.Q(y_coord=self.tile.y_coord - 1) &
@@ -108,6 +114,8 @@ class Player(models.Model):
                 self.tile = room.tile_set.filter(
                     models.Q(y_coord=self.tile.y_coord) &
                     models.Q(x_coord=self.tile.room.grid_size - 1)).first()
+
+        return {'tiles': tiles.append(self.tile)}
 
 
 @receiver(models.signals.post_save, sender=User)

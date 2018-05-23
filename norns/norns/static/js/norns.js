@@ -23,8 +23,15 @@ function Tile(x, y, consumables, enemies, players, weapons) {
 }
 
 function draw(tiles) {
+  console.log('draw function triggered')
   tiles.forEach(function(tile){tile.draw()})
 }
+
+function getToken(event) {
+    console.log(event)
+}
+
+$(".login-form").on("submit", getToken);
 
 // function newGame(event) {
 //     event.preventDefault()
@@ -55,18 +62,22 @@ var getCookie = function(name) {
 function newGame(event) {
     event.preventDefault()
     token = getCookie('csrftoken');
-    console.log(token)
     $.ajax({
         method: 'POST',
         xhrFields: {
             withCredentials: true
         },
         headers: {
-            'Authorization': 'Token' + token
+            'X-CSRFToken': `${token}`
         },
         url: `${__API_URL__}room/new`,
-        success: function (data) {console.log(data)}
+        success: function (data) {
+            data.tiles.forEach(function(tile){
+                roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
+            })
+        }
     });
+    draw(roomTiles);
 }
 
 function clearCanvas() {

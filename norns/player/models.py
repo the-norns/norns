@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.dispatch import receiver
 
 
 class Group(models.Model):
@@ -107,3 +108,12 @@ class Player(models.Model):
                 self.tile = room.tile_set.filter(
                     models.Q(y_coord=self.tile.y_coord) &
                     models.Q(x_coord=self.tile.room.grid_size - 1))
+
+
+@receiver(models.signals.post_save, sender=User)
+def create_new_player(sender, created=False, instance=None, **kwargs):
+    """
+    Create disappointment.
+    """
+    if created:
+        Player(user=instance).save()

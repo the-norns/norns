@@ -42,9 +42,7 @@ class Room(models.Model):
         Get or generate south room.
         """
         if not self.room_south:
-            room = Room(grid_size=self.grid_size)
-            room.room_north = self
-            room.save()
+            Room(grid_size=self.grid_size, room_north=self).save()
         return self.room_south
 
     def go_east(self):
@@ -62,9 +60,7 @@ class Room(models.Model):
         Get or generate west room.
         """
         if not self.room_west:
-            room = Room(grid_size=self.grid_size)
-            room.room_east = self
-            room.save()
+            Room(grid_size=self.grid_size, room_east=self).save()
         return self.room_west
 
 
@@ -98,6 +94,17 @@ class Tile(models.Model):
             weapon = Weapon.objects.order_by('?').first()
             self.weapons.append(weapon)
             weapon.save()
+
+
+@receiver(models.signals.post_save, sender='player.Player')
+def create_start_room(sender, created=False, instance=None, **kwargs):
+    """
+    Create initial room.
+    """
+    if created:
+        room = Room()
+        instance.room = room
+        room.save()
 
 
 @receiver(models.signals.post_save, sender=Room)

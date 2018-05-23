@@ -14,3 +14,4 @@ class TileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tile
         fields = '__all__'
+        depth = 1

@@ -59,7 +59,7 @@ class Player(models.Model):
         weapon = self.inventory.weapons.filter(name=item).first()
         self.weapon = weapon
         self.inventory.weapons.remove(weapon)
-        return {'message': f'Equipped {self.name}'}
+        return {'message': 'Equipped {}'.fomat(self.name)}
 
     def move(self, direction):
         """

@@ -16,47 +16,38 @@ class Weapon(models.Model):
         'status.Ability', on_delete=models.SET_NULL, null=True)
     reach = models.IntegerField(default=0)
 
-    def attack(self, player, enemy):
+    def attack(self, source, target):
         """
-        Attempt to damage enemy.
+        Attempt to damage target.
         """
+        if not target.name:
+            return 'You can\'t attack {}.'.format(target.name)
 
-        enemy = player.tile.room.tiles.enemies.filter(name=enemy)
-        etiles = player.tile.room.tiles.filter(
-            models.Q(enemies=enemy) &
-            models.Q(room=player.tile.room))
+        message = ''
+        if abs(source.tile.x_coord - target.tile.x_coord) <= self.reach \
+           and abs(source.tile.y_coord - target.tile.y_coord) <= self.reach:
+            roll = sum([randint(0, 6) for _ in range(self.strength)])
+            target.health -= roll
+            if roll == self.strength * 6:
+                message += 'Crit!\n'
+            message += '{} hit {} for {} damage.\n'.format(
+                source.name, target.name, roll)
 
-        if etiles.count():
-            etile = etiles.first()
-            if etiles.count() > 1:
-                dx = abs(etile.x_axis - player.tile.x_axis)
-                dy = abs(etile.y_axis - player.tile.y_axis)
-                for tile in etiles.all():
-                    min_axis = dx if dx < dy else dy
-                    tile_dx = abs(tile.x_axis - player.tile.x_axis)
-                    tile_dy = abs(tile.y_axis - player.tile.y_axis)
-                    if tile_dx < min_axis or tile_dy < min_axis:
-                        etile = tile
-                        dx = tile_dx
-                        dy = tile_dy
+        if target.health <= 0:
+            message += ' {} was slain!\n'.format(target.name)
+            for weapon in target.inventory.weapons.all():
+                weapon.tiles.add(target.tile)
+                target.inventory.remove(weapon)
+            for consumable in target.inventory.consumables.all():
+                consumable.tiles.add(target.tile)
+                target.inventory.remove(consumable)
+            if hasattr(target, 'user'):
+                message += ' You have died.\n'
+                #  target.tile = 'target.origin.tile_set.order_by('?').first()
+            else:
+                target.delete()
 
-            message = ''
-            if abs(player.tile.x_coord - etile.x_coord) <= self.reach \
-               and abs(player.tile.y_coord - etile.y_coord) <= self.reach:
-                roll = sum([randint(0, 6) for _ in range(self.strength)])
-                enemy.health -= roll
-                message += 'You struck for {} damage!'.format(roll)
-
-            if enemy.health <= 0:
-                message += ' {} was slain!'.format(enemy)
-                for weapon in enemy.inventory.weapons.all():
-                    weapon.tiles.add(etile)
-                enemy.tiles.remove(etile)
-                return {
-                    'message': message,
-                    'tiles': [etile],
-                }
-            return {'message': message}
+        return message
 
 
 class Consumable(models.Model):
@@ -72,15 +63,26 @@ class Consumable(models.Model):
         """
         Loot consumable.
         """
-        self.tiles.remove(player.tile)
-        player.consumables.add(self)
+        self.tile_set.remove(player.tile)
+        player.inventory.consumables.add(self)
+        return {
+            'message': 'You looted {}!'.format(self.name),
+            'tiles': [player.tile]
+        }
 
     def handle_use(self, player, target):
         """
         Use consumable.
         """
-        player.consumables.remove(self)
+        if not player.inventory.consumables.filter(id=self.id).count():
+            return {
+                'message': 'You don\'t have {}'.format(self.name),
+            }
+        player.inventory.consumables.remove(self)
         self.ability.use_ability(player, target)
+        return {
+            'message': 'You used {}'.format(self.name),
+        }
 
 
 class Inventory(models.Model):
@@ -101,3 +103,26 @@ def create_start_room(sender, instance=None, **kwargs):
         inventory = Inventory()
         inventory.save()
         instance.inventory = inventory
+
+
+@receiver(models.signals.pre_save, sender='enemy.Enemy')
+def create_enemy_inventory(sender, instance=None, **kwargs):
+    """
+    Create enemy inventory.
+    """
+    if not instance.inventory:
+        inventory = Inventory()
+        inventory.save()
+        instance.inventory = inventory
+
+
+#@receiver(models.signals.pre_save, sender=Consumable)
+#def create_consumable_ability(sender, instance=None, **kwargs):
+#    """
+#    Create an ability for a consumable.
+#    """
+#    from status.models import Ability
+#
+#    if not instance.ability:
+#        ability = Ability.objects.order_by('?').first()
+#        instance.ability = ability

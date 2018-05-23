@@ -59,7 +59,7 @@ class Ability(models.Model):
         """
         player_tile = player.tile
         target_tile = player_tile.room.tile_set.filter(
-            models.Q(enemies=target) | models.Q(player=target))
+            models.Q(enemy=target) | models.Q(player=player)).first()
         if not target_tile:
             return HttpResponseBadRequest()
         distance = (

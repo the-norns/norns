@@ -34,7 +34,7 @@ class RoomView(CreateAPIView, RetrieveAPIView, UpdateAPIView):
         if verb == 'look':
             if not player.tile.looked:
                 player.tile.roll_tile()
-            message = f'You see...'  # implement message output.
+            message = 'You see...'  # implement message output.
             return Response({
                 'message': message,
                 'tiles': [player.tile.id],
@@ -48,7 +48,7 @@ class RoomView(CreateAPIView, RetrieveAPIView, UpdateAPIView):
                 player.inventory.weapons.add(weapon)
                 weapon.tiles.remove(player.tile)
                 return Response({
-                    'message': f'You picked up {weapon.name}',
+                    'message': 'You picked up {}'.format(weapon.name),
                     'tiles': [player.tile.id],
                 })
 

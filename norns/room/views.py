@@ -27,9 +27,7 @@ class RoomView(CreateAPIView, RetrieveAPIView, UpdateAPIView):
         """
         Response to action post.
         """
-        user = User.objects.filter(username=request.user.username).first()
-        player = get_object_or_404(Player, user=user)
-        player = Player.get_active_player(user)
+        player = get_object_or_404(Player, user=request.user, active=True)
         user_input = self.request.data['user_input'].split()
         if not user_input:
             return _serialize(player, 'no user input')
@@ -61,10 +59,10 @@ class NewRoomView(CreateAPIView):
         """
         Response to create room post.
         """
-        user = User.objects.filter(username=request.user.username).first()
-        for player in Player.objects.filter(user=user, active=True).all():
+        for player in Player.objects.filter(
+                user=request.user, active=True).all():
             player.active = False
-        player = Player.objects.create(user=user, active=True)
+        player = get_object_or_404(Player, user=request.user, active=True)
         player.tile = player.tile.room.tile_set.order_by('?').first()
         return _serialize(player, 'Welcome to Hel.', status=201)
 

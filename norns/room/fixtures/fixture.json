@@ -1,11 +1,1 @@
-[
-  {
-    "model": "room.Room",
-    "pk": 1,
-    "fields": {
-      "room_north": 1,
-      "room_east": 1,
-      "grid_size": 10
-    }
-  }
-]
+[]

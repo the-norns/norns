@@ -58,6 +58,7 @@ class NewRoomView(CreateAPIView):
         """
         Response to create room post.
         """
+        # import pdb; pdb.set_trace()
         for player in Player.objects.filter(
                 user=request.user, active=True).all():
             player.active = False

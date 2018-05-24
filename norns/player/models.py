@@ -34,12 +34,7 @@ class Player(models.Model):
         """
         Handle input.
         """
-        # if self.tile.room.round_start:
-        #    if not self.tile.room.player_set.filter(
-        #        combat_action=None).count() or \
-        #        timezone.now - self.tile.room.round_start > time
-        #            combat_action=None).count() or timezone.now -
-        message = ''
+
         if not self.tile.room.round_start:
             for tile in self.tile.room.tile_set.all():
                 if tile.enemy_set.count():
@@ -49,12 +44,28 @@ class Player(models.Model):
 
         verb = user_input[0]
         if verb == 'go':
-            return self.move(user_input[1])
-        if verb == 'attack':
-            return self.weapon.attack(self, user_input[1])
-        if verb == 'equip':
-            return self.equip(user_input[1])
-        message = 'Could not take action {}'.format(' '.join(user_input))
+            message = self.move(user_input[1])
+        elif verb == 'attack':
+            message = self.weapon.attack(self, user_input[1])
+        elif verb == 'equip':
+            message = self.equip(user_input[1])
+        else:
+            message = 'could not take action {}'.format(' '.join(user_input))
+
+        if self.tile.room.round_start:
+            still_enemy = False
+            for tile in self.tile.room.tile_set.all():
+                if tile.enemy_set.count():
+                    still_enemy = True
+                    break
+            if still_enemy is False:
+                self.tile.room.round_start = None
+                self.tile.room.save()
+                return message
+            for tile in self.tile.room.tile_set.all():
+                for enemy in tile.enemy_set.all():
+                    enemy.do_combat()
+
         return message
 
     def equip(self, item):
@@ -65,12 +76,10 @@ class Player(models.Model):
         weapon = self.inventory.weapons.filter(name=item).first()
         # import pdb; pdb.set_trace()
         if not weapon:
-            message = 'You can\'t equip that!'
-            return message
+            return 'You can\'t equip that!'
         self.weapon = weapon
         self.inventory.weapons.remove(weapon)
-        message = 'You equipped {}.'.format(weapon.name)
-        return message
+        return 'Equipped {}.'.format(weapon.name)
 
     def move(self, direction):
         """
@@ -88,8 +97,7 @@ class Player(models.Model):
 
         move_direction()
         self.save()
-        message = 'You moved {}.'.format(direction)
-        return message
+        return 'You moved {}'.format(direction)
 
     def move_north(self):
         """

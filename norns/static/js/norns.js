@@ -1,21 +1,14 @@
-let CANVAS_WIDTH = 600;
-let CANVAS_HEIGHT = 470;
+let canvasWidth = 600;
+let canvasHeight = 500;
 let roomTiles = [];
+let message
 const __API_URL__ = 'http://localhost:8000/api/v1/'
 
-let canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
-                      "' height='" + CANVAS_HEIGHT + "'></canvas>");
+let canvasElement = $("<canvas width='" + canvasWidth + 
+                      "' height='" + canvasHeight + "'></canvas>");
 let canvas = canvasElement.get(0).getContext("2d");
 
 canvasElement.appendTo($(".game"));
-
-function destroyCanvas () { 
-  let canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
-                      "' height='" + CANVAS_HEIGHT + "'></canvas>");
-  let canvas = canvasElement.get(0).getContext("2d");
-
-canvasElement.appendTo($(".game"));
-}
 
 function Tile(x, y, consumables, enemies, players, weapons) {
     this.x = x;
@@ -26,26 +19,27 @@ function Tile(x, y, consumables, enemies, players, weapons) {
     this.weapons = weapons;
     this.color = "#7c5b51";
     this.draw = function() {
-    if (this.players.length > 0) {
+    if (this.enemies.length > 0) {
+        canvas.fillStyle = "#cc0606"
+    } else if (this.weapons.length || this.consumables.length > 0) {
+        canvas.fillStyle = "#0061ff"
+    } else if (this.players.length > 0) {
         canvas.fillStyle = "#0c9e20"
     } else { 
         canvas.fillStyle = this.color; 
-    }
-    if (this.enemies.length > 0) {
-        canvas.fillStyle = "#cc0606"
-    }
-    if (this.weapons.length || this.consumables.length > 0) {
-        canvas.fillStyle = "#0061ff"
     }
     canvas.fillRect(this.x * 100, this.y * 100, 99, 99);
     }
 }
 
 function draw(tiles) {
-  console.log(roomTiles)
+  clearCanvas()
   tiles.forEach(function(tile){tile.draw()})
 }
 
+function clearCanvas() {
+    canvas.clearRect(0, 0, canvasWidth, canvasHeight);
+}
 
 var getCookie = function(name) {
     var cookieValue = null;
@@ -62,19 +56,41 @@ var getCookie = function(name) {
     return cookieValue;
 };
 
-function newGame(event) {
+// function newGame(event) {
+//     event.preventDefault()
+//     token = getCookie('csrftoken');
+//     $(".start-buttons").remove()
+//     $.ajax({
+//         method: 'POST',
+//         xhrFields: {
+//             withCredentials: true
+//         },
+//         headers: {
+//             'X-CSRFToken': `${token}`
+//         },
+//         url: `${__API_URL__}room/new`,
+//         success: function (data) {
+//             data.tiles.forEach(function(tile){
+//                 roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
+//             })
+//             draw(roomTiles)
+//         }
+//     });
+// }
+
+function joinGame(event) {
     event.preventDefault()
     token = getCookie('csrftoken');
-    $(".start-game").remove()
+    $(".start-buttons").remove()
     $.ajax({
-        method: 'POST',
+        method: 'GET',
         xhrFields: {
             withCredentials: true
         },
         headers: {
             'X-CSRFToken': `${token}`
         },
-        url: `${__API_URL__}room/new`,
+        url: `${__API_URL__}room`,
         success: function (data) {
             data.tiles.forEach(function(tile){
                 roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
@@ -84,15 +100,11 @@ function newGame(event) {
     });
 }
 
-function clearCanvas() {
-    canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-}
-
 function action(event) {
     event.preventDefault()
     data = {'data': event.target.actionInput.value}
+    $(".action-form")[0].reset();
     roomTiles = []
-    console.log(roomTiles)
     $.ajax({
         method: 'POST',
         xhrFields: {
@@ -102,7 +114,7 @@ function action(event) {
         headers: {
             'X-CSRFToken': `${token}`
         },
-        url: `${__API_URL__}room/`,
+        url: `${__API_URL__}room`,
         success: function (data) {
             console.log(data.message)
             data.tiles.forEach(function(tile){
@@ -114,5 +126,6 @@ function action(event) {
     });
 }
 
-$(".start-game").on("click", newGame);
+// $(".start-game").on("click", newGame);
+$(".join-game").on("click", joinGame);
 $(".action-form").on("submit", action);

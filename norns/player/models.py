@@ -46,7 +46,8 @@ class Player(models.Model):
         if verb == 'go':
             message = self.move(user_input[1])
         elif verb == 'attack':
-            message = self.weapon.attack(self, user_input[1])
+            target = self.tile.enemy_set.filter(name=user_input[1]).first()
+            message = self.weapon.attack(self, target)
         elif verb == 'equip':
             message = self.equip(user_input[1])
         else:

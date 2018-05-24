@@ -57,7 +57,7 @@ def populate_enemies(sender, created=False, instance=None, **kwargs):
     """
     if created:
         roll = randint(0, 10)
-        if roll > 2:
+        if roll > 1:
             return
         Enemy.objects.create(tile=instance)
 

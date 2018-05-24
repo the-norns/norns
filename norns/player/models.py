@@ -72,7 +72,9 @@ class Player(models.Model):
         """
         Equip inventory item.
         """
+        message = ''
         weapon = self.inventory.weapons.filter(name=item).first()
+        # import pdb; pdb.set_trace()
         if not weapon:
             return 'You can\'t equip that!'
         self.weapon = weapon
@@ -83,13 +85,15 @@ class Player(models.Model):
         """
         Change player tile.
         """
+        message = ''
         move_direction = {
             'east': self.move_east,
             'north': self.move_north,
             'south': self.move_south,
             'west': self.move_west}.get(direction, None)
         if not move_direction:
-            return 'You can\'t move {}.'.format(direction)
+            message = 'You can\'t move {}.'.format(direction)
+            message
 
         move_direction()
         self.save()

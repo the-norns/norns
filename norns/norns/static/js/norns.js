@@ -33,7 +33,6 @@ function Tile(x, y, consumables, enemies, players, weapons) {
 }
 
 function draw(tiles) {
-  console.log(roomTiles)
   clearCanvas()
   tiles.forEach(function(tile){tile.draw()})
 }
@@ -106,7 +105,6 @@ function action(event) {
     data = {'data': event.target.actionInput.value}
     $(".action-form")[0].reset();
     roomTiles = []
-    console.log(roomTiles)
     $.ajax({
         method: 'POST',
         xhrFields: {

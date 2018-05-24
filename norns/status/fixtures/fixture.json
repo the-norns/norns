@@ -70,5 +70,14 @@
       "range": 3,
       "action": "MH"
     }
+  },
+  {
+    "model": "status.ability",
+    "pk": 11,
+    "fields": {
+      "name": "Safe",
+      "range": 3,
+      "action": "SR"
+    }
   }
 ]

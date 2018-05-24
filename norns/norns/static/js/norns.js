@@ -82,6 +82,7 @@ function joinGame(event) {
     event.preventDefault()
     token = getCookie('csrftoken');
     $(".start-buttons").remove()
+    $(".action-ul").show()
     $.ajax({
         method: 'GET',
         xhrFields: {
@@ -95,6 +96,7 @@ function joinGame(event) {
             data.tiles.forEach(function(tile){
                 roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
             })
+            $(".messages").text(data.message)
             draw(roomTiles)
         }
     });
@@ -121,6 +123,7 @@ function action(event) {
                 roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
             })
             clearCanvas()
+            $(".messages").text(data.message)
             draw(roomTiles)
         }
     });

@@ -55,7 +55,7 @@
   background-color: white;
 }
 
-.messages-container {
+.stats-container {
   width: 200px;
   height: 100%;
   float: right;
@@ -71,6 +71,21 @@
   position: absolute;
   bottom: 0;
   background-color: white;
+  color: green;
+}
+
+.action-ul {
+  display: none;
+}
+
+.actions ul {
+  position: absolute;
+  left: -30px;
+  bottom: -12px;
+}
+
+.actions li {
+  display: inline-block;
 }
 
 .actions button {

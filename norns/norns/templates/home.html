@@ -18,8 +18,8 @@
     </div></li>
   </ul>
 
-  <div class="messages-container">
-    <p class="messages"></p>
+  <div class="stats-container">
+    <p class="stats"></p>
   </div>
   <div class="tabs-container">
     <ul>
@@ -29,11 +29,13 @@
     </ul>
 </div>
   <div class="actions">
-    <form class=action-form action="{% url "room" %}" method="POST">
+    <ul class="action-ul">
+    <li><form class=action-form action="{% url "room" %}" method="POST">
       {% csrf_token %}
     <input name="actionInput" type=text>
     <button type="submit">Enter</button>
-  </form>
+  </form></li>
+  <li class="messages"></li>
   </div>
 </div>
 {% else %}

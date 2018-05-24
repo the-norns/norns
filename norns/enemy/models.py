@@ -56,8 +56,8 @@ def populate_enemies(sender, created=False, instance=None, **kwargs):
     Generate tile mobs.
     """
     if created:
-        roll = randint(0, 10)
-        if roll > 1:
+        roll = randint(0, 100)
+        if roll > 2:
             return
         Enemy.objects.create(tile=instance)
 

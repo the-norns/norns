@@ -15,7 +15,7 @@
   <div class="actions">
     <form class=action-form action="{% url "room" %}" method="POST">
       {% csrf_token %}
-    <input class="action-input" type=text>
+    <input name="actionInput" type=text>
     <button type="submit">Enter</button>
   </form>
   </div>

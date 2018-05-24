@@ -29,10 +29,14 @@ before_script:
 - unzip chromedriver_linux64.zip -d $HOME/usr/bin
 - export CHROME_BIN=chromium-browser
 script:
-- python ./norns/manage.py migrate
-- coverage run ./norns/manage.py test norns
+- pushd norns
+- python ./manage.py migrate
+- coverage run ./manage.py test
+- popd
 after_success:
+- pushd norns
 - coveralls
+- popd
 - |
   if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
     if [ "${DOCKER_USER}" != "" ]; then

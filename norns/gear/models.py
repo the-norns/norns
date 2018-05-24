@@ -13,7 +13,7 @@ class Weapon(models.Model):
     strength = models.IntegerField(default=0)
     agility = models.IntegerField(default=0)
     ability = models.ForeignKey(
-        'status.Ability', on_delete=models.SET_NULL, null=True)
+        'status.Ability', on_delete=models.CASCADE, null=True)
     reach = models.IntegerField(default=0)
 
     def attack(self, source, target):
@@ -56,8 +56,7 @@ class Consumable(models.Model):
     """
 
     name = models.CharField(max_length=255, default='Untitled')
-    ability = models.ForeignKey(
-        'status.Ability', on_delete=models.SET_NULL, null=True)
+    ability = models.ForeignKey('status.Ability', on_delete=models.CASCADE)
 
     def loot(self, player):
         """
@@ -92,9 +91,7 @@ def create_start_room(sender, instance=None, **kwargs):
     Create initial inventory.
     """
     if not instance.inventory:
-        inventory = Inventory()
-        inventory.save()
-        instance.inventory = inventory
+        instance.inventory = Inventory.objects.create()
 
 
 @receiver(models.signals.pre_save, sender='enemy.Enemy')
@@ -103,18 +100,4 @@ def create_enemy_inventory(sender, instance=None, **kwargs):
     Create enemy inventory.
     """
     if not instance.inventory:
-        inventory = Inventory()
-        inventory.save()
-        instance.inventory = inventory
-
-
-#@receiver(models.signals.pre_save, sender=Consumable)
-#def create_consumable_ability(sender, instance=None, **kwargs):
-#    """
-#    Create an ability for a consumable.
-#    """
-#    from status.models import Ability
-#
-#    if not instance.ability:
-#        ability = Ability.objects.order_by('?').first()
-#        instance.ability = ability
+        instance.inventory = Inventory.objects.create()

@@ -9,20 +9,40 @@ let canvas = canvasElement.get(0).getContext("2d");
 
 canvasElement.appendTo($(".game"));
 
+function destroyCanvas () { 
+  let canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
+                      "' height='" + CANVAS_HEIGHT + "'></canvas>");
+  let canvas = canvasElement.get(0).getContext("2d");
+
+canvasElement.appendTo($(".game"));
+}
+
 function Tile(x, y, consumables, enemies, players, weapons) {
     this.x = x;
     this.y = y;
-    this.color = "#7c5b51";
+    this.consumables = consumables;
     this.enemies = enemies;
     this.players = players;
     this.weapons = weapons;
+    this.color = "#7c5b51";
     this.draw = function() {
-    canvas.fillStyle = this.color;
+    if (this.players.length > 0) {
+        canvas.fillStyle = "#0c9e20"
+    } else { 
+        canvas.fillStyle = this.color; 
+    }
+    if (this.enemies.length > 0) {
+        canvas.fillStyle = "#cc0606"
+    }
+    if (this.weapons.length || this.consumables.length > 0) {
+        canvas.fillStyle = "#0061ff"
+    }
     canvas.fillRect(this.x * 100, this.y * 100, 99, 99);
-  }
+    }
 }
 
 function draw(tiles) {
+  console.log(roomTiles)
   tiles.forEach(function(tile){tile.draw()})
 }
 
@@ -70,20 +90,25 @@ function clearCanvas() {
 
 function action(event) {
     event.preventDefault()
-    console.log(event.target.action.value)
+    data = {'data': event.target.actionInput.value}
+    roomTiles = []
+    console.log(roomTiles)
     $.ajax({
         method: 'POST',
         xhrFields: {
             withCredentials: true
         },
+        data: data,
         headers: {
             'X-CSRFToken': `${token}`
         },
         url: `${__API_URL__}room/`,
         success: function (data) {
+            console.log(data.message)
             data.tiles.forEach(function(tile){
                 roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
             })
+            clearCanvas()
             draw(roomTiles)
         }
     });

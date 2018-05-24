@@ -46,7 +46,13 @@ class Weapon(models.Model):
             if hasattr(target, 'user'):
                 message += ' You have died.\n'
                 target.tile = target.origin.tile_set.order_by('?').first()
+                target.health = 10
             else:
+                if not any(map(
+                        lambda tile: tile.enemy_set.count(),
+                        target.room.tile_set.all())):
+                    target.room.round_start = None
+                    target.room.save()
                 target.delete()
 
         return message

@@ -16,15 +16,13 @@ class Room(models.Model):
         blank=True,
         related_name='room_south',
         on_delete=models.SET_NULL,
-        null=True,
-    )
+        null=True)
     room_east = models.OneToOneField(
         'Room',
         blank=True,
         related_name='room_west',
         on_delete=models.SET_NULL,
-        null=True,
-    )
+        null=True)
     grid_size = models.IntegerField(default=5)
 
     def go_north(self):
@@ -32,9 +30,7 @@ class Room(models.Model):
         Get or generate north room.
         """
         if not self.room_north:
-            room = Room(grid_size=self.grid_size)
-            self.room_north = room
-            room.save()
+            self.room_north = Room.objects.create(grid_size=self.grid_size)
         return self.room_north
 
     def go_south(self):
@@ -50,9 +46,7 @@ class Room(models.Model):
         Get or generate east room.
         """
         if not self.room_east:
-            room = Room(grid_size=self.grid_size)
-            self.room_east = room
-            room.save()
+            self.room_east = Room.objects.create(grid_size=self.grid_size)
         return self.room_east
 
     def go_west(self):
@@ -104,9 +98,7 @@ def create_start_room(sender, instance=None, **kwargs):
     """
     Create initial room.
     """
-    try:
-        instance.tile
-    except Exception:
+    if not hasattr(instance, 'tile'):
         room = Room.objects.create()
         instance.origin = room
         instance.tile = room.tile_set.order_by('?').first()

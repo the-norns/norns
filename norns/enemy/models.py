@@ -64,9 +64,7 @@ def populate_enemy_type(sender, instance=None, **kwargs):
     """
     Generate tile mobs.
     """
-    try:
-        instance.enemy_type
-    except Exception:
+    if not hasattr(instance, 'enemy_type'):
         if EnemyType.objects.count():
             instance.enemy_type = EnemyType.objects.order_by('?').first()
         else:

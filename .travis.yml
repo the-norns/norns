@@ -29,8 +29,8 @@ before_script:
 - unzip chromedriver_linux64.zip -d $HOME/usr/bin
 - export CHROME_BIN=chromium-browser
 script:
-- python norns/manage.py migrate
-- coverage run norns/manage.py test norns
+- cd norns && python ./manage.py migrate
+- cd norns && coverage run ./manage.py test norns
 after_success:
 - coveralls
 - |

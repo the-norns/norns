@@ -3,7 +3,7 @@
     "model": "gear.weapon",
     "pk": 1,
     "fields": {
-      "name": "Steel Broadsword",
+      "name": "Broadsword",
       "strength": 15,
       "agility": 3,
       "reach": 3
@@ -13,7 +13,7 @@
     "model": "gear.weapon",
     "pk": 2,
     "fields": {
-      "name": "Small Steel Knives",
+      "name": "Knives",
       "strength": 5,
       "agility": 9,
       "reach": 1
@@ -23,7 +23,7 @@
     "model": "gear.weapon",
     "pk": 3,
     "fields": {
-      "name": "Steel Shortsword",
+      "name": "Shortsword",
       "strength": 8,
       "agility": 5,
       "reach": 2
@@ -33,7 +33,7 @@
     "model": "gear.weapon",
     "pk": 4,
     "fields": {
-      "name": "Maple Bow",
+      "name": "Bow",
       "strength": 6,
       "agility": 6,
       "reach": 10
@@ -63,7 +63,7 @@
     "model": "gear.weapon",
     "pk": 7,
     "fields": {
-      "name": "Iron Mace",
+      "name": "Mace",
       "strength": 13,
       "agility": 4,
       "reach": 2
@@ -93,7 +93,7 @@
     "model": "gear.consumable",
     "pk": 1,
     "fields": {
-      "name": "Mashed Potatoes",
+      "name": "Potatoes",
       "ability": 10
     }
   },
@@ -101,7 +101,7 @@
     "model": "gear.consumable",
     "pk": 2,
     "fields": {
-      "name": "Orange Juice",
+      "name": "Orange",
       "ability": 10
     }
   }

@@ -40,7 +40,7 @@ class RoomView(APIView):
         Response to action post.
         """
         player = get_object_or_404(Player, user=request.user, active=True)
-        user_input = request.data['user_input'].split()
+        user_input = self.request.data['data'].split()
         if not user_input:
             return _serialize(player, 'no user input')
         verb = user_input[0]

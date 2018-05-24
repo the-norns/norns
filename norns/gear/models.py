@@ -16,6 +16,15 @@ class Weapon(models.Model):
         'status.Ability', on_delete=models.CASCADE, null=True)
     reach = models.IntegerField(default=0)
 
+    def check_reach(self, source, target):
+        """
+        Check whether target is within reach.
+        """
+        if abs(source.tile.x_coord - target.tile.x_coord) <= self.reach \
+           and abs(source.tile.y_coord - target.tile.y_coord) <= self.reach:
+            return True
+        return False
+
     def attack(self, source, target):
         """
         Attempt to damage target.
@@ -24,8 +33,7 @@ class Weapon(models.Model):
             return 'You can\'t attack that.'
 
         message = ''
-        if abs(source.tile.x_coord - target.tile.x_coord) <= self.reach \
-           and abs(source.tile.y_coord - target.tile.y_coord) <= self.reach:
+        if self.check_reach(source, target):
             roll = sum([randint(0, 6) for _ in range(self.strength)])
             target.health -= roll
             if roll == self.strength * 6:

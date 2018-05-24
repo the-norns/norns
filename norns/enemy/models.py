@@ -46,6 +46,9 @@ class Enemy(models.Model):
         if queryset.count():
             self.tile = queryset.first()
 
+    def do_combat(self):
+        pass
+
 
 @receiver(models.signals.post_save, sender='room.Tile')
 def populate_enemies(sender, created=False, instance=None, **kwargs):

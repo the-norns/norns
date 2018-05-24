@@ -77,4 +77,7 @@ def create_consumable_ability(sender, instance=None, **kwargs):
     Create an ability for a consumable.
     """
     if not instance.ability:
-        instance.ability = Ability.objects.order_by('?').first()
+        if Ability.objects.count():
+            instance.ability = Ability.objects.order_by('?').first()
+        else:
+            instance.ability = Ability.objects.create()

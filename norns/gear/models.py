@@ -90,9 +90,7 @@ def create_player_inventory(sender, instance=None, **kwargs):
     """
     Create initial inventory.
     """
-    try:
-        instance.inventory
-    except Exception:
+    if not hasattr(instance, 'inventory'):
         instance.inventory = Inventory.objects.create()
 
 
@@ -101,7 +99,5 @@ def create_enemy_inventory(sender, instance=None, **kwargs):
     """
     Create enemy inventory.
     """
-    try:
-        instance.inventory
-    except Exception:
+    if not hasattr(instance, 'inventory'):
         instance.inventory = Inventory.objects.create()

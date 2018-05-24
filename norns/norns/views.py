@@ -31,16 +31,10 @@ PURCHASES = {
 }
 
 
-
 class HomeView(TemplateView):
     """View class for the homepage."""
 
     template_name = 'home.html'
-
-    def get_context_data(self, **kwargs):
-        """Get request for homepage class view."""
-        context = super().get_context_data(**kwargs)
-        return context
 
 
 class StoreView(TemplateView):
@@ -51,40 +45,36 @@ class StoreView(TemplateView):
     def post(self, request, *args, **kwargs):
         """Handle post request for order form."""
         if 'purchase' not in kwargs:
-            return {}
+            return render(request, 'store.html')
 
         purchase = kwargs['purchase'].strip().lower()
 
         if purchase not in PURCHASES:
-            return {}
+            return render(request, 'store.html')
 
         player = get_object_or_404(Player, user=request.user, active=True)
 
-        purchase = PURCHASES[purchase]
+        purchase = PURCHASES[purchase].copy()
 
         query = purchase.pop('query')
 
-        csrfmiddlewaretoken = self.request.POST['csrfmiddlewaretoken']
         stripeToken = self.request.POST['stripeToken']
         stripeTokenType = self.request.POST['stripeTokenType']
         stripeEmail = self.request.POST['stripeEmail']
 
+        purchase.setdefault('currency', 'usd')
+        purchase.setdefault('source', stripeToken)
+
         try:
             token = stripe.Token.retrieve(stripeToken)
-
-            purchase.setdefault(currency='usd', source=stripeToken)
-
             charge = stripe.Charge.create(**purchase)
-            # Use Stripe's library to make requests...
         except stripe.error.CardError as e:
-            # Since it's a decline, stripe.error.CardError will be caught
             body = e.json_body
             err = body.get('error', {})
 
             print('Status is:', e.http_status)
             print('Type is:', err.get('type'))
             print('Code is:', err.get('code'))
-            # param is '' in this case
             print('Param is:', err.get('param'))
             print('Message is:', err.get('message'))
         except stripe.error.RateLimitError as e:
@@ -102,16 +92,30 @@ class StoreView(TemplateView):
         except Exception as e:
             print('Something else happened, completely unrelated to Stripe', e)
         else:
-            print(charge)
-
             if isinstance(charge, stripe.Charge):
-                import pdb; pdb.set_trace()
+                charge = charge.to_dict()
+                token = token.to_dict()
 
-                print(query.first())
+                if token.get('id', None) != stripeToken:
+                    return render(request, 'store.html')
+
+                if token.get('email', None) != stripeEmail:
+                    return render(request, 'store.html')
+
+                card = token.get(stripeTokenType, None)
+
+                if card is None:
+                    return render(request, 'store.html')
+
+                if charge.get('status', None) != 'succeeded':
+                    return render(request, 'store.html')
+
+                query.first().inventory_set.add(player.inventory)
+                player.inventory.save()
 
                 return redirect('home')
 
-        return {}
+        return render(request, 'store.html')
 
 
 def about_view(request):

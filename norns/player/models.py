@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -34,8 +34,10 @@ class Player(models.Model):
         """
         Handle input.
         """
-        #if self.tile.room.round_start:
+        # if self.tile.room.round_start:
         #    if not self.tile.room.player_set.filter(
+        #        combat_action=None).count() or \
+        #        timezone.now - self.tile.room.round_start > time
         #            combat_action=None).count() or timezone.now -
 
         if not self.tile.room.round_start:
@@ -59,9 +61,11 @@ class Player(models.Model):
         Equip inventory item.
         """
         weapon = self.inventory.weapons.filter(name=item).first()
+        if not weapon:
+            return {'message': 'You can\'t equip that!'}
         self.weapon = weapon
         self.inventory.weapons.remove(weapon)
-        return 'Equipped {}'.format(self.name)
+        return {'message': 'Equipped {}.'.format(weapon.name)}
 
     def move(self, direction):
         """

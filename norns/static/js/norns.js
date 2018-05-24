@@ -3,7 +3,7 @@ let CANVAS_HEIGHT = 470;
 let roomTiles = [];
 const __API_URL__ = 'http://localhost:8000/api/v1/'
 
-let canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
+let canvasElement = $("<canvas width='" + CANVAS_WIDTH +
                       "' height='" + CANVAS_HEIGHT + "'></canvas>");
 let canvas = canvasElement.get(0).getContext("2d");
 
@@ -103,7 +103,7 @@ let CANVAS_HEIGHT = 470;
 let roomTiles = [];
 const __API_URL__ = 'http://localhost:8000/api/v1/'
 
-let canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
+let canvasElement = $("<canvas width='" + CANVAS_WIDTH +
                       "' height='" + CANVAS_HEIGHT + "'></canvas>");
 let canvas = canvasElement.get(0).getContext("2d");
 

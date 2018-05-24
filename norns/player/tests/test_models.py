@@ -234,7 +234,7 @@ class TestModelsWithData(TestCase):
     Test Player model.
     """
 
-    fixtures = ['fixture']
+    fixtures = ['status/fixtures/fixture.json', 'fixture']
 
     def setUp(self):
         """
@@ -272,7 +272,7 @@ class TestPlayerWithInventory(TestCase):
     Test Player model.
     """
 
-    fixtures = ['fixture']
+    fixtures = ['status/fixtures/fixture.json', 'fixture']
 
     def setUp(self):
         """

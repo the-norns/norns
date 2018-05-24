@@ -59,7 +59,7 @@ class TestRoutesWithData(TestCase):
     Integration tests.
     """
 
-    fixtures = ['fixture']
+    fixtures = ['status/fixtures/fixture.json', 'fixture']
 
     def setUp(self):
         """

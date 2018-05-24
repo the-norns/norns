@@ -19,5 +19,6 @@ urlpatterns = [
     path('api/v1/gear/', include('gear.urls')),
     path('api/v1/', include('room.urls')),
     path('store/', StoreView.as_view(), name='store'),
+    path('store/<str:purchase>', StoreView.as_view(), name='store_purchase'),
     path('login', views.obtain_auth_token),
 ]

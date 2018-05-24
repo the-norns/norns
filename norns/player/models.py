@@ -17,23 +17,30 @@ class Player(models.Model):
     abilities = models.ManyToManyField('status.Ability', blank=True)
     inventory = models.OneToOneField(
         'gear.Inventory',
-        blank=True,
-        on_delete=models.CASCADE,
-        null=True)
+        on_delete=models.CASCADE)
     origin = models.ForeignKey('room.Room', on_delete=models.CASCADE)
-    tile = models.ForeignKey(
-        'room.Tile', blank=True, on_delete=models.SET_NULL, null=True)
     weapon = models.ForeignKey(
         'gear.Weapon',
         blank=True,
         related_name='equiped_set',
         on_delete=models.SET_NULL,
         null=True)
+    combat_action = models.CharField(max_length=255, blank=True, null=True)
+    tile = models.ForeignKey('room.Tile', on_delete=models.CASCADE)
 
     def handle_user_input(self, user_input):
         """
         Handle input.
         """
+        #if self.tile.room.round_start:
+        #    if not self.tile.room.player_set.filter(
+        #            combat_action=None).count() or timezone.now - 
+
+        if not self.tile.room.round_start:
+            for tile in self.tile.room.tile_set.all():
+                if tile.enemy_set.count():
+                    self.tile.room.round_start.save()
+
         verb = user_input[0]
         if verb == 'go':
             return self.move(user_input[1])
@@ -64,7 +71,9 @@ class Player(models.Model):
         if not move_direction:
             return 'You can\'t move {}.'.format(direction)
 
-        return move_direction() or ''
+        move_direction()
+        self.save()
+        return {'message': 'You moved {}'.format(direction)}
 
     def move_north(self):
         """
@@ -145,5 +154,5 @@ def create_new_player(sender, created=False, instance=None, **kwargs):
     Create disappointment.
     """
     if created:
-        Player(user=instance, active=True).save()
-        Token(user=instance).save()
+        Player.objects.create(user=instance, active=True)
+        Token.objects.create(user=instance)

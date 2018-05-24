@@ -48,7 +48,7 @@ class TestModelsWithData(TestCase):
     Test Room and Tile models.
     """
 
-    fixtures = ['fixture']
+    fixtures = ['status/fixtures/fixture.json', 'fixture']
 
     def setUp(self):
         """

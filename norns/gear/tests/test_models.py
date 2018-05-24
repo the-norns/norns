@@ -1,9 +1,9 @@
 from django.test import TestCase
+from django.db.models import Q
 from model_mommy import mommy
 
 from player.models import Player
 from enemy.models import Enemy
-from status.models import Ability
 
 from ..models import Weapon, Consumable
 
@@ -13,18 +13,21 @@ class TestModels(TestCase):
     Test Weapon model.
     """
 
-    #  fixtures = ['fixture']
+    fixtures = [
+            'status/fixtures/fixture.json',
+            'fixture',
+    ]
 
     def setUp(self):
         """
         Create items.
         """
         self.player = mommy.make(Player)
-        self.enemy = mommy.make(Enemy)
-        self.ability = mommy.make(Ability)
-        self.consumable = mommy.make(Consumable)
-        self.weapon = mommy.make(Weapon, strength=1)
+        self.enemy = Enemy.objects.first()
+        self.enemy.tile = self.player.tile
+        self.consumable = Consumable.objects.first()
         self.consumable.tile_set.add(self.player.tile)
+        self.weapon = Weapon.objects.first()
         self.weapon.tile_set.add(self.player.tile)
 
     def tearDown(self):
@@ -37,7 +40,7 @@ class TestModels(TestCase):
         """
         Validate weapon created.
         """
-        self.assertTrue(Weapon.objects.count() == 1)
+        self.assertTrue(Weapon.objects.count() > 0)
 
     def test_consumable_loot(self):
         """
@@ -97,3 +100,20 @@ class TestModels(TestCase):
         while self.player.health > 0:
             message = self.weapon.attack(self.enemy, self.player).split()
         self.assertEqual(message[-1], 'died.')
+
+    def test_attack_out_of_range(self):
+        """
+        Validate that a weapon cannot attack a target out of range.
+        """
+        tile_set = self.player.tile.room.tile_set
+        initial_health = self.enemy.health
+        self.player.tile = tile_set.filter(
+            Q(x_coord=0) &
+            Q(y_coord=0)).first()
+        self.enemy.tile = tile_set.filter(
+            Q(x_coord=4) &
+            Q(y_coord=4)).first()
+        message = self.weapon.attack(self.player, self.enemy)['message']
+        self.assertEqual(
+            message, '{} is out of range.'.format(self.enemy.name))
+        self.assertEqual(initial_health, self.enemy.health)

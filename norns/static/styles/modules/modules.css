@@ -1,10 +1,19 @@
 .game, .container {
   position: relative;
-  width: 800px;
-  height: 500px;
-  margin-left: 24vw;
+  width: 700px;
+  height: 530px;
+  margin-left: 26.5vw;
   margin-top: 5vw;
   margin-bottom: 7vw;
+}
+
+.game ul {
+  position: absolute;
+  top: 45%;
+  left: 18%;
+}
+.game ul li {
+  display: inline-block;
 }
 
 .auth-list li label {
@@ -13,10 +22,6 @@
 
 .auth-list li input {
   right: 0;
-}
-
-.game div {
-  border: 1px solid red;
 }
 
 .minimap {
@@ -83,12 +88,5 @@
 }
 
 canvas {
-  border: 1px solid red;
   background-color: black;
-}
-
-.start-game {
-  position: absolute;
-  top: 50%;
-  left: 32%;
 }

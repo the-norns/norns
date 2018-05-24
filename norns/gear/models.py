@@ -20,8 +20,8 @@ class Weapon(models.Model):
         """
         Attempt to damage target.
         """
-        if not target.name:
-            return 'You can\'t attack {}.'.format(target.name)
+        if not target.name or target.tile.room is not source.tile.room:
+            return {'message': 'You can\'t attack that.'}
 
         message = ''
         if abs(source.tile.x_coord - target.tile.x_coord) <= self.reach \
@@ -32,6 +32,8 @@ class Weapon(models.Model):
                 message += 'Crit!\n'
             message += '{} hit {} for {} damage.\n'.format(
                 source.name, target.name, roll)
+        else:
+            return {'message': '{} is out of range.'.format(target.name)}
 
         if target.health <= 0:
             message += ' {} was slain!\n'.format(target.name)
@@ -43,7 +45,7 @@ class Weapon(models.Model):
                 target.inventory.remove(consumable)
             if hasattr(target, 'user'):
                 message += ' You have died.\n'
-                #  target.tile = 'target.origin.tile_set.order_by('?').first()
+                target.tile = target.origin.tile_set.order_by('?').first()
             else:
                 target.delete()
 

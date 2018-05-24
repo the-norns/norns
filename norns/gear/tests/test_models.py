@@ -1,11 +1,11 @@
-from django.test import TestCase
 from django.db.models import Q
+from django.test import TestCase
 from model_mommy import mommy
 
-from player.models import Player
 from enemy.models import Enemy
+from player.models import Player
 
-from ..models import Weapon, Consumable
+from ..models import Consumable, Weapon
 
 
 class TestModels(TestCase):
@@ -113,7 +113,7 @@ class TestModels(TestCase):
         self.enemy.tile = tile_set.filter(
             Q(x_coord=4) &
             Q(y_coord=4)).first()
-        message = self.weapon.attack(self.player, self.enemy)['message']
+        message = self.weapon.attack(self.player, self.enemy)
         self.assertEqual(
             message, '{} is out of range.'.format(self.enemy.name))
         self.assertEqual(initial_health, self.enemy.health)

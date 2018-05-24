@@ -38,6 +38,7 @@ class Weapon(models.Model):
         if self.check_reach(source, target):
             roll = sum([randint(0, 6) for _ in range(self.strength)])
             target.health -= roll
+            target.save()
             if roll == self.strength * 6:
                 message += 'Crit!\n'
             message += '{} hit {} for {} damage.\n'.format(

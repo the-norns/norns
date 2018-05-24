@@ -95,32 +95,35 @@ class Enemy(models.Model):
         """
         Attack or advance on player.
         """
+        message = ''
         attacked = False
-        for player in self.tile.player_set:
-            if self.weapon.check_reach(self, player):
-                self.weapon.attack(self, player)
-                if not self.tile.player_set.count():
-                    self.tile.room.round_start = None
-                attacked = True
-                break
+        if self.weapon:
+            for player in self.tile.player_set.all():
+                if self.weapon.check_reach(self, player):
+                    message = self.weapon.attack(self, player)
+                    if not self.tile.player_set.count():
+                        self.tile.room.round_start = None
+                    attacked = True
+                    break
 
-        if not attacked:
-            dist = 5
-            for player in self.tile.player_set:
-                dx = self.tile.x_coord - player.tile.x_coord
-                dy = self.tile.y_coord - player.tile.y_coord
-                new_dist = abs(dx) + abs(dy) / 2
-                if new_dist < dist:
-                    if abs(dx) > abs(dy):
-                        if dx > 0:
-                            self.move('west')
+            if not attacked and not self.tile.player_set.count():
+                dist = 5
+                for player in self.tile.player_set.all():
+                    dx = self.tile.x_coord - player.tile.x_coord
+                    dy = self.tile.y_coord - player.tile.y_coord
+                    new_dist = abs(dx) + abs(dy) / 2
+                    if new_dist < dist:
+                        if abs(dx) > abs(dy):
+                            if dx > 0:
+                                self.move('west')
+                            else:
+                                self.move('east')
                         else:
-                            self.move('east')
-                    else:
-                        if dy > 0:
-                            self.move('north')
-                        else:
-                            self.move('south')
+                            if dy > 0:
+                                self.move('north')
+                            else:
+                                self.move('south')
+        return message
 
 
 @receiver(models.signals.post_save, sender='room.Tile')

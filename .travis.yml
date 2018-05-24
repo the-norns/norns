@@ -30,7 +30,7 @@ before_script:
 - export CHROME_BIN=chromium-browser
 script:
 - python ./norns/manage.py migrate
-- coverage run ./norns/manage.py test
+- coverage run ./norns/manage.py test norns
 after_success:
 - coveralls
 - |

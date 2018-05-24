@@ -17,9 +17,7 @@ class Player(models.Model):
     abilities = models.ManyToManyField('status.Ability', blank=True)
     inventory = models.OneToOneField(
         'gear.Inventory',
-        blank=True,
-        on_delete=models.CASCADE,
-        null=True)
+        on_delete=models.CASCADE)
     origin = models.ForeignKey('room.Room', on_delete=models.CASCADE)
     tile = models.ForeignKey(
         'room.Tile', blank=True, on_delete=models.SET_NULL, null=True)

@@ -29,11 +29,21 @@ class Player(models.Model):
         related_name='equiped_set',
         on_delete=models.SET_NULL,
         null=True)
+    combat_action = models.CharField(max_length=255, blank=True, null=True)
 
     def handle_user_input(self, user_input):
         """
         Handle input.
         """
+        #if self.tile.room.round_start:
+        #    if not self.tile.room.player_set.filter(
+        #            combat_action=None).count() or timezone.now - 
+
+        if not self.tile.room.round_start:
+            for tile in self.tile.room.tile_set.all():
+                if tile.enemy_set.count():
+                    self.tile.room.round_start.save()
+
         verb = user_input[0]
         if verb == 'go':
             return self.move(user_input[1])
@@ -64,7 +74,9 @@ class Player(models.Model):
         if not move_direction:
             return 'You can\'t move {}.'.format(direction)
 
-        return move_direction() or ''
+        move_direction()
+        self.save()
+        return {'message': 'You moved {}'.format(direction)}
 
     def move_north(self):
         """

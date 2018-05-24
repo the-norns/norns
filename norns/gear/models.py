@@ -45,7 +45,7 @@ class Weapon(models.Model):
                 target.inventory.remove(consumable)
             if hasattr(target, 'user'):
                 message += ' You have died.\n'
-                #  target.tile = 'target.origin.tile_set.order_by('?').first()
+                target.tile = target.origin.tile_set.order_by('?').first()
             else:
                 target.delete()
 

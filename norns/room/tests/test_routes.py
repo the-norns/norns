@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.test import TestCase
 from django.urls import reverse_lazy
 from model_mommy import mommy
@@ -16,6 +17,7 @@ class TestRoutes(TestCase):
         """
         super().setUp()
         self.user = mommy.make(User)
+        self.player = Player.objects.filter(user=self.user).first()
 
     def tearDown(self):
         """
@@ -36,6 +38,20 @@ class TestRoutes(TestCase):
         self.assertIn('tiles', response.data)
         self.assertEqual(response.data['message'], 'Welcome to Hel.')
         self.assertTrue(response.data['tiles'][0])
+
+    def test_go_keyword_moves_player(self):
+        """
+        Validate go keyword functions.
+        """
+        self.client.force_login(self.user)
+        tl_tile = self.player.tile.room.tile_set.filter(
+                Q(x_coord=0) &
+                Q(y_coord=0)).first()
+        self.player.tile = tl_tile
+        data = {'user_input': 'go south'}
+        self.client.post(reverse_lazy('room'), data=data)
+        self.player = Player.objects.filter(user=self.user).first()
+        self.assertEqual(self.player.tile.y_coord, 1)
 
 
 class TestRoutesWithData(TestCase):

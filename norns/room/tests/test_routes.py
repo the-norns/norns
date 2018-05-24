@@ -48,6 +48,7 @@ class TestRoutes(TestCase):
                 Q(x_coord=0) &
                 Q(y_coord=0)).first()
         self.player.tile = tl_tile
+        self.player.save()
         data = {'user_input': 'go south'}
         self.client.post(reverse_lazy('room'), data=data)
         self.player = Player.objects.filter(user=self.user).first()

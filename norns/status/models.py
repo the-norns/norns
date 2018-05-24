@@ -27,7 +27,8 @@ class Action:
         max_length = max(map(len, cls.actions.keys()))
         return models.CharField(
             max_length=max_length,
-            choices=choices)
+            choices=choices,
+            default='MH')
 
 
 class MinorHeal(Action):
@@ -40,7 +41,35 @@ class MinorHeal(Action):
     quantity = 5
 
 
-for action in (MinorHeal,):
+class SafeRoom(Action):
+    """
+    Heal target for 5.
+    """
+
+    short_name = 'SR'
+
+    @classmethod
+    def run(cls, ability, player, target, distance):
+        """
+        Clear rooms of enemies.
+        """
+        def _clear_room(room):
+            for tile in room.tile_set.all():
+                tile.enemy_set.set([])
+                tile.save()
+        room = target.tile.room
+        _clear_room(room)
+        if room.room_north:
+            _clear_room(room.room_north)
+        if hasattr(room, 'room_south'):
+            _clear_room(room.room_south)
+        if room.room_east:
+            _clear_room(room.room_east)
+        if hasattr(room, 'room_west'):
+            _clear_room(room.room_west)
+
+
+for action in (MinorHeal, SafeRoom):
     action.actions[action.short_name] = action
 
 
@@ -53,11 +82,13 @@ class Ability(models.Model):
     range = models.IntegerField(default=0)
     action = Action.get_model_field()
 
-    def use_ability(self, player, target):
+    def use_ability(self, player, target=None):
         """
         Validate and dispatch action.
         """
         player_tile = player.tile
+        if target is None:
+            target = player
         target_tile = target.tile
         if player_tile.room != target_tile.room:
             return 'No target found.'

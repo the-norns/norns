@@ -25,10 +25,12 @@ class Weapon(models.Model):
             message = 'You can\'t attack that.'
             return message
 
-        if abs(source.tile.x_coord - target.tile.x_coord) <= self.reach \
-           and abs(source.tile.y_coord - target.tile.y_coord) <= self.reach:
+        message = ''
+        if abs(source.tile.x_coord - target.tile.x_coord) < self.reach \
+           or abs(source.tile.y_coord - target.tile.y_coord) < self.reach:
             roll = sum([randint(0, 6) for _ in range(self.strength)])
             target.health -= roll
+            target.save()
             if roll == self.strength * 6:
                 message += 'Crit!\n'
             message += '{} hit {} for {} damage.\n'.format(

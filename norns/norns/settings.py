@@ -164,3 +164,7 @@ EMAIL_USE_TLS = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.{}.EmailBackend'.format(
     'console' if DEBUG else 'smtp')
+
+# Game settings
+
+INSTANCE_SIZE_LIMIT = 100

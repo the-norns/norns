@@ -1,11 +1,10 @@
 from random import randint
 
+from django.conf import settings
 from django.db import models
 from django.dispatch import receiver
 
 from gear.models import Consumable, Weapon
-
-INSTANCE_SIZE_LIMIT = 100
 
 
 class Room(models.Model):
@@ -114,7 +113,7 @@ def create_start_room(sender, instance=None, **kwargs):
             origin_id = origin['origin_id']
             if (
                     cls.objects.filter(origin_id=origin_id).count()
-                    < INSTANCE_SIZE_LIMIT):
+                    < settings.INSTANCE_SIZE_LIMIT):
                 room = Room.objects.get(pk=origin_id)
                 break
         if room is not None:
@@ -136,4 +135,7 @@ def populate_tiles(sender, created=False, instance=None, **kwargs):
     if created:
         for x in range(instance.grid_size):
             for y in range(instance.grid_size):
+                if Tile.objects.filter(
+                        x_coord=x, y_coord=y, room=instance).first():
+                    continue
                 Tile.objects.create(x_coord=x, y_coord=y, room=instance)

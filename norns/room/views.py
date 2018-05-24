@@ -81,6 +81,7 @@ class NewRoomView(CreateAPIView):
         for player in Player.objects.filter(
                 user=request.user, active=True).all():
             player.active = False
+            player.save()
         player = Player.objects.create(user=request.user, active=True)
         return _serialize(player, 'Welcome to Hel.', status=201)
 

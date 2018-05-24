@@ -80,12 +80,13 @@ class Tile(models.Model):
         """
         Create disappointment.
         """
-        message = 'You see...'  # implement message output.
+        message = 'You see... '  # implement message output.
         if not self.looked:
             self.looked = True
             roll = randint(0, 10)
             if roll > 2:
-                return {}
+                message += 'nothing of interest.'
+                return {'message': message}
             if roll > 1:
                 weapon = Weapon.objects.order_by('?').first()
                 if weapon:
@@ -99,7 +100,7 @@ class Tile(models.Model):
                 self.save()
                 message += ' '
                 message += consumable.name
-        return message
+        return {'message': message}
 
 
 @receiver(models.signals.pre_save, sender='player.Player')

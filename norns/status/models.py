@@ -1,4 +1,5 @@
 from django.db import models
+from django.dispatch import receiver
 
 
 class Action:
@@ -68,3 +69,12 @@ class Ability(models.Model):
 
         Action.actions[self.action].run(self, player, target, distance)
         return 'You used {}'.format(self.name)
+
+
+@receiver(models.signals.pre_save, sender='gear.Consumable')
+def create_consumable_ability(sender, instance=None, **kwargs):
+    """
+    Create an ability for a consumable.
+    """
+    if not instance.ability:
+        instance.ability = Ability.objects.order_by('?').first()

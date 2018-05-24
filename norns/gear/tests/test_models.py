@@ -13,7 +13,7 @@ class TestModels(TestCase):
     Test Weapon model.
     """
 
-    #  fixtures = ['fixture']
+    #  fixtures = ['status/fixtures/fixture.json', 'fixture']
 
     def setUp(self):
         """

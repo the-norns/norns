@@ -29,8 +29,10 @@ class Weapon(models.Model):
         """
         Attempt to damage target.
         """
+        message = ''
         if not target.name or target.tile.room is not source.tile.room:
-            return 'You can\'t attack that.'
+            message = 'You can\'t attack that.'
+            return message
 
         message = ''
         if self.check_reach(source, target):
@@ -41,7 +43,8 @@ class Weapon(models.Model):
             message += '{} hit {} for {} damage.\n'.format(
                 source.name, target.name, roll)
         else:
-            return '{} is out of range.'.format(target.name)
+            message += '{} is out of range.'.format(target.name)
+            return message
 
         if target.health <= 0:
             message += ' {} was slain!\n'.format(target.name)
@@ -78,9 +81,11 @@ class Consumable(models.Model):
         """
         Loot consumable.
         """
+        message = ''
         self.tile_set.remove(player.tile)
         player.inventory.consumables.add(self)
-        return 'You looted {}!'.format(self.name)
+        message = 'You looted {}!'.format(self.name)
+        return message
 
     def handle_use(self, player, target):
         """

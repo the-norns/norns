@@ -59,9 +59,10 @@ class Player(models.Model):
         Equip inventory item.
         """
         weapon = self.inventory.weapons.filter(name=item).first()
+        # import pdb; pdb.set_trace()
         self.weapon = weapon
         self.inventory.weapons.remove(weapon)
-        return 'Equipped {}'.format(self.name)
+        return 'Equipped {}'.format(self.weapon.name)
 
     def move(self, direction):
         """

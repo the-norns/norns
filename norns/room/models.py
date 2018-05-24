@@ -84,7 +84,7 @@ class Tile(models.Model):
         if not self.looked:
             self.looked = True
             roll = randint(0, 10)
-            if roll > 2:
+            if roll > 5:
                 return {}
             if roll > 1:
                 weapon = Weapon.objects.order_by('?').first()

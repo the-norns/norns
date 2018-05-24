@@ -48,17 +48,17 @@ class RoomView(APIView):
             return _serialize(player, player.tile.look())
 
         if verb == 'take':
-            weapon = player.tile.weapons.filter(name=(' ').join(user_input[1:])).first()
-            consumable = player.tile.consumables.filter(name=(' ').join(user_input[1:])).first()
+            weapon = player.tile.weapons.filter(name=user_input[1]).first()
+            consumable = player.tile.consumables.filter(name=user_input[1]).first()
             if weapon:
                 player.inventory.weapons.add(weapon)
-                weapon.tiles.remove(player.tile)
+                weapon.tile_set.remove(player.tile)
                 return _serialize(
                     player,
                     'You picked up {}'.format(weapon.name))
             if consumable:
                 player.inventory.consumables.add(consumable)
-                consumable.tiles.remove(player.tile)
+                consumable.tile_set.remove(player.tile)
                 return _serialize(
                     player,
                     'You picked up {}'.format(consumable.name))

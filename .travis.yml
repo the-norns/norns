@@ -34,9 +34,7 @@ script:
 - coverage run ./manage.py test
 - popd
 after_success:
-- pushd norns
-- coveralls
-- popd
+- coveralls --rcfile=norns
 - |
   if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
     if [ "${DOCKER_USER}" != "" ]; then

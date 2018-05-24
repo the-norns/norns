@@ -7,13 +7,35 @@
   margin-bottom: 7vw;
 }
 
-.game ul {
+.start-buttons {
   position: absolute;
   top: 45%;
   left: 18%;
 }
-.game ul li {
+
+.start-buttons li {
   display: inline-block;
+}
+
+.tabs-container {
+  position: absolute;
+  bottom: 0;
+  right: .7%;
+}
+
+.tabs-container ul li {
+  display: inline-block;
+}
+
+.tabs-container li {
+  font-size: 14px;
+  background-color: rgb(30, 30, 30);
+  padding: 0px 6px;
+  margin: -4.2px;
+  height: 40px;
+  text-align: center;
+  border-radius: 2px;
+  box-shadow: 3px 4px 8px 0 rgba(0, 0, 0, 0.5), 3px 0px 20px 3px rgba(0, 0, 0, 0.5);
 }
 
 .auth-list li label {
@@ -51,11 +73,9 @@
   background-color: white;
 }
 
-.store {
-  position: absolute;
-  bottom: 30px;
-  right: 0;
-  background-color: white;
+.actions button {
+  background-color: rgb(30, 30, 30);
+  color: rgb(100, 168, 103);
 }
 
 .hitCounter {

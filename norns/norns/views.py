@@ -24,11 +24,6 @@ class StoreView(TemplateView):
 
     template_name = 'store.html'
 
-    def get_context_data(self, **kwargs):
-        """Get request for store class view."""
-        context = super().get_context_data(**kwargs)
-        return context
-
     def post(self, request, *args, **kwargs):
         """Handle post request for order form."""
         stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -45,7 +40,10 @@ class StoreView(TemplateView):
             source=stripeToken,
         )
 
-        return redirect('home')
+        if isinstance(charge, stripe.Charge):
+            pass
+
+        return redirect('store')
 
 
 def about_view(request):

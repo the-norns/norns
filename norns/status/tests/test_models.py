@@ -23,14 +23,11 @@ class TestModels(TestCase):
         """
         self.player = mommy.make(Player)
         self.enemy = mommy.make(Enemy, tile=self.player.tile)
-        for _ in range(3):
-            mommy.make(Ability)
 
     def tearDown(self):
         """
         Destroy items.
         """
-        Ability.objects.all().delete()
         Enemy.objects.all().delete()
         Player.objects.all().delete()
 
@@ -127,21 +124,5 @@ class TestModels(TestCase):
         Test ability to use actions.
         """
         ability = Ability.objects.get(pk=11)
-        self.assertIsNotNone(ability)
-        ability.use_ability(self.player, self.enemy)
-
-    def test_run_12(self):
-        """
-        Test ability to use actions.
-        """
-        ability = Ability.objects.get(pk=12)
-        self.assertIsNotNone(ability)
-        ability.use_ability(self.player, self.enemy)
-
-    def test_run_13(self):
-        """
-        Test ability to use actions.
-        """
-        ability = Ability.objects.get(pk=13)
         self.assertIsNotNone(ability)
         ability.use_ability(self.player, self.enemy)

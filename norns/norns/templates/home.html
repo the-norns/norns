@@ -3,12 +3,20 @@
 {% block content %}
 {% if user.is_authenticated %}
 <div class="game">
-  <div class="start-game">
+  <ul class="start-buttons">
+  <li><div class="start-game">
+    <!-- <form>
+      {% csrf_token %}
+    <button type="submit">New Game</button>
+  </form> -->
+  </div></li>
+  <li><div class="join-game">
     <form>
       {% csrf_token %}
-    <button type="submit">Start Game</button>
+    <button type="submit">Resume Game</button>
   </form>
-  </div>
+  </div></li>
+</ul>
   <div class="messages-container">
     <p class="messages"></p>
   </div>

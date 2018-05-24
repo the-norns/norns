@@ -1,5 +1,5 @@
 let canvasWidth = 600;
-let canvasHeight = 470;
+let canvasHeight = 500;
 let roomTiles = [];
 const __API_URL__ = 'http://localhost:8000/api/v1/'
 
@@ -8,14 +8,6 @@ let canvasElement = $("<canvas width='" + canvasWidth +
 let canvas = canvasElement.get(0).getContext("2d");
 
 canvasElement.appendTo($(".game"));
-
-// function destroyCanvas () { 
-//   let canvasElement = $("<canvas width='" + canvasWidth + 
-//                       "' height='" + canvasHeight + "'></canvas>");
-//   let canvas = canvasElement.get(0).getContext("2d");
-
-// canvasElement.appendTo($(".game"));
-// }
 
 function Tile(x, y, consumables, enemies, players, weapons) {
     this.x = x;
@@ -45,6 +37,9 @@ function draw(tiles) {
   tiles.forEach(function(tile){tile.draw()})
 }
 
+function clearCanvas() {
+    canvas.clearRect(0, 0, canvasWidth, canvasHeight);
+}
 
 var getCookie = function(name) {
     var cookieValue = null;
@@ -61,19 +56,41 @@ var getCookie = function(name) {
     return cookieValue;
 };
 
-function newGame(event) {
+// function newGame(event) {
+//     event.preventDefault()
+//     token = getCookie('csrftoken');
+//     $(".start-buttons").remove()
+//     $.ajax({
+//         method: 'POST',
+//         xhrFields: {
+//             withCredentials: true
+//         },
+//         headers: {
+//             'X-CSRFToken': `${token}`
+//         },
+//         url: `${__API_URL__}room/new`,
+//         success: function (data) {
+//             data.tiles.forEach(function(tile){
+//                 roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
+//             })
+//             draw(roomTiles)
+//         }
+//     });
+// }
+
+function joinGame(event) {
     event.preventDefault()
     token = getCookie('csrftoken');
-    $(".start-game").remove()
+    $(".start-buttons").remove()
     $.ajax({
-        method: 'POST',
+        method: 'GET',
         xhrFields: {
             withCredentials: true
         },
         headers: {
             'X-CSRFToken': `${token}`
         },
-        url: `${__API_URL__}room/new`,
+        url: `${__API_URL__}room`,
         success: function (data) {
             data.tiles.forEach(function(tile){
                 roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
@@ -81,10 +98,6 @@ function newGame(event) {
             draw(roomTiles)
         }
     });
-}
-
-function clearCanvas() {
-    canvas.clearRect(0, 0, canvasWidth, canvasHeight);
 }
 
 function action(event) {
@@ -102,7 +115,7 @@ function action(event) {
         headers: {
             'X-CSRFToken': `${token}`
         },
-        url: `${__API_URL__}room/`,
+        url: `${__API_URL__}room`,
         success: function (data) {
             console.log(data.message)
             data.tiles.forEach(function(tile){
@@ -114,5 +127,6 @@ function action(event) {
     });
 }
 
-$(".start-game").on("click", newGame);
+// $(".start-game").on("click", newGame);
+$(".join-game").on("click", joinGame);
 $(".action-form").on("submit", action);

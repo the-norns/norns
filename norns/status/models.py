@@ -55,8 +55,7 @@ class SafeRoom(Action):
         """
         def _clear_room(room):
             for tile in room.tile_set.all():
-                tile.enemy_set.set([])
-                tile.save()
+                tile.enemy_set.all().delete()
         room = target.tile.room
         _clear_room(room)
         if room.room_north:

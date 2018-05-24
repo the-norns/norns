@@ -21,7 +21,7 @@ class Weapon(models.Model):
         Attempt to damage target.
         """
         if not target.name or target.tile.room is not source.tile.room:
-            return {'message': 'You can\'t attack that.'}
+            return 'You can\'t attack that.'
 
         message = ''
         if abs(source.tile.x_coord - target.tile.x_coord) <= self.reach \
@@ -33,7 +33,7 @@ class Weapon(models.Model):
             message += '{} hit {} for {} damage.\n'.format(
                 source.name, target.name, roll)
         else:
-            return {'message': '{} is out of range.'.format(target.name)}
+            return '{} is out of range.'.format(target.name)
 
         if target.health <= 0:
             message += ' {} was slain!\n'.format(target.name)
@@ -46,13 +46,13 @@ class Weapon(models.Model):
             if hasattr(target, 'user'):
                 message += ' You have died.\n'
                 target.tile = target.origin.tile_set.order_by('?').first()
-                target.health = 10
+                # target.health = 10
             else:
                 if not any(map(
                         lambda tile: tile.enemy_set.count(),
-                        target.room.tile_set.all())):
-                    target.room.round_start = None
-                    target.room.save()
+                        target.tile.room.tile_set.all())):
+                    target.tile.room.round_start = None
+                    target.tile.room.save()
                 target.delete()
 
         return message

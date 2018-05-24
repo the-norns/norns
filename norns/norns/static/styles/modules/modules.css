@@ -58,7 +58,6 @@
 .stats-container {
   width: 200px;
   height: 100%;
-  float: right;
   background-color: white;
   position: absolute;
   top: 0;
@@ -120,6 +119,10 @@
   margin-left: 3vw;
   width: 300px;
   height: 400px;
+}
+
+.player-stats {
+  list-style-type: none;
 }
 
 canvas {

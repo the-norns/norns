@@ -29,18 +29,22 @@ class StoreView(TemplateView):
         context = super().get_context_data(**kwargs)
         return context
 
-    def post(self, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         """Handle post request for order form."""
         stripe.api_key = settings.STRIPE_SECRET_KEY
 
-        token = self.request.POST['stripeToken']
+        csrfmiddlewaretoken = self.request.POST['csrfmiddlewaretoken']
+        stripeToken = self.request.POST['stripeToken']
+        stripeTokenType = self.request.POST['stripeTokenType']
+        stripeEmail = self.request.POST['stripeEmail']
 
         charge = stripe.Charge.create(
             amount=2000,
             currency='usd',
             description='Example charge',
-            source=token,
+            source=stripeToken,
         )
+
         return redirect('home')
 
 

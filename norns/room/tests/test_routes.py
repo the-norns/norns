@@ -66,10 +66,8 @@ class TestRoutesWithData(TestCase):
         """
         player = Player.objects.filter(user=self.user, active=True).first()
         weapon = mommy.make(Weapon, name='sword')
-        weapon.save()
         player.tile.desc = 'a tile.'
         player.tile.weapons.add(weapon)
-        player.tile.save()
         data = {'user_input': 'look'}
         self.client.force_login(self.user)
         response = self.client.post(reverse_lazy('room'), data=data)

@@ -1,0 +1,15 @@
+[run]
+omit =
+  **/apps.py
+  **/wsgi.py
+  **/__init__.py
+  **/test_*.py
+  **/test.py
+
+[report]
+exclude_lines =
+  pragma: no cover
+  raise AssertionError
+  raise NotImplementedError
+  return NotImplemented
+  if __name__ == .__main__.:

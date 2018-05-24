@@ -10,6 +10,7 @@ class EnemyType(models.Model):
     """
 
     name = models.CharField(max_length=255, default='Unnamed')
+    health = models.IntegerField(default=10)
 
 
 class Enemy(models.Model):
@@ -20,22 +21,18 @@ class Enemy(models.Model):
     name = models.CharField(max_length=255, default='Unnamed')
     health = models.IntegerField(default=10)
 
-    enemy_type = models.ForeignKey(
-        EnemyType, on_delete=models.CASCADE, null=True)
+    enemy_type = models.ForeignKey(EnemyType, on_delete=models.CASCADE)
 
     abilities = models.ManyToManyField('status.Ability', blank=True)
     inventory = models.OneToOneField(
         'gear.Inventory',
-        blank=True,
-        on_delete=models.CASCADE,
-        null=True)
+        on_delete=models.CASCADE)
     weapon = models.ForeignKey(
         'gear.Weapon',
         blank=True,
         on_delete=models.SET_NULL,
         null=True)
-    tile = models.ForeignKey(
-        'room.Tile', blank=True, on_delete=models.SET_NULL, null=True)
+    tile = models.ForeignKey('room.Tile', on_delete=models.CASCADE)
 
     def wander(self):
         """
@@ -59,6 +56,16 @@ def populate_enemies(sender, created=False, instance=None, **kwargs):
         roll = randint(0, 10)
         if roll > 2:
             return
-        Enemy(
-            enemy_type=EnemyType.objects.order_by('?').first(),
-            tile=instance).save()
+        Enemy.objects.create(tile=instance)
+
+
+@receiver(models.signals.pre_save, sender=Enemy)
+def populate_enemy_type(sender, instance=None, **kwargs):
+    """
+    Generate tile mobs.
+    """
+    if not hasattr(instance, 'enemy_type'):
+        if EnemyType.objects.count():
+            instance.enemy_type = EnemyType.objects.order_by('?').first()
+        else:
+            instance.enemy_type = EnemyType.objects.create()

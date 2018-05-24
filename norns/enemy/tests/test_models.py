@@ -2,9 +2,10 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from model_mommy import mommy
 
-from player.models import Player
-from ..models import Enemy
 from gear.models import Weapon
+from player.models import Player
+
+from ..models import Enemy
 
 
 class TestModels(TestCase):

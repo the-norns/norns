@@ -4,10 +4,11 @@ Core views.
 
 import stripe
 from django.conf import settings
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import TemplateView
 
 from gear.models import Consumable, Weapon
+from player.models import Player
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -57,12 +58,11 @@ class StoreView(TemplateView):
         if purchase not in PURCHASES:
             return {}
 
+        player = get_object_or_404(Player, user=request.user, active=True)
+
         purchase = PURCHASES[purchase]
 
-        query = purchase.pop('query', None)
-
-        if query is None:
-            return {}
+        query = purchase.pop('query')
 
         csrfmiddlewaretoken = self.request.POST['csrfmiddlewaretoken']
         stripeToken = self.request.POST['stripeToken']

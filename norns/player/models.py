@@ -1,4 +1,6 @@
 from django.contrib.auth.models import User
+from django.timezone import timezone
+from datetime import timedelta
 from django.db import models
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
@@ -32,10 +34,10 @@ class Player(models.Model):
         """
         Handle input.
         """
-        #if self.tile.room.round_start:
+        # if self.tile.room.round_start:
         #    if not self.tile.room.player_set.filter(
-        #            combat_action=None).count() or timezone.now - 
-
+        #        combat_action=None).count() or \
+        #        timezone.now - self.tile.room.round_start > time
         if not self.tile.room.round_start:
             for tile in self.tile.room.tile_set.all():
                 if tile.enemy_set.count():
@@ -55,9 +57,11 @@ class Player(models.Model):
         Equip inventory item.
         """
         weapon = self.inventory.weapons.filter(name=item).first()
+        if not weapon:
+            return {'message': 'You can\'t equip that!'}
         self.weapon = weapon
         self.inventory.weapons.remove(weapon)
-        return 'Equipped {}'.format(self.name)
+        return {'message': 'Equipped {}.'.format(weapon.name)}
 
     def move(self, direction):
         """

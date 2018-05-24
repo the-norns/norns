@@ -4,32 +4,43 @@
 {% if user.is_authenticated %}
 <div class="game">
   <ul class="start-buttons">
-  <li><div class="start-game">
-    <!-- <form>
+ <!--  <li><div class="start-game">
+    <form>
       {% csrf_token %}
     <button type="submit">New Game</button>
-  </form> -->
-  </div></li>
+  </form>
+  </div></li> -->
   <li><div class="join-game">
     <form>
       {% csrf_token %}
     <button type="submit">Resume Game</button>
-  </form>
-  </div></li>
-</ul>
-  <div class="messages-container">
-    <p class="messages"></p>
+    </form>
+    </div></li>
+  </ul>
+
+    <div class="stats-container">
+    <ul class="player-stats">
+    </ul>
   </div>
+
+  <div class="tabs-container">
+    <ul class="tabs">
+      <li><a href={% url "store" %}>store</a></li>
+      <li><a class="inventory"href="#">inventory</a></li>
+      <li><a class="stats" href="#">stats</a></li>
+    </ul>
+</div>
+
   <div class="actions">
-    <form class=action-form action="{% url "room" %}" method="POST">
+    <ul class="action-ul">
+    <li><form class=action-form action="{% url "room" %}" method="POST">
       {% csrf_token %}
     <input name="actionInput" type=text>
     <button type="submit">Enter</button>
-  </form>
+  </form></li>
+  <li class="messages"></li>
   </div>
-  <div class="store">
-    <a href={% url "store" %}>store</a>
-  </div>
+
 </div>
 {% else %}
 <div class="game">

@@ -1,7 +1,10 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.generics import (CreateAPIView, RetrieveAPIView,
-                                     UpdateAPIView)
+from rest_framework.authentication import (SessionAuthentication,
+                                           TokenAuthentication)
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from player.models import Player
 
@@ -17,17 +20,27 @@ def _serialize(player, message, **kwargs):
         **kwargs)
 
 
-class RoomView(CreateAPIView, RetrieveAPIView, UpdateAPIView):
+class RoomView(APIView):
     """
     Parse form data and relevant room state.
     """
+
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, _format=None):
+        """
+        Response to get.
+        """
+        player = get_object_or_404(Player, user=request.user, active=True)
+        return _serialize(player, '')
 
     def post(self, request, _format=None):
         """
         Response to action post.
         """
         player = get_object_or_404(Player, user=request.user, active=True)
-        user_input = self.request.data['user_input'].split()
+        user_input = request.data['user_input'].split()
         if not user_input:
             return _serialize(player, 'no user input')
         verb = user_input[0]

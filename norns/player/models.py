@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -34,10 +34,12 @@ class Player(models.Model):
         """
         Handle input.
         """
-        #if self.tile.room.round_start:
+        # if self.tile.room.round_start:
         #    if not self.tile.room.player_set.filter(
+        #        combat_action=None).count() or \
+        #        timezone.now - self.tile.room.round_start > time
         #            combat_action=None).count() or timezone.now -
-
+        message = ''
         if not self.tile.room.round_start:
             for tile in self.tile.room.tile_set.all():
                 if tile.enemy_set.count():
@@ -52,33 +54,42 @@ class Player(models.Model):
             return self.weapon.attack(self, user_input[1])
         if verb == 'equip':
             return self.equip(user_input[1])
-        return 'could not take action {}'.format(' '.join(user_input))
+        message = 'Could not take action {}'.format(' '.join(user_input))
+        return message
 
     def equip(self, item):
         """
         Equip inventory item.
         """
+        message = ''
         weapon = self.inventory.weapons.filter(name=item).first()
         # import pdb; pdb.set_trace()
+        if not weapon:
+            message = 'You can\'t equip that!'
+            return message
         self.weapon = weapon
         self.inventory.weapons.remove(weapon)
-        return 'Equipped {}'.format(self.weapon.name)
+        message = 'You equipped {}.'.format(weapon.name)
+        return message
 
     def move(self, direction):
         """
         Change player tile.
         """
+        message = ''
         move_direction = {
             'east': self.move_east,
             'north': self.move_north,
             'south': self.move_south,
             'west': self.move_west}.get(direction, None)
         if not move_direction:
-            return 'You can\'t move {}.'.format(direction)
+            message = 'You can\'t move {}.'.format(direction)
+            message
 
         move_direction()
         self.save()
-        return {'message': 'You moved {}'.format(direction)}
+        message = 'You moved {}.'.format(direction)
+        return message
 
     def move_north(self):
         """

@@ -24,6 +24,7 @@ class Room(models.Model):
         on_delete=models.SET_NULL,
         null=True)
     grid_size = models.IntegerField(default=5)
+    round_start = models.DateTimeField(auto_now=True, null=True)
 
     def go_north(self):
         """

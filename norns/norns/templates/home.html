@@ -18,16 +18,19 @@
     </div></li>
   </ul>
 
-  <div class="stats-container">
-    <p class="stats"></p>
+    <div class="stats-container">
+    <ul class="player-stats">
+    </ul>
   </div>
+
   <div class="tabs-container">
-    <ul>
+    <ul class="tabs">
       <li><a href={% url "store" %}>store</a></li>
       <li><a class="inventory"href="#">inventory</a></li>
       <li><a class="stats" href="#">stats</a></li>
     </ul>
 </div>
+
   <div class="actions">
     <ul class="action-ul">
     <li><form class=action-form action="{% url "room" %}" method="POST">
@@ -37,6 +40,7 @@
   </form></li>
   <li class="messages"></li>
   </div>
+
 </div>
 {% else %}
 <div class="game">

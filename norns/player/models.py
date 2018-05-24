@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.dispatch import receiver
@@ -34,12 +36,14 @@ class Player(models.Model):
         """
         #if self.tile.room.round_start:
         #    if not self.tile.room.player_set.filter(
-        #            combat_action=None).count() or timezone.now - 
+        #            combat_action=None).count() or timezone.now -
 
         if not self.tile.room.round_start:
             for tile in self.tile.room.tile_set.all():
                 if tile.enemy_set.count():
-                    self.tile.room.round_start.save()
+                    self.tile.room.round_start = datetime.now(timezone.utc)
+                    self.tile.room.save()
+                    break
 
         verb = user_input[0]
         if verb == 'go':

@@ -5,6 +5,8 @@ from django.dispatch import receiver
 
 from gear.models import Consumable, Weapon
 
+INSTANCE_SIZE_LIMIT = 100
+
 
 class Room(models.Model):
     """
@@ -24,7 +26,7 @@ class Room(models.Model):
         on_delete=models.SET_NULL,
         null=True)
     grid_size = models.IntegerField(default=5)
-    round_start = models.DateTimeField(auto_now=True, null=True)
+    round_start = models.DateTimeField(blank=True, null=True)
 
     def go_north(self):
         """
@@ -39,7 +41,7 @@ class Room(models.Model):
         Get or generate south room.
         """
         if not hasattr(self, 'room_south'):
-            Room(grid_size=self.grid_size, room_north=self).save()
+            Room.objects.create(grid_size=self.grid_size, room_north=self)
         return self.room_south
 
     def go_east(self):
@@ -55,7 +57,7 @@ class Room(models.Model):
         Get or generate west room.
         """
         if not hasattr(self, 'room_west'):
-            Room(grid_size=self.grid_size, room_east=self).save()
+            Room.objects.create(grid_size=self.grid_size, room_east=self)
         return self.room_west
 
 
@@ -86,11 +88,17 @@ class Tile(models.Model):
                 return {}
             if roll > 1:
                 weapon = Weapon.objects.order_by('?').first()
-                weapon.save()
-                self.weapons.add(weapon)
+                if weapon:
+                    self.weapons.add(weapon)
+                    self.save()
+                    message += ' '
+                    message += weapon.name
             consumable = Consumable.objects.order_by('?').first()
-            consumable.save()
-            self.consumables.add(consumable)
+            if consumable:
+                self.consumables.add(consumable)
+                self.save()
+                message += ' '
+                message += consumable.name
         return message
 
 
@@ -100,7 +108,22 @@ def create_start_room(sender, instance=None, **kwargs):
     Create initial room.
     """
     if not hasattr(instance, 'tile'):
-        room = Room.objects.create()
+        cls = type(instance)
+        room = None
+        for origin in cls.objects.order_by('?').values('origin_id').distinct():
+            origin_id = origin['origin_id']
+            if (
+                    cls.objects.filter(origin_id=origin_id).count()
+                    < INSTANCE_SIZE_LIMIT):
+                room = Room.objects.get(pk=origin_id)
+                break
+        if room is not None:
+            pass
+        elif Room.objects.filter(room_north=None, room_east=None).count():
+            room = Room.objects.filter(
+                room_north=None, room_east=None).order_by('?').first()
+        else:
+            room = Room.objects.create()
         instance.origin = room
         instance.tile = room.tile_set.order_by('?').first()
 

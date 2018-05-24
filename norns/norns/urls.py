@@ -17,7 +17,7 @@ urlpatterns = [
     path('accounts/', include('registration.backends.hmac.urls')),
     path('admin/', admin.site.urls),
     path('api/v1/gear/', include('gear.urls')),
-    path('api/v1/room/', include('room.urls')),
+    path('api/v1/', include('room.urls')),
     path('store/', StoreView.as_view(), name='store'),
     path('login', views.obtain_auth_token),
 ]

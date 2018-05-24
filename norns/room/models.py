@@ -38,7 +38,7 @@ class Room(models.Model):
         Get or generate south room.
         """
         if not hasattr(self, 'room_south'):
-            Room(grid_size=self.grid_size, room_north=self).save()
+            Room.objects.create(grid_size=self.grid_size, room_north=self)
         return self.room_south
 
     def go_east(self):
@@ -54,7 +54,7 @@ class Room(models.Model):
         Get or generate west room.
         """
         if not hasattr(self, 'room_west'):
-            Room(grid_size=self.grid_size, room_east=self).save()
+            Room.objects.create(grid_size=self.grid_size, room_east=self)
         return self.room_west
 
 
@@ -85,11 +85,17 @@ class Tile(models.Model):
                 return {}
             if roll > 1:
                 weapon = Weapon.objects.order_by('?').first()
-                weapon.save()
-                self.weapons.add(weapon)
+                if weapon:
+                    self.weapons.add(weapon)
+                    self.save()
+                    message += ' '
+                    message += weapon.name
             consumable = Consumable.objects.order_by('?').first()
-            consumable.save()
-            self.consumables.add(consumable)
+            if consumable:
+                self.consumables.add(consumable)
+                self.save()
+                message += ' '
+                message += consumable.name
         return message
 
 

@@ -49,7 +49,7 @@ class TestRoutes(TestCase):
                 Q(y_coord=0)).first()
         self.player.tile = tl_tile
         self.player.save()
-        data = {'user_input': 'go south'}
+        data = {'data': 'go south'}
         self.client.post(reverse_lazy('room'), data=data)
         self.player = Player.objects.filter(user=self.user).first()
         self.assertEqual(self.player.tile.y_coord, 1)
@@ -85,7 +85,7 @@ class TestRoutesWithData(TestCase):
         weapon = mommy.make(Weapon, name='sword')
         player.tile.desc = 'a tile.'
         player.tile.weapons.add(weapon)
-        data = {'user_input': 'look'}
+        data = {'data': 'look'}
         self.client.force_login(self.user)
         response = self.client.post(reverse_lazy('room'), data=data)
         self.client.logout()

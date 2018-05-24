@@ -1,10 +1,10 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
 from model_mommy import mommy
 
-from gear.models import Weapon
-from room.models import Tile
-
+from player.models import Player
 from ..models import Enemy
+from gear.models import Weapon
 
 
 class TestModels(TestCase):
@@ -12,39 +12,38 @@ class TestModels(TestCase):
     Test Enemy model.
     """
 
+    fixtures = [
+        'status/fixtures/fixture.json',
+        'fixture',
+    ]
+
     def setUp(self):
         """
         Create enemy models.
         """
-        self.tile1 = mommy.make(Tile)
-        self.tile2 = mommy.make(Tile)
-        self.loot = mommy.make(Weapon)
-        self.enemy1 = mommy.make(Enemy)
-        self.enemy2 = mommy.make(Enemy)
-        self.enemy1.tile = self.tile1
-        self.enemy2.tile = self.tile2
-        self.enemy1.loot = self.loot
+        self.user = mommy.make(User)
+        self.player = Player.objects.filter(user=self.user).first()
+        self.enemy = mommy.make(Enemy)
+        self.enemy.weapon = Weapon.objects.first()
 
     def tearDown(self):
         """
         Destroy enemy models.
         """
-        Tile.objects.all().delete()
+        User.objects.all().delete()
+        Player.objects.all().delete()
 
     def test_enemy_exists(self):
         """
         Validate enemy created.
         """
-        self.assertGreaterEqual(Enemy.objects.count(), 2)
+        self.assertGreaterEqual(Enemy.objects.count(), 1)
 
-    def test_enemy_has_tile(self):
+    def test_enemy_do_combat_attack(self):
         """
-        Validate enemy has a tile.
+        Validate enemy attacks when in range of player
         """
-        self.assertEqual(self.enemy1.tile, self.tile1)
-
-    def test_enemy_has_loot(self):
-        """
-        Validate enemy has loot.
-        """
-        self.assertEqual(self.enemy1.loot, self.loot)
+        self.enemy.tile = self.player.tile
+        message = ''
+        while message != 'died.':
+            message = self.enemy.do_combat().split()[-1]

@@ -21,7 +21,8 @@ class Weapon(models.Model):
         Attempt to damage target.
         """
         message = ''
-        if not target.name or target.tile.room is not source.tile.room:
+        if not hasattr(target, 'name') or \
+                target.tile.room is not source.tile.room:
             message = 'You can\'t attack that.'
             return message
 

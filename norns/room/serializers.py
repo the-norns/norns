@@ -36,4 +36,4 @@ class TileSerializer(serializers.ModelSerializer):
             'player_set',
             'enemy_set',
         )
-        depth = 1
+        depth = 3

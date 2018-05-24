@@ -72,13 +72,13 @@ class Player(models.Model):
         """
         Equip inventory item.
         """
-        message = ''
         weapon = self.inventory.weapons.filter(name=item).first()
         # import pdb; pdb.set_trace()
         if not weapon:
             return 'You can\'t equip that!'
         self.weapon = weapon
         self.inventory.weapons.remove(weapon)
+        self.save()
         return 'Equipped {}.'.format(weapon.name)
 
     def move(self, direction):
@@ -93,7 +93,7 @@ class Player(models.Model):
             'west': self.move_west}.get(direction, None)
         if not move_direction:
             message = 'You can\'t move {}.'.format(direction)
-            message
+            return message
 
         move_direction()
         self.save()

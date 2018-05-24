@@ -23,11 +23,6 @@ function Tile(x, y, consumables, enemies, players, weapons) {
 }
 
 function draw(tiles) {
-<<<<<<< HEAD
-  tiles.forEach(function(tile){tile.draw()})
-}
-
-=======
   console.log('draw function triggered')
   tiles.forEach(function(tile){tile.draw()})
 }
@@ -38,7 +33,6 @@ function getToken(event) {
 
 $(".login-form").on("submit", getToken);
 
->>>>>>> f9e3b1c2e9157a7d587a925e370288d29b3bcd86
 // function newGame(event) {
 //     event.preventDefault()
 //     $(".start-game").remove()
@@ -50,10 +44,7 @@ $(".login-form").on("submit", getToken);
 //     .then(console.log(roomTiles))
 //     .then(() => draw(roomTiles))
 // }
-<<<<<<< HEAD
-=======
 
->>>>>>> f9e3b1c2e9157a7d587a925e370288d29b3bcd86
 var getCookie = function(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -72,23 +63,12 @@ var getCookie = function(name) {
 function newGame(event) {
     event.preventDefault()
     token = getCookie('csrftoken');
-<<<<<<< HEAD
-    console.log(token)
-=======
->>>>>>> f9e3b1c2e9157a7d587a925e370288d29b3bcd86
     $.ajax({
         method: 'POST',
         xhrFields: {
             withCredentials: true
         },
         headers: {
-<<<<<<< HEAD
-            'Authorization': 'Token' + token
-        },
-        url: `${__API_URL__}room/new`,
-        success: function (data) {console.log(data)}
-    });
-=======
             'X-CSRFToken': `${token}`
         },
         url: `${__API_URL__}room/new`,
@@ -199,7 +179,6 @@ function action(event) {
 $(".start-game").on("click", newGame);
 $(".action-form").on("submit", action);
 
->>>>>>> f9e3b1c2e9157a7d587a925e370288d29b3bcd86
 }
 
 function clearCanvas() {

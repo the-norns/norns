@@ -86,11 +86,13 @@ class Inventory(models.Model):
 
 
 @receiver(models.signals.pre_save, sender='player.Player')
-def create_start_room(sender, instance=None, **kwargs):
+def create_player_inventory(sender, instance=None, **kwargs):
     """
     Create initial inventory.
     """
-    if not instance.inventory:
+    try:
+        instance.inventory
+    except Exception:
         instance.inventory = Inventory.objects.create()
 
 
@@ -99,5 +101,7 @@ def create_enemy_inventory(sender, instance=None, **kwargs):
     """
     Create enemy inventory.
     """
-    if not instance.inventory:
+    try:
+        instance.inventory
+    except Exception:
         instance.inventory = Inventory.objects.create()

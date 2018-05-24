@@ -10,6 +10,7 @@ class EnemyType(models.Model):
     """
 
     name = models.CharField(max_length=255, default='Unnamed')
+    health = models.IntegerField(default=10)
 
 
 class Enemy(models.Model):
@@ -31,8 +32,7 @@ class Enemy(models.Model):
         blank=True,
         on_delete=models.SET_NULL,
         null=True)
-    tile = models.ForeignKey(
-        'room.Tile', blank=True, on_delete=models.SET_NULL, null=True)
+    tile = models.ForeignKey('room.Tile', on_delete=models.CASCADE)
 
     def wander(self):
         """
@@ -64,5 +64,10 @@ def populate_enemy_type(sender, instance=None, **kwargs):
     """
     Generate tile mobs.
     """
-    if not instance.enemy_type:
-        instance.enemy_type = EnemyType.objects.order_by('?').first()
+    try:
+        instance.enemy_type
+    except Exception:
+        if EnemyType.objects.count():
+            instance.enemy_type = EnemyType.objects.order_by('?').first()
+        else:
+            instance.enemy_type = EnemyType.objects.create()

@@ -1,8 +1,10 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TestCase
 from model_mommy import mommy
 
 from gear.models import Weapon
+from room.models import Room
 
 from ..models import Player
 
@@ -300,3 +302,38 @@ class TestPlayerWithInventory(TestCase):
         player.handle_user_input(
             'equip {}'.format(
                 player.inventory.weapons.first().name).split())
+
+
+class TestInstanceCreation(TestCase):
+    """
+    Test Player model.
+    """
+
+    def setUp(self):
+        """
+        Create player models.
+        """
+        self.INSTANCE_SIZE_LIMIT, settings.INSTANCE_SIZE_LIMIT = (
+            settings.INSTANCE_SIZE_LIMIT, 6)
+        Player.objects.all().delete()
+        Room.objects.all().delete()
+        User.objects.all().delete()
+        self.user = mommy.make(User)
+        for _ in range(100):
+            mommy.make(Player, user=self.user)
+
+    def tearDown(self):
+        """
+        Destroy player models.
+        """
+        settings.INSTANCE_SIZE_LIMIT = self.INSTANCE_SIZE_LIMIT
+        Player.objects.all().delete()
+        Room.objects.all().delete()
+        User.objects.all().delete()
+
+    def test_common_instances(self):
+        """
+        Common instances.
+        """
+        self.assertEqual(Player.objects.count(), 101)
+        self.assertEqual(Room.objects.count(), 201)

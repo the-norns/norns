@@ -17,18 +17,15 @@ class Player(models.Model):
     abilities = models.ManyToManyField('status.Ability', blank=True)
     inventory = models.OneToOneField(
         'gear.Inventory',
-        blank=True,
-        on_delete=models.CASCADE,
-        null=True)
+        on_delete=models.CASCADE)
     origin = models.ForeignKey('room.Room', on_delete=models.CASCADE)
-    tile = models.ForeignKey(
-        'room.Tile', blank=True, on_delete=models.SET_NULL, null=True)
     weapon = models.ForeignKey(
         'gear.Weapon',
         blank=True,
         related_name='equiped_set',
         on_delete=models.SET_NULL,
         null=True)
+    tile = models.ForeignKey('room.Tile', on_delete=models.CASCADE)
 
     def handle_user_input(self, user_input):
         """
@@ -145,5 +142,5 @@ def create_new_player(sender, created=False, instance=None, **kwargs):
     Create disappointment.
     """
     if created:
-        Player(user=instance, active=True).save()
-        Token(user=instance).save()
+        Player.objects.create(user=instance, active=True)
+        Token.objects.create(user=instance)

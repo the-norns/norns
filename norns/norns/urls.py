@@ -4,6 +4,7 @@ Norns URL Configuration.
 
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework.authtoken import views
 
 from .views import HomeView, StoreView, about_view
 
@@ -18,4 +19,5 @@ urlpatterns = [
     path('api/v1/gear/', include('gear.urls')),
     path('api/v1/room/', include('room.urls')),
     path('store/', StoreView.as_view(), name='store'),
+    path('login', views.obtain_auth_token),
 ]

@@ -1,11 +1,11 @@
-from django.test import TestCase
 from django.db.models import Q
+from django.test import TestCase
 from model_mommy import mommy
 
-from player.models import Player
 from enemy.models import Enemy
+from player.models import Player
 
-from ..models import Weapon, Consumable
+from ..models import Consumable, Weapon
 
 
 class TestModels(TestCase):

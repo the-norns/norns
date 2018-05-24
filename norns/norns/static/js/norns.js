@@ -1,21 +1,21 @@
-let CANVAS_WIDTH = 600;
-let CANVAS_HEIGHT = 470;
+let canvasWidth = 600;
+let canvasHeight = 470;
 let roomTiles = [];
 const __API_URL__ = 'http://localhost:8000/api/v1/'
 
-let canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
-                      "' height='" + CANVAS_HEIGHT + "'></canvas>");
+let canvasElement = $("<canvas width='" + canvasWidth + 
+                      "' height='" + canvasHeight + "'></canvas>");
 let canvas = canvasElement.get(0).getContext("2d");
 
 canvasElement.appendTo($(".game"));
 
-function destroyCanvas () { 
-  let canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
-                      "' height='" + CANVAS_HEIGHT + "'></canvas>");
-  let canvas = canvasElement.get(0).getContext("2d");
+// function destroyCanvas () { 
+//   let canvasElement = $("<canvas width='" + canvasWidth + 
+//                       "' height='" + canvasHeight + "'></canvas>");
+//   let canvas = canvasElement.get(0).getContext("2d");
 
-canvasElement.appendTo($(".game"));
-}
+// canvasElement.appendTo($(".game"));
+// }
 
 function Tile(x, y, consumables, enemies, players, weapons) {
     this.x = x;
@@ -26,16 +26,14 @@ function Tile(x, y, consumables, enemies, players, weapons) {
     this.weapons = weapons;
     this.color = "#7c5b51";
     this.draw = function() {
-    if (this.players.length > 0) {
+    if (this.enemies.length > 0) {
+        canvas.fillStyle = "#cc0606"
+    } else if (this.weapons.length || this.consumables.length > 0) {
+        canvas.fillStyle = "#0061ff"
+    } else if (this.players.length > 0) {
         canvas.fillStyle = "#0c9e20"
     } else { 
         canvas.fillStyle = this.color; 
-    }
-    if (this.enemies.length > 0) {
-        canvas.fillStyle = "#cc0606"
-    }
-    if (this.weapons.length || this.consumables.length > 0) {
-        canvas.fillStyle = "#0061ff"
     }
     canvas.fillRect(this.x * 100, this.y * 100, 99, 99);
     }
@@ -43,6 +41,7 @@ function Tile(x, y, consumables, enemies, players, weapons) {
 
 function draw(tiles) {
   console.log(roomTiles)
+  clearCanvas()
   tiles.forEach(function(tile){tile.draw()})
 }
 
@@ -85,12 +84,13 @@ function newGame(event) {
 }
 
 function clearCanvas() {
-    canvas.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    canvas.clearRect(0, 0, canvasWidth, canvasHeight);
 }
 
 function action(event) {
     event.preventDefault()
     data = {'data': event.target.actionInput.value}
+    $(".action-form")[0].reset();
     roomTiles = []
     console.log(roomTiles)
     $.ajax({

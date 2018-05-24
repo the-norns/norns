@@ -13,7 +13,7 @@
       <ul class="items">
         <li><div><p>Thor</p><form action="{% url "store" %}" method="POST">
           {% if user.is_authenticated %}
-          <form action="{% url "store" %}" method="POST">
+          <form action="{% url "store_purchase" "thor" %}" method="POST">
             {% csrf_token %}
             <script
               src="https://checkout.stripe.com/checkout.js" class="stripe-button"
@@ -31,7 +31,7 @@
         </div></li>
         <li><div><p>Orichalcum Walker of Speed</p><form action="{% url "store" %}" method="POST">
           {% if user.is_authenticated %}
-          <form action="{% url "store" %}" method="POST">
+          <form action="{% url "store_purchase" "walker" %}" method="POST">
             {% csrf_token %}
             <script
               src="https://checkout.stripe.com/checkout.js" class="stripe-button"
@@ -49,7 +49,7 @@
         </div></li>
         <li><div><p>Safe Room</p>
           {% if user.is_authenticated %}
-          <form action="{% url "store" %}" method="POST">
+          <form action="{% url "store_purchase" "safe" %}" method="POST">
             {% csrf_token %}
             <script
               src="https://checkout.stripe.com/checkout.js" class="stripe-button"

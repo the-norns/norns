@@ -23,8 +23,7 @@ class TestModels(TestCase):
         Create items.
         """
         self.player = mommy.make(Player)
-        self.enemy = Enemy.objects.first()
-        self.enemy.tile = self.player.tile
+        self.enemy = mommy.make(Enemy, tile=self.player.tile)
         self.consumable = Consumable.objects.first()
         self.consumable.tile_set.add(self.player.tile)
         self.weapon = Weapon.objects.first()

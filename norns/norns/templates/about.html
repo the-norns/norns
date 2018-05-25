@@ -2,24 +2,78 @@
 {% load static %}
 
 {% block content %}
+
 <div class="banner">
+  <img src="{% static "assets/statuesbanner1.png" %}" />
+  <h1>The Team</h1>
+</div>
+
+<div class="about">
+  <ul class="team">
+    <li><ul class="team-member">
+      <li>
+        <h2>David Snowberger</h2>
+        <img src="{% static "assets/dave.jpg" %}">
+      </li>
+      <li>
+        <p>Dave is a software developer with an interest in machine learning and data science. For fun, he likes to read, sail, and rollerblade.</p>
+        <p><a href="https://github.com/dsnowb">GitHub</a> | <a href="https://www.linkedin.com/in/dsnowberger">LinkedIn</a></p>
+      </li>
+    </ul></li>
+    <li><ul class="team-member">
+      <li>
+        <h2>Asa Katida</h2>
+        <img src="{% static "assets/adam.jpg" %}">
+      </li>
+      <li>
+        <p>Python developer with a background in distributed system configuration. Proficient in adapting to new environments and changing specifications.</p>
+        <p><a href="https://github.com/asakatida">GitHub</a> | <a href="https://www.linkedin.com/in/asakatida">LinkedIn</a></p>
+      </li>
+    </ul></li>
+    <li><ul class="team-member">
+      <li>
+        <h2>Kat Cosgrove</h2>
+        <img src="{% static "assets/kat.jpg" %}">
+      </li>
+      <li>
+        <p>Kat is a software developer in Python and JavaScript. She actively enjoys SQL. Her favorite things are rock climbing, barbequeing, and film collecting.</p>
+        <p><a href="https://github.com/katcosgrove">GitHub</a> | <a href="https://www.linkedin.com/in/katcosgrove">LinkedIn</a></p>
+      </li>
+      </ul></li>
+  </ul>
+</div>
+<!-- <div class="banner">
       <img src="{% static "assets/statuesbanner1.png" %}" />
       <h1>About</h1>
     </div>
     <div class="about">
-      <ul class="items">
+      <ul class="team-member">
+          <li>
+            <div><h2>David Snowberger</h2>
+            <img src="{% static "assets/dave.jpg" %}"></li>
+            <li><p>Dave is a software developer with an interest in machine learning and data science. For fun, he likes to read, sail, and rollerblade.</p>
+            <p><a href="https://github.com/dsnowb">GitHub</a> | <a href="https://www.linkedin.com/in/dsnowberger">LinkedIn</a></p>
+            </div>
+          </li>
+          </ul>
+        <ul class="team-member">
         <li>
-          <div><h2>David Snowberger</h2>
-          <p>Lorem ipsum dolor sit amet, nec sale nusquam conclusionemque id, luptatum sapientem mea ad, platonem persequeris ad pri. An tibique expetenda cum, constituam scribentur no mei, mel id ponderum mandamus theophrastus.</p></div>
-        </li>
-        <li>
-          <div><h2>Asa Katida</h2>
-          <p>Lorem ipsum dolor sit amet, nec sale nusquam conclusionemque id, luptatum sapientem mea ad, platonem persequeris ad pri. An tibique expetenda cum, constituam scribentur no mei, mel id ponderum mandamus theophrastus.</p></div>
-        </li>
-        <li>
-          <div><h2>Kat Cosgrove</h2>
-          <p>Lorem ipsum dolor sit amet, nec sale nusquam conclusionemque id, luptatum sapientem mea ad, platonem persequeris ad pri. An tibique expetenda cum, constituam scribentur no mei, mel id ponderum mandamus theophrastus.</p></div>
-        </li>
-      </ul>
+            <div><h2>Asa Katida</h2>
+            <img src="{% static "assets/adam.jpg" %}"></li>
+            <li><p>Python developer with a background in distributed system configuration. Proficient in adapting to new environments and changing specifications.</p>
+            <p><a href="https://github.com/asakatida">GitHub</a> | <a href="https://www.linkedin.com/in/asakatida">LinkedIn</a></p>
+          </div></li>
+          </ul>
+        <ul class="team-member">
+            <li>
+            <div>
+              <h2>Kat Cosgrove</h2>
+            <img src="{% static "assets/kat.jpg" %}"></li>
+            <li><p>Kat is a software developer in Python and JavaScript. She actively enjoys SQL. Her favorite things are rock climbing, barbequeing, and film collecting.</p>
+            <p><a href="https://github.com/katcosgrove">GitHub</a> | <a href="https://www.linkedin.com/in/katcosgrove">LinkedIn</a></p>
+            </div>
+          </li>
+          </ul>
     </div>
+</div> -->
 {% endblock %}

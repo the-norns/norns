@@ -3,7 +3,9 @@ from django.db.models import Q
 from django.test import TestCase
 from model_mommy import mommy
 
+from gear.models import Weapon
 from player.models import Player
+
 from ..models import Enemy
 
 

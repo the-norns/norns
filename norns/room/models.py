@@ -82,11 +82,11 @@ class Tile(models.Model):
         message = ''
         if not self.looked:
             self.looked = True
-            roll = randint(0, 10)
-            if roll > 3:
+            roll = randint(0, 100)
+            if roll > 30:
                 message += 'You found nothing of interest.'
                 return message
-            if roll > 1:
+            if roll > 10:
                 weapon = Weapon.objects.order_by('?').first()
                 if weapon:
                     self.weapons.add(weapon)
@@ -137,5 +137,5 @@ def populate_tiles(sender, created=False, instance=None, **kwargs):
             for y in range(instance.grid_size):
                 if Tile.objects.filter(
                         x_coord=x, y_coord=y, room=instance).first():
-                    continue
+                    continue  # pragma: no cover
                 Tile.objects.create(x_coord=x, y_coord=y, room=instance)

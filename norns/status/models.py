@@ -55,8 +55,7 @@ class SafeRoom(Action):
         """
         def _clear_room(room):
             for tile in room.tile_set.all():
-                tile.enemy_set.set([])
-                tile.save()
+                tile.enemy_set.all().delete()
         room = target.tile.room
         _clear_room(room)
         if room.room_north:
@@ -96,7 +95,7 @@ class Ability(models.Model):
             abs(player_tile.x_coord - target_tile.x_coord) +
             abs(player_tile.y_coord - target_tile.y_coord))
         if not 0 <= distance <= self.range:
-            return 'Out of range.'
+            return 'Out of range.'  # pragma: no cover
 
         Action.actions[self.action].run(self, player, target, distance)
         return 'You used {}'.format(self.name)
@@ -107,7 +106,7 @@ def create_consumable_ability(sender, instance=None, **kwargs):
     """
     Create an ability for a consumable.
     """
-    if not instance.ability:
+    if not instance.ability:  # pragma: no cover
         if Ability.objects.count():
             instance.ability = Ability.objects.order_by('?').first()
         else:

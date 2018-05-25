@@ -105,26 +105,42 @@
   color: white;
   position: absolute;
   top: 3vw;
-  left: 40vw;
+  left: 36vw;
 }
 
-.storeItems, .about {
-  margin-left: 11vw;
+.about {
+  width: 900px;
+  margin-left: 17vw;
+  text-align: center;
 }
 
-.items li {
-  display: inline-block;
+.team-member {
   list-style-type: none;
   background-color: grey;
-  margin-left: 3vw;
-  width: 300px;
-  height: 400px;
+  padding-bottom: 20px;
 }
 
 .player-stats {
   list-style-type: none;
 }
 
+.messages {
+  font-size: 11px;
+}
+
 canvas {
   background-color: black;
+}
+
+.items {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.items li {
+  margin: 5px;
+  display: inline-block;
+  width: 200px;
+  height: 300px;
+  background-color: grey;
 }

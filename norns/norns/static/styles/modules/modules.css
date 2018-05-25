@@ -12,6 +12,10 @@
   border: 1px solid red;
 }
 
+.instructions ul {
+  list-style-type: none;
+}
+
 .intro {
   margin: 150px;
   width: 1000px;
@@ -64,22 +68,18 @@
   right: 0;
 }
 
-.minimap {
-  height: 100px;
-  width: 100px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: white;
-}
-
 .stats-container {
+  color: black;
   width: 200px;
   height: 100%;
   background-color: white;
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.stats-container h2 {
+  color: black;
 }
 
 .actions {

@@ -11,7 +11,7 @@
       <h2>{{ message }}</h2>
       {% endif %}
       <ul class="items">
-        <li><div><p>Thor</p><form action="{% url "store" %}" method="POST">
+        <li><div><p>Mjolnir</p><form action="{% url "store" %}" method="POST">
           {% if user.is_authenticated %}
           <form action="{% url "store_purchase" "thor" %}" method="POST">
             {% csrf_token %}
@@ -25,11 +25,12 @@
               data-locale="auto">
             </script>
           </form>
+          <p>Become the legend. Max weapon stats.</p>
           {% else %}
           <button class="stripe-button"><a href="{% url "auth_login" %}">Login to buy</a></button>
           {% endif %}
         </div></li>
-        <li><div><p>Orichalcum Walker of Speed</p><form action="{% url "store" %}" method="POST">
+        <li><div><p>Gungnir</p><form action="{% url "store" %}" method="POST">
           {% if user.is_authenticated %}
           <form action="{% url "store_purchase" "walker" %}" method="POST">
             {% csrf_token %}
@@ -38,11 +39,12 @@
               data-key="pk_test_OO9CRAads4tmdugzqQIrga8M"
               data-amount="200"
               data-name="Norns"
-              data-description="Orichalcum Walker of Speed ($2.00)"
+              data-description="Gungnir ($2.00)"
               data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
               data-locale="auto">
             </script>
           </form>
+          <p>The legendary spear Gungnir.</p>
           {% else %}
           <button class="stripe-button"><a href="{% url "auth_login" %}">Login to buy</a></button>
           {% endif %}
@@ -61,6 +63,7 @@
               data-locale="auto">
             </script>
           </form>
+          <p>Guarantees the next room is free of enemies.</p>
           {% else %}
           <button class="stripe-button"><a href="{% url "auth_login" %}">Login to buy</a></button>
           {% endif %}

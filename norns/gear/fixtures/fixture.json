@@ -6,7 +6,7 @@
       "name": "Broadsword",
       "strength": 15,
       "agility": 3,
-      "reach": 0
+      "reach": 1
     }
   },
   {
@@ -16,7 +16,7 @@
       "name": "Knives",
       "strength": 5,
       "agility": 9,
-      "reach": 0
+      "reach": 1
     }
   },
   {
@@ -26,7 +26,7 @@
       "name": "Shortsword",
       "strength": 8,
       "agility": 5,
-      "reach": 0
+      "reach": 1
     }
   },
   {
@@ -36,7 +36,7 @@
       "name": "Bow",
       "strength": 6,
       "agility": 6,
-      "reach": 2
+      "reach": 3
     }
   },
   {
@@ -46,7 +46,7 @@
       "name": "Crossbow",
       "strength": 7,
       "agility": 5,
-      "reach": 2
+      "reach": 3
     }
   },
   {
@@ -56,7 +56,7 @@
       "name": "Quarterstaff",
       "strength": 9,
       "agility": 5,
-      "reach": 1
+      "reach": 2
     }
   },
   {
@@ -66,7 +66,7 @@
       "name": "Mace",
       "strength": 13,
       "agility": 4,
-      "reach": 0
+      "reach": 1
     }
   },
   {
@@ -76,7 +76,7 @@
       "name": "Polearm",
       "strength": 12,
       "agility": 5,
-      "reach": 1
+      "reach": 2
     }
   },
   {
@@ -86,7 +86,7 @@
       "name": "Lance",
       "strength": 12,
       "agility": 5,
-      "reach": 1
+      "reach": 2
     }
   },
   {
@@ -96,7 +96,7 @@
       "name": "Orichalcum Walker of Speed",
       "strength": 15,
       "agility": 20,
-      "reach": 1
+      "reach": 2
     }
   },
   {

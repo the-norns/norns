@@ -137,5 +137,5 @@ def populate_tiles(sender, created=False, instance=None, **kwargs):
             for y in range(instance.grid_size):
                 if Tile.objects.filter(
                         x_coord=x, y_coord=y, room=instance).first():
-                    continue
+                    continue  # pragma: no cover
                 Tile.objects.create(x_coord=x, y_coord=y, room=instance)

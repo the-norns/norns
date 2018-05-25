@@ -9,7 +9,4 @@ class WeaponView(generics.CreateAPIView, generics.RetrieveAPIView,
     """Return JSON of enemy."""
 
     serializer_class = EnemySerializer
-
-    def get_object(self):
-        """Get an enemy object."""
-        return Enemy.objects.get(id=self.kwargs['pk'])
+    model = Enemy

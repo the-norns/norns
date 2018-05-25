@@ -73,7 +73,9 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = environ.get(
-    'CORS_ORIGIN_WHITELIST', 'localhost:8000').split()
+    'CORS_ORIGIN_WHITELIST', 'norns.live').split()
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'norns.urls'
 

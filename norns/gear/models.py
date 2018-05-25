@@ -46,7 +46,7 @@ class Weapon(models.Model):
                 weapon.tile_set.add(target.tile)
                 target.inventory.weapons.remove(weapon)
             for consumable in target.inventory.consumables.all():
-                consumable.tiles.add(target.tile)  # pragma: no cover
+                consumable.tile_set.add(target.tile)  # pragma: no cover
                 target.inventory.consumables.remove(consumable)  # pragma: no cover
             target.save()
             if hasattr(target, 'user'):

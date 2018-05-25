@@ -179,5 +179,6 @@ def create_new_player(sender, created=False, instance=None, **kwargs):
     Create disappointment.
     """
     if created:
-        Player.objects.create(user=instance, active=True)
+        Player.objects.create(user=instance, active=True,
+                              name=instance.username)
         Token.objects.create(user=instance)

@@ -36,9 +36,9 @@ class Player(models.Model):
         Handle input.
         """
 
-        if not self.tile.room.round_start:
+        if not self.tile.room.round_start:  # pragma: no cover
             for tile in self.tile.room.tile_set.all():
-                if tile.enemy_set.count():  # pragma: no cover
+                if tile.enemy_set.count():
                     self.tile.room.round_start = datetime.now(timezone.utc)
                     self.tile.room.save()
                     break

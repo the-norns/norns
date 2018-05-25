@@ -116,3 +116,12 @@ def create_enemy_inventory(sender, instance=None, **kwargs):
     """
     if not hasattr(instance, 'inventory'):
         instance.inventory = Inventory.objects.create()
+
+
+@receiver(models.signals.pre_save, sender='enemy.Enemy')
+def populate_enemy_weapon(sender, instance=None, **kwargs):
+    """
+    Generate tile mobs.
+    """
+    if Weapon.objects.count():
+        instance.weapon = Weapon.objects.order_by('?').first()

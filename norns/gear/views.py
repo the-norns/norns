@@ -9,9 +9,4 @@ class WeaponView(generics.CreateAPIView, generics.RetrieveAPIView,
     """Return JSON of weapon."""
 
     serializer_class = WeaponSerializer
-
-    def get_object(self):
-        """
-        Get object.
-        """
-        return Weapon.objects.get(id=self.kwargs['pk'])
+    model = Weapon

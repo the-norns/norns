@@ -1,10 +1,41 @@
 .game, .container {
   position: relative;
-  width: 800px;
-  height: 500px;
-  margin-left: 24vw;
+  width: 700px;
+  height: 530px;
+  margin-left: 26.5vw;
   margin-top: 5vw;
   margin-bottom: 7vw;
+}
+
+.start-buttons {
+  position: absolute;
+  top: 45%;
+  left: 18%;
+}
+
+.start-buttons li {
+  display: inline-block;
+}
+
+.tabs-container {
+  position: absolute;
+  bottom: 0;
+  right: .7%;
+}
+
+.tabs-container ul li {
+  display: inline-block;
+}
+
+.tabs-container li {
+  font-size: 14px;
+  background-color: rgb(30, 30, 30);
+  padding: 0px 6px;
+  margin: -4.2px;
+  height: 40px;
+  text-align: center;
+  border-radius: 2px;
+  box-shadow: 3px 4px 8px 0 rgba(0, 0, 0, 0.5), 3px 0px 20px 3px rgba(0, 0, 0, 0.5);
 }
 
 .auth-list li label {
@@ -13,10 +44,6 @@
 
 .auth-list li input {
   right: 0;
-}
-
-.game div {
-  border: 1px solid red;
 }
 
 .minimap {
@@ -28,10 +55,9 @@
   background-color: white;
 }
 
-.messages-container {
+.stats-container {
   width: 200px;
   height: 100%;
-  float: right;
   background-color: white;
   position: absolute;
   top: 0;
@@ -44,13 +70,26 @@
   position: absolute;
   bottom: 0;
   background-color: white;
+  color: green;
 }
 
-.store {
+.action-ul {
+  display: none;
+}
+
+.actions ul {
   position: absolute;
-  bottom: 30px;
-  right: 0;
-  background-color: white;
+  left: -30px;
+  bottom: -12px;
+}
+
+.actions li {
+  display: inline-block;
+}
+
+.actions button {
+  background-color: rgb(30, 30, 30);
+  color: rgb(100, 168, 103);
 }
 
 .hitCounter {
@@ -82,13 +121,10 @@
   height: 400px;
 }
 
-canvas {
-  border: 1px solid red;
-  background-color: black;
+.player-stats {
+  list-style-type: none;
 }
 
-.start-game {
-  position: absolute;
-  top: 50%;
-  left: 32%;
+canvas {
+  background-color: black;
 }

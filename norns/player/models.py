@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -193,5 +193,6 @@ def create_new_player(sender, created=False, instance=None, **kwargs):
     Create disappointment.
     """
     if created:
-        Player.objects.create(user=instance, active=True)
+        Player.objects.create(user=instance, active=True,
+                              name=instance.username)
         Token.objects.create(user=instance)

@@ -1,10 +1,21 @@
 .game, .container {
+  color: white;
   position: relative;
   width: 700px;
   height: 530px;
   margin-left: 26.5vw;
   margin-top: 5vw;
   margin-bottom: 7vw;
+}
+
+.game {
+  border: 1px solid red;
+}
+
+.intro {
+  margin: 150px;
+  width: 1000px;
+  color: white;
 }
 
 .start-buttons {
@@ -15,6 +26,13 @@
 
 .start-buttons li {
   display: inline-block;
+}
+
+.registration-button {
+  font-size: 16px;
+  background-color: rgb(30, 30, 30);
+  padding: 10px;
+  border-radius: 2px;
 }
 
 .tabs-container {

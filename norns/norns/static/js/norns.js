@@ -142,7 +142,11 @@ function stats(players){
     players.forEach(function(player) {
         $( ".player-stats" ).append(`<li><h2>Player</h2></li>`)
         $( ".player-stats" ).append(`<li>Name: ${player['name']}</li>`)
-        $( ".player-stats" ).append(`<li>Health: ${player['health']}</li>`)
+        if (player['health'] < 1) {
+            $( ".player-stats" ).append(`<li>Health:<b style="color: red;">Dead!</b></li>`)
+        } else {
+            $( ".player-stats" ).append(`<li>Health: ${player['health']}</li>`)
+        }
         if (player['weapon'] != null){
             $( ".player-stats" ).append(`<li>Weapon: ${player['weapon']['name']}</li>`)
         }

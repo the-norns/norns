@@ -37,7 +37,7 @@ function Tile(x, y, consumables, enemies, players, weapons) {
             })
             tile = 'static/assets/playerfloortile.jpg'
             loadImages(tile, this.x * 100, this.y * 100)
-        } else { 
+        } else {
             tile = 'static/assets/floortile.jpg'
             loadImages(tile, this.x * 100, this.y * 100)
         }

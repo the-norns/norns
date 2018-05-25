@@ -27,6 +27,11 @@ DEBUG = environ.get('DEBUG', 'false').strip().lower() not in ('', 'false')
 
 ALLOWED_HOSTS = environ.get('ALLOWED_HOSTS', '').split()
 
+USE_X_FORWARDED_HOST = environ.get(
+    'USE_X_FORWARDED_HOST', 'false').strip().lower() not in ('', 'false')
+USE_X_FORWARDED_PORT = environ.get(
+    'USE_X_FORWARDED_PORT', 'false').strip().lower() not in ('', 'false')
+
 # Stripe keys
 STRIPE_PUBLIC_KEY = environ.get("STRIPE_PUBLIC_KEY", "")
 STRIPE_SECRET_KEY = environ.get("STRIPE_SECRET_KEY", "")

@@ -2,6 +2,17 @@
 {% load static %}
 {% block content %}
 {% if user.is_authenticated %}
+<div class="instructions">
+    <ul>
+      <li><h2>Instructions</h2></li>
+      <li><p>"go" and a cardinal direction to move.</p></li>
+      <li><p>"look" to check for gear on your tile.</p></li>
+      <li><p>"take" and the item name to pick up items.</p></li>
+      <li><p>"equip" and the weapon name to equip a weapon.</p></li>
+      <li><p>"attack" and the enemy's name to attack.</p></li>
+      <li><p>You cannot leave the room during combat.</p></li>
+    </ul>
+  </div>
 <div class="game">
   <ul class="start-buttons">
   <li><div class="join-game">
@@ -11,17 +22,6 @@
     </form>
     </div></li>
   </ul>
-
-  <div class="instructions">
-    <ul>
-      <li><p>"go" and a cardinal direction to move.</p></li>
-      <li><p>"look" to check for gear on your tile.</p></li>
-      <li><p>"take" and the item name to pick up items.</p></li>
-      <li><p>"equip" and the weapon name to equip a weapon.</p></li>
-      <li><p>"attack" and the enemy's name to attack.</p></li>
-      <li><p>You cannot leave the room during combat.</p></li>
-    </ul>
-  </div>
 
   <div class="stats-container">
     <ul class="player-stats">

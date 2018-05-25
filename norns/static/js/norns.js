@@ -88,7 +88,6 @@ function joinGame(event) {
     event.preventDefault()
     token = getCookie('csrftoken');
     $(".start-buttons").remove()
-    $(".instructions").remove()
     $(".action-ul").show()
     $.ajax({
         method: 'GET',

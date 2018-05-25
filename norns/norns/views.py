@@ -16,17 +16,17 @@ PURCHASES = {
     'thor': {
         'amount': 2000,
         'description': 'Norns player Thor',
-        'query': Weapon.objects.filter(name='Mjolnir hammer of Thor'),
+        'query': Weapon.objects.filter(name='Mjolnir'),
     },
-    'walker': {
+    'gungnir': {
         'amount': 200,
-        'description': 'Norns weapon Walker',
-        'query': Weapon.objects.filter(name='Orichalcum Walker of Speed'),
+        'description': 'Norns weapon Gungnir',
+        'query': Weapon.objects.filter(name='Gungnir'),
     },
     'safe': {
         'amount': 99,
         'description': 'Norns room safe',
-        'query': Consumable.objects.filter(name='Safe Room'),
+        'query': Consumable.objects.filter(name='Safety'),
     }
 }
 

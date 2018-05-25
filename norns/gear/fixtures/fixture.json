@@ -93,7 +93,7 @@
     "model": "gear.weapon",
     "pk": 10,
     "fields": {
-      "name": "Orichalcum Walker of Speed",
+      "name": "Gungnir",
       "strength": 15,
       "agility": 20,
       "reach": 2
@@ -103,7 +103,7 @@
     "model": "gear.weapon",
     "pk": 11,
     "fields": {
-      "name": "Mjolnir hammer of Thor",
+      "name": "Mjolnir",
       "strength": 99,
       "agility": 99,
       "reach": 99
@@ -129,7 +129,7 @@
     "model": "gear.consumable",
     "pk": 3,
     "fields": {
-      "name": "Safe Room",
+      "name": "Safety",
       "ability": 11
     }
   }

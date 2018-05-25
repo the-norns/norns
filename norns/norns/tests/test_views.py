@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from ..views import HomeView, StoreView, about_view
+from ..views import AboutView, HomeView, StoreView
 
 
 class TestViews(TestCase):
@@ -12,6 +12,6 @@ class TestViews(TestCase):
         """
         Use import.
         """
-        self.assertIsNotNone(about_view)
+        self.assertIsNotNone(AboutView.as_view())
         self.assertIsNotNone(HomeView.as_view())
         self.assertIsNotNone(StoreView.as_view())

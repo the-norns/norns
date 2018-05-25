@@ -40,7 +40,6 @@ function Tile(x, y, consumables, enemies, players, weapons) {
         }
 
         if (this.players.length && this.enemies.length > 0) {
-            stats(this.players)
             $(".player-stats").append(`<li><b><i>Alert!</i><b></li>`)
             $(".player-stats").append(`<li><b><i>There are enemies on this tile!</i><b></li>`)
 

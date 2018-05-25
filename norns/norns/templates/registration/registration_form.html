@@ -5,7 +5,7 @@
   <h2>Register for a Norns account</h2>
   <form method="post">
     <ul class="auth-list">
-    {{ form.as_ul }}
+    {{ form.as_p }}
     </ul>
     {% csrf_token %}
     <input type="submit" value="Register"/>

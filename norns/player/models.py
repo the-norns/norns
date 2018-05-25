@@ -14,7 +14,8 @@ class Player(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     active = models.BooleanField(default=False)
     name = models.CharField(max_length=255, default='Unnamed')
-    health = models.IntegerField(default=10)
+    max_health = models.IntegerField(default=200)
+    health = models.IntegerField(default=200)
 
     abilities = models.ManyToManyField('status.Ability', blank=True)
     inventory = models.OneToOneField(
@@ -95,11 +96,17 @@ class Player(models.Model):
             message = 'You can\'t move {}.'.format(direction)
             return message
 
-        move_direction()
+        room = self.tile.room
+
+        move_direction(bool(room.round_start))
+
+        if room != self.tile.room:
+            self.health = self.max_health
+
         self.save()
         return 'You moved {}'.format(direction)
 
-    def move_north(self):
+    def move_north(self, combat):
         """
         Change player tile north.
         """
@@ -108,13 +115,15 @@ class Player(models.Model):
             models.Q(x_coord=self.tile.x_coord))
         if queryset.count():
             self.tile = queryset.first()
+        elif combat:
+            pass  # pragma: no cover
         else:
             room = self.tile.room.go_north()
             self.tile = room.tile_set.filter(
                 models.Q(y_coord=self.tile.room.grid_size - 1) &
                 models.Q(x_coord=self.tile.x_coord)).first()
 
-    def move_east(self):
+    def move_east(self, combat):
         """
         Change player tile east.
         """
@@ -123,13 +132,15 @@ class Player(models.Model):
             models.Q(x_coord=self.tile.x_coord + 1))
         if queryset.count():
             self.tile = queryset.first()
+        elif combat:
+            pass  # pragma: no cover
         else:
             room = self.tile.room.go_east()
             self.tile = room.tile_set.filter(
                 models.Q(y_coord=self.tile.y_coord) &
                 models.Q(x_coord=0)).first()
 
-    def move_south(self):
+    def move_south(self, combat):
         """
         Change player tile south.
         """
@@ -138,13 +149,15 @@ class Player(models.Model):
             models.Q(x_coord=self.tile.x_coord))
         if queryset.count():
             self.tile = queryset.first()
+        elif combat:
+            pass  # pragma: no cover
         else:
             room = self.tile.room.go_south()
             self.tile = room.tile_set.filter(
                 models.Q(y_coord=0) &
                 models.Q(x_coord=self.tile.x_coord)).first()
 
-    def move_west(self):
+    def move_west(self, combat):
         """
         Change player tile west.
         """
@@ -153,6 +166,8 @@ class Player(models.Model):
             models.Q(x_coord=self.tile.x_coord - 1))
         if queryset.count():
             self.tile = queryset.first()
+        elif combat:
+            pass  # pragma: no cover
         else:
             room = self.tile.room.go_west()
             self.tile = room.tile_set.filter(

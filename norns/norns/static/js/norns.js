@@ -1,7 +1,6 @@
 let canvasWidth = 600;
 let canvasHeight = 500;
 let roomTiles = [];
-let inventory
 let message
 const __API_URL__ = 'http://localhost:8000/api/v1/'
 

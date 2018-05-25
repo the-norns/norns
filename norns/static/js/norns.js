@@ -19,24 +19,51 @@ function Tile(x, y, consumables, enemies, players, weapons) {
     this.weapons = weapons;
     this.color = "#7c5b51";
     this.draw = function() {
-    if (this.enemies.length > 0) {
-        canvas.fillStyle = "#cc0606"
-    } else if (this.weapons.length || this.consumables.length > 0) {
-        canvas.fillStyle = "#0061ff"
-    } else if (this.players.length != 0) {
-        // for (key in this.players[0]) {
-        //     $( ".stats" ).append(`<li>${key}: ${this.players[0][key]}</li>`);
-        //     console.log(key, this.players[0][key])
-        // }
-        $( ".player-stats" ).append(`<li>Name: ${this.players[0]['name']}</li>`)
-        $( ".player-stats" ).append(`<li>Health: ${this.players[0]['health']}</li>`)
-        $( ".player-stats" ).append(`<li>Weapon: ${this.players[0]['weapon']['name']}</li>`)
-        canvas.fillStyle = "#0c9e20"
-    } else { 
-        canvas.fillStyle = this.color; 
+        let image = new Image()
+        if (this.enemies.length > 0) {
+            tile = 'static/assets/enemyfloortile.jpg'
+            loadImages(tile, this.x * 100, this.y * 100)
+        } else if (this.weapons.length || this.consumables.length > 0) {
+            tile = 'static/assets/lootfloortile.jpg'
+            loadImages(tile, this.x * 100, this.y * 100)
+        } else if (this.players.length != 0) {
+            this.players.forEach(function(player) {
+                $( ".player-stats" ).append(`<li>Name: ${player['name']}</li>`)
+                $( ".player-stats" ).append(`<li>Health: ${player['health']}</li>`)
+                $( ".player-stats" ).append(`<li>Weapon: ${player['weapon']['name']}</li>`)
+            })
+            tile = 'static/assets/playerfloortile.jpg'
+            loadImages(tile, this.x * 100, this.y * 100)
+        } else { 
+            tile = 'static/assets/floortile.jpg'
+            loadImages(tile, this.x * 100, this.y * 100)
+        }
+
+        if (this.players.length && this.enemies.length > 0) {
+            this.players.forEach(function(player) {
+                $( ".player-stats" ).append(`<li>Name: ${player['name']}</li>`)
+                $( ".player-stats" ).append(`<li>Health: ${player['health']}</li>`)
+                $( ".player-stats" ).append(`<li>Weapon: ${player['weapon']['name']}</li>`)
+            })
+
+            $(".player-stats").append(`<li><b><i>Alert!</i><b></li>`)
+            $(".player-stats").append(`<li><b><i>There are enemies on this tile!</i><b></li>`)
+
+            this.enemies.forEach(function(enemy) {
+                $(".player-stats").append(`<li>Name: ${enemy['enemy_type']['name']}</li>`)
+                $(".player-stats").append(`<li>Health: ${enemy['health']}</li>`)
+            })
+            console.log(this.enemies[0])
+        }
     }
-    canvas.fillRect(this.x * 100, this.y * 100, 99, 99);
-    }
+}
+
+function loadImages(tile, x, y) {
+    let image = new Image()
+    image.addEventListener('load', function() {
+        canvas.drawImage(image, x, y, 99, 99)
+    }, false);
+    image.src = tile
 }
 
 function draw(tiles) {
@@ -113,6 +140,7 @@ function action(event) {
     event.preventDefault()
     data = {'data': event.target.actionInput.value}
     $(".action-form")[0].reset();
+    $(".player-stats").empty()
     roomTiles = []
     $.ajax({
         method: 'POST',

@@ -2,7 +2,8 @@ let canvasWidth = 600;
 let canvasHeight = 500;
 let roomTiles = [];
 let message
-const __API_URL__ = 'http://localhost:8000/api/v1/'
+// const __API_URL__ = 'http://localhost:8000/api/v1/'
+const __API_URL__ = 'https://norns.live/api/v1/'
 
 let canvasElement = $("<canvas width='" + canvasWidth + 
                       "' height='" + canvasHeight + "'></canvas>");

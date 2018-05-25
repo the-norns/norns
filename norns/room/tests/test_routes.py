@@ -54,6 +54,14 @@ class TestRoutes(TestCase):
         self.player = Player.objects.filter(user=self.user).first()
         self.assertEqual(self.player.tile.y_coord, 1)
 
+    def test_no_input(self):
+        """
+        Validate no input.
+        """
+        self.client.force_login(self.user)
+        data = {'data': ''}
+        self.client.post(reverse_lazy('room'), data=data)
+
 
 class TestRoutesWithData(TestCase):
     """

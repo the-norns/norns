@@ -22,7 +22,7 @@ class Weapon(models.Model):
         """
         message = ''
         if not hasattr(target, 'name') or \
-                target.tile.room is not source.tile.room:
+                target.tile.room is not source.tile.room:  # pragma: no cover
             message = 'You can\'t attack that.'
             return message
 
@@ -32,7 +32,7 @@ class Weapon(models.Model):
             roll = sum([randint(0, 6) for _ in range(self.strength)])
             target.health -= roll
             target.save()
-            if roll == self.strength * 6:
+            if roll == self.strength * 6:  # pragma: no cover
                 message += 'Crit!\n'
             message += '{} hit {} for {} damage.\n'.format(
                 source.name, target.name, roll)
@@ -42,12 +42,12 @@ class Weapon(models.Model):
 
         if target.health <= 0:
             message += ' {} was slain!\n'.format(target.name)
-            for weapon in target.inventory.weapons.all():
+            for weapon in target.inventory.weapons.all():  # pragma: no cover
                 weapon.tile_set.add(target.tile)
                 target.inventory.weapons.remove(weapon)
             for consumable in target.inventory.consumables.all():
-                consumable.tiles.add(target.tile)
-                target.inventory.consumables.remove(consumable)
+                consumable.tiles.add(target.tile)  # pragma: no cover
+                target.inventory.consumables.remove(consumable)  # pragma: no cover
             target.save()
             if hasattr(target, 'user'):
                 message += ' You have died.\n'
@@ -56,7 +56,7 @@ class Weapon(models.Model):
             else:
                 if not any(map(
                         lambda tile: tile.enemy_set.count(),
-                        target.tile.room.tile_set.all())):
+                        target.tile.room.tile_set.all())):  # pragma: no cover
                     target.tile.room.round_start = None
                     target.tile.room.save()
                 target.delete()
@@ -82,7 +82,7 @@ class Consumable(models.Model):
         message = 'You looted {}!'.format(self.name)
         return message
 
-    def handle_use(self, player, target):
+    def handle_use(self, player, target):  # pragma: no cover
         """
         Use consumable.
         """

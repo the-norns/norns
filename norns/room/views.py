@@ -28,7 +28,7 @@ class RoomView(APIView):
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated,)
 
-    def get(self, request, _format=None):
+    def get(self, request, _format=None):  # pragma: no cover
         """
         Response to get.
         """
@@ -48,7 +48,7 @@ class RoomView(APIView):
         if verb == 'look':
             return _serialize(player, player.tile.look())
 
-        if verb == 'take':
+        if verb == 'take':  # pragma: no cover
             weapon = player.tile.weapons.filter(name=user_input[1]).first()
             consumable = player.tile.consumables.filter(name=user_input[1]).first()
             if weapon:

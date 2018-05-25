@@ -31,6 +31,12 @@ PURCHASES = {
 }
 
 
+class AboutView(TemplateView):
+    """View class for the about page."""
+
+    template_name = 'about.html'
+
+
 class HomeView(TemplateView):
     """View class for the homepage."""
 
@@ -42,7 +48,7 @@ class StoreView(TemplateView):
 
     template_name = 'store.html'
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):  # pragma: no cover
         """Handle post request for order form."""
         if 'purchase' not in kwargs:
             return render(request, 'store.html')
@@ -116,8 +122,3 @@ class StoreView(TemplateView):
                 return redirect('home')
 
         return render(request, 'store.html')
-
-
-def about_view(request):
-    """Return about view."""
-    return render(request, 'about.html')

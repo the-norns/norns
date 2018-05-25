@@ -13,6 +13,9 @@
 }
 
 .instructions ul {
+  width: 300px;
+  color: white;
+  float: left;
   list-style-type: none;
 }
 

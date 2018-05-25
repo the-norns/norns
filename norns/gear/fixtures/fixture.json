@@ -1,0 +1,136 @@
+[
+  {
+    "model": "gear.weapon",
+    "pk": 1,
+    "fields": {
+      "name": "Broadsword",
+      "strength": 15,
+      "agility": 3,
+      "reach": 1
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 2,
+    "fields": {
+      "name": "Knives",
+      "strength": 5,
+      "agility": 9,
+      "reach": 1
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 3,
+    "fields": {
+      "name": "Shortsword",
+      "strength": 8,
+      "agility": 5,
+      "reach": 1
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 4,
+    "fields": {
+      "name": "Bow",
+      "strength": 6,
+      "agility": 6,
+      "reach": 3
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 5,
+    "fields": {
+      "name": "Crossbow",
+      "strength": 7,
+      "agility": 5,
+      "reach": 3
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 6,
+    "fields": {
+      "name": "Quarterstaff",
+      "strength": 9,
+      "agility": 5,
+      "reach": 2
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 7,
+    "fields": {
+      "name": "Mace",
+      "strength": 13,
+      "agility": 4,
+      "reach": 1
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 8,
+    "fields": {
+      "name": "Polearm",
+      "strength": 12,
+      "agility": 5,
+      "reach": 2
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 9,
+    "fields": {
+      "name": "Lance",
+      "strength": 12,
+      "agility": 5,
+      "reach": 2
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 10,
+    "fields": {
+      "name": "Gungnir",
+      "strength": 15,
+      "agility": 20,
+      "reach": 2
+    }
+  },
+  {
+    "model": "gear.weapon",
+    "pk": 11,
+    "fields": {
+      "name": "Mjolnir",
+      "strength": 99,
+      "agility": 99,
+      "reach": 99
+    }
+  },
+  {
+    "model": "gear.consumable",
+    "pk": 1,
+    "fields": {
+      "name": "Potatoes",
+      "ability": 10
+    }
+  },
+  {
+    "model": "gear.consumable",
+    "pk": 2,
+    "fields": {
+      "name": "Orange",
+      "ability": 10
+    }
+  },
+  {
+    "model": "gear.consumable",
+    "pk": 3,
+    "fields": {
+      "name": "Safety",
+      "ability": 11
+    }
+  }
+]

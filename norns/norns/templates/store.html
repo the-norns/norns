@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="banner">
+      <img src="{% static "assets/statuesbanner1.png" %}" />
+      <h1>STORE</h1>
+    </div>
+    <div class="storeItems">
+      {% if message %}
+      <h2>{{ message }}</h2>
+      {% endif %}
+      <ul class="items">
+        <li><div><p>Mjolnir</p><form action="{% url "store" %}" method="POST">
+          {% if user.is_authenticated %}
+          <form action="{% url "store_purchase" "thor" %}" method="POST">
+            {% csrf_token %}
+            <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="pk_test_OO9CRAads4tmdugzqQIrga8M"
+              data-amount="2000"
+              data-name="Norns"
+              data-description="Thor ($20.00)"
+              data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+              data-locale="auto">
+            </script>
+          </form>
+          <p>Become the legend. Max weapon stats.</p>
+          {% else %}
+          <button class="stripe-button"><a href="{% url "auth_login" %}">Login to buy</a></button>
+          {% endif %}
+        </div></li>
+        <li><div><p>Gungnir</p><form action="{% url "store" %}" method="POST">
+          {% if user.is_authenticated %}
+          <form action="{% url "store_purchase" "walker" %}" method="POST">
+            {% csrf_token %}
+            <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="pk_test_OO9CRAads4tmdugzqQIrga8M"
+              data-amount="200"
+              data-name="Norns"
+              data-description="Gungnir ($2.00)"
+              data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+              data-locale="auto">
+            </script>
+          </form>
+          <p>The legendary spear Gungnir.</p>
+          {% else %}
+          <button class="stripe-button"><a href="{% url "auth_login" %}">Login to buy</a></button>
+          {% endif %}
+        </div></li>
+        <li><div><p>Safe Room</p>
+          {% if user.is_authenticated %}
+          <form action="{% url "store_purchase" "safe" %}" method="POST">
+            {% csrf_token %}
+            <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="pk_test_OO9CRAads4tmdugzqQIrga8M"
+              data-amount="99"
+              data-name="Norns"
+              data-description="Safe Room ($0.99)"
+              data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+              data-locale="auto">
+            </script>
+          </form>
+          <p>Guarantees the next room is free of enemies.</p>
+          {% else %}
+          <button class="stripe-button"><a href="{% url "auth_login" %}">Login to buy</a></button>
+          {% endif %}
+        </div></li>
+      </ul>
+    </div>
+{% endblock %}

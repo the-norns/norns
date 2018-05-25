@@ -1,0 +1,168 @@
+.game, .container {
+  color: white;
+  position: relative;
+  width: 700px;
+  height: 530px;
+  margin-left: 26.5vw;
+  margin-top: 5vw;
+  margin-bottom: 7vw;
+}
+
+.game {
+  border: 1px solid red;
+}
+
+.instructions ul {
+  width: 300px;
+  color: white;
+  float: left;
+  list-style-type: none;
+}
+
+.intro {
+  margin: 150px;
+  width: 1000px;
+  color: white;
+}
+
+.start-buttons {
+  position: absolute;
+  top: 45%;
+  left: 18%;
+}
+
+.start-buttons li {
+  display: inline-block;
+}
+
+.registration-button {
+  font-size: 16px;
+  background-color: rgb(30, 30, 30);
+  padding: 10px;
+  border-radius: 2px;
+}
+
+.tabs-container {
+  position: absolute;
+  bottom: 0;
+  right: .7%;
+}
+
+.tabs-container ul li {
+  display: inline-block;
+}
+
+.tabs-container li {
+  font-size: 14px;
+  background-color: rgb(30, 30, 30);
+  padding: 0px 6px;
+  margin: -4.2px;
+  height: 40px;
+  text-align: center;
+  border-radius: 2px;
+  box-shadow: 3px 4px 8px 0 rgba(0, 0, 0, 0.5), 3px 0px 20px 3px rgba(0, 0, 0, 0.5);
+}
+
+.auth-list li label {
+  left: 0;
+}
+
+.auth-list li input {
+  right: 0;
+}
+
+.stats-container {
+  overflow: scroll;
+  color: black;
+  width: 200px;
+  height: 100%;
+  background-color: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.stats-container h2 {
+  color: black;
+}
+
+.actions {
+  width: 100%;
+  height: 30px;
+  position: absolute;
+  bottom: 0;
+  background-color: white;
+  color: green;
+}
+
+.action-ul {
+  display: none;
+}
+
+.actions ul {
+  position: absolute;
+  left: -30px;
+  bottom: -12px;
+}
+
+.actions li {
+  display: inline-block;
+}
+
+.actions button {
+  background-color: rgb(30, 30, 30);
+  color: rgb(100, 168, 103);
+}
+
+.hitCounter {
+  text-align: center;
+}
+
+.banner {
+  position: relative;
+}
+
+.banner h1 {
+  font-size: 100px;
+  color: white;
+  position: absolute;
+  top: 3vw;
+  left: 36vw;
+}
+
+.about {
+  width: 900px;
+  margin-left: 17vw;
+  text-align: center;
+}
+
+.team-member {
+  list-style-type: none;
+  background-color: grey;
+  padding-bottom: 20px;
+}
+
+.player-stats {
+  list-style-type: none;
+}
+
+.messages {
+  font-size: 11px;
+}
+
+canvas {
+  background-color: black;
+}
+
+.items {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.items li {
+  margin: 5px;
+  display: inline-block;
+  width: 200px;
+  height: 300px;
+  background-color: grey;
+}

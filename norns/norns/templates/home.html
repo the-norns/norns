@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="instructions">
+    <ul>
+      <li><h2>Instructions</h2></li>
+      <li><p>"go" and a cardinal direction to move.</p></li>
+      <li><p>"look" to check for gear on your tile.</p></li>
+      <li><p>"take" and the item name to pick up items.</p></li>
+      <li><p>"equip" and the weapon name to equip a weapon.</p></li>
+      <li><p>"attack" and the enemy's name to attack.</p></li>
+      <li><p>You cannot leave the room during combat.</p></li>
+    </ul>
+  </div>
+<div class="game">
+  <ul class="start-buttons">
+  <li><div class="join-game">
+    <form>
+      {% csrf_token %}
+    <button type="submit">Resume Game</button>
+    </form>
+    </div></li>
+  </ul>
+
+  <div class="stats-container">
+    <ul class="player-stats">
+    </ul>
+  </div>
+
+  <div class="tabs-container">
+    <ul class="tabs">
+      <li><a href={% url "store" %}>store</a></li>
+    </ul>
+</div>
+
+  <div class="actions">
+    <ul class="action-ul">
+    <li><form class=action-form action="{% url "room" %}" method="POST">
+      {% csrf_token %}
+    <input name="actionInput" type=text>
+    <button type="submit">Enter</button>
+  </form></li>
+  <li class="messages"></li>
+  </div>
+
+</div>
+{% else %}
+  <div class="intro">
+  <h2>Story so far</h2>
+  <p>You awaken on a cool, slightly damp floor. With some difficulty, you struggle to your feet. You are in what appears to be a cavern filled with a mild, ambient light. You think you can hear a dog howling from somewhere in the deep. You think back to the last thing you can recall:</p>
+
+  <p>It was almost time for afternoon jello in the Norse Geriatic Center. Orvar had called gin with a cackle and reached for the pile of thin mints serving as the pot, when he suffered a coughing fit (a side effect of all the cackling) and an eight of clubs slipped from his shirt cuff, fluttering to the table for all to see. All around, the cirle of players fell dead silent... then erupted! You reached for your cane. Svanhildr went for her walker. Sigurdr for his nasal rinse. Still others fielded their own weapons of doom - at last, here was an opporunity for a glorious death! The halls of Valhalla awaited! Or so you thought. As it turns out, the stress of possible combat proved too much, and the lot of you had heart attacks on the spot.</p>
+
+  <p>So you're not in Valhalla. Instead, you died of old age and must therefore be in Hel. Poop. Well... time to explore your new home. Maybe there's some mead about, or at least some blood-pressure medication. You think you should try to look around...</p>
+  <a class="registration-button" href="{% url "registration_register" %}"><b>join the fight</b></a>
+</div>
+{% endif %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="{% static "./js/norns.js" %}" type="text/javascript"></script>
+{% endblock content %}

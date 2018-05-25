@@ -2,9 +2,9 @@ let canvasWidth = 600;
 let canvasHeight = 500;
 let roomTiles = [];
 let message
-const __API_URL__ = 'http://localhost:8000/api/v1/'
+const __API_URL__ = 'https://norns.live/api/v1/'
 
-let canvasElement = $("<canvas width='" + canvasWidth + 
+let canvasElement = $("<canvas width='" + canvasWidth +
                       "' height='" + canvasHeight + "'></canvas>");
 let canvas = canvasElement.get(0).getContext("2d");
 
@@ -34,7 +34,7 @@ function Tile(x, y, consumables, enemies, players, weapons) {
             })
             tile = 'static/assets/playerfloortile.jpg'
             loadImages(tile, this.x * 100, this.y * 100)
-        } else { 
+        } else {
             tile = 'static/assets/floortile.jpg'
             loadImages(tile, this.x * 100, this.y * 100)
         }

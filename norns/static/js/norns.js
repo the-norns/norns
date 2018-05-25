@@ -4,7 +4,7 @@ let roomTiles = [];
 let message
 const __API_URL__ = 'https://norns.live/api/v1/'
 
-let canvasElement = $("<canvas width='" + canvasWidth +
+let canvasElement = $("<canvas width='" + canvasWidth + 
                       "' height='" + canvasHeight + "'></canvas>");
 let canvas = canvasElement.get(0).getContext("2d");
 
@@ -27,10 +27,13 @@ function Tile(x, y, consumables, enemies, players, weapons) {
             tile = 'static/assets/lootfloortile.jpg'
             loadImages(tile, this.x * 100, this.y * 100)
         } else if (this.players.length != 0) {
+            console.log(this.players)
             this.players.forEach(function(player) {
                 $( ".player-stats" ).append(`<li>Name: ${player['name']}</li>`)
                 $( ".player-stats" ).append(`<li>Health: ${player['health']}</li>`)
-                $( ".player-stats" ).append(`<li>Weapon: ${player['weapon']['name']}</li>`)
+                if (player['weapon'] != null){
+                    $( ".player-stats" ).append(`<li>Weapon: ${player['weapon']['name']}</li>`)
+                }
             })
             tile = 'static/assets/playerfloortile.jpg'
             loadImages(tile, this.x * 100, this.y * 100)
@@ -50,10 +53,10 @@ function Tile(x, y, consumables, enemies, players, weapons) {
             $(".player-stats").append(`<li><b><i>There are enemies on this tile!</i><b></li>`)
 
             this.enemies.forEach(function(enemy) {
-                $(".player-stats").append(`<li>Name: ${enemy['enemy_type']['name']}</li>`)
+                $(".player-stats").append(`<li>Name: ${enemy['name']}</li>`)
                 $(".player-stats").append(`<li>Health: ${enemy['health']}</li>`)
             })
-            console.log(this.enemies[0])
+            console.log(this.enemies)
         }
     }
 }

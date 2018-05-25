@@ -5,7 +5,6 @@ from model_mommy import mommy
 
 from player.models import Player
 from ..models import Enemy
-from gear.models import Weapon
 
 
 class TestModels(TestCase):
@@ -15,6 +14,7 @@ class TestModels(TestCase):
 
     fixtures = [
         'status/fixtures/fixture.json',
+        'gear/fixtures/fixture.json',
         'fixture',
     ]
 
@@ -25,7 +25,6 @@ class TestModels(TestCase):
         self.user = mommy.make(User)
         self.player = Player.objects.filter(user=self.user).first()
         self.enemy = mommy.make(Enemy)
-        self.enemy.weapon = Weapon.objects.first()
 
     def tearDown(self):
         """

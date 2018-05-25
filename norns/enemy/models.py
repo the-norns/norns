@@ -123,7 +123,7 @@ class Enemy(models.Model):
                             dist = new_dist
                             min_dx = dx
                             min_dy = dy
-                if abs(min_dx) > abs(min_dy):
+                if abs(min_dx) < abs(min_dy):
                     if min_dx > 0:
                         self.move('west')
                     else:  # pragma: no cover

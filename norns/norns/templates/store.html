@@ -11,7 +11,7 @@
       <h2>{{ message }}</h2>
       {% endif %}
       <ul class="items">
-        <li><div><p>Thor</p><form action="{% url "store" %}" method="POST">
+        <li><div><p>Mjolnir</p><form action="{% url "store" %}" method="POST">
           {% if user.is_authenticated %}
           <form action="{% url "store_purchase" "thor" %}" method="POST">
             {% csrf_token %}
@@ -25,7 +25,7 @@
               data-locale="auto">
             </script>
           </form>
-          <p>The legendary hero Thor. Max hero stats.</p>
+          <p>Become the legend. Max weapon stats.</p>
           {% else %}
           <button class="stripe-button"><a href="{% url "auth_login" %}">Login to buy</a></button>
           {% endif %}

@@ -2,9 +2,10 @@ let canvasWidth = 600;
 let canvasHeight = 500;
 let roomTiles = [];
 let message
-const __API_URL__ = 'https://norns.live/api/v1/'
+const __API_URL__ = 'http://localhost:8000/api/v1/'
+// const __API_URL__ = 'https://norns.live/api/v1/'
 
-let canvasElement = $("<canvas width='" + canvasWidth +
+let canvasElement = $("<canvas width='" + canvasWidth + 
                       "' height='" + canvasHeight + "'></canvas>");
 let canvas = canvasElement.get(0).getContext("2d");
 
@@ -21,39 +22,33 @@ function Tile(x, y, consumables, enemies, players, weapons) {
     this.draw = function() {
         let image = new Image()
         if (this.enemies.length > 0) {
+            stats(this.players)
             tile = 'static/assets/enemyfloortile.jpg'
             loadImages(tile, this.x * 100, this.y * 100)
         } else if (this.weapons.length || this.consumables.length > 0) {
+            stats(this.players)
             tile = 'static/assets/lootfloortile.jpg'
             loadImages(tile, this.x * 100, this.y * 100)
-        } else if (this.players.length != 0) {
-            this.players.forEach(function(player) {
-                $( ".player-stats" ).append(`<li>Name: ${player['name']}</li>`)
-                $( ".player-stats" ).append(`<li>Health: ${player['health']}</li>`)
-                $( ".player-stats" ).append(`<li>Weapon: ${player['weapon']['name']}</li>`)
-            })
+        } else if (this.players.length > 0) {
+            stats(this.players)
             tile = 'static/assets/playerfloortile.jpg'
             loadImages(tile, this.x * 100, this.y * 100)
         } else {
+            stats(this.players)
             tile = 'static/assets/floortile.jpg'
             loadImages(tile, this.x * 100, this.y * 100)
         }
 
         if (this.players.length && this.enemies.length > 0) {
-            this.players.forEach(function(player) {
-                $( ".player-stats" ).append(`<li>Name: ${player['name']}</li>`)
-                $( ".player-stats" ).append(`<li>Health: ${player['health']}</li>`)
-                $( ".player-stats" ).append(`<li>Weapon: ${player['weapon']['name']}</li>`)
-            })
-
+            stats(this.players)
             $(".player-stats").append(`<li><b><i>Alert!</i><b></li>`)
             $(".player-stats").append(`<li><b><i>There are enemies on this tile!</i><b></li>`)
 
             this.enemies.forEach(function(enemy) {
-                $(".player-stats").append(`<li>Name: ${enemy['enemy_type']['name']}</li>`)
+                $(".player-stats").append(`<li>Name: ${enemy['name']}</li>`)
                 $(".player-stats").append(`<li>Health: ${enemy['health']}</li>`)
             })
-            console.log(this.enemies[0])
+            console.log(this.enemies)
         }
     }
 }
@@ -90,32 +85,11 @@ var getCookie = function(name) {
     return cookieValue;
 };
 
-// function newGame(event) {
-//     event.preventDefault()
-//     token = getCookie('csrftoken');
-//     $(".start-buttons").remove()
-//     $.ajax({
-//         method: 'POST',
-//         xhrFields: {
-//             withCredentials: true
-//         },
-//         headers: {
-//             'X-CSRFToken': `${token}`
-//         },
-//         url: `${__API_URL__}room/new`,
-//         success: function (data) {
-//             data.tiles.forEach(function(tile){
-//                 roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
-//             })
-//             draw(roomTiles)
-//         }
-//     });
-// }
-
 function joinGame(event) {
     event.preventDefault()
     token = getCookie('csrftoken');
     $(".start-buttons").remove()
+    $(".instructions").remove()
     $(".action-ul").show()
     $.ajax({
         method: 'GET',
@@ -153,17 +127,42 @@ function action(event) {
         },
         url: `${__API_URL__}room`,
         success: function (data) {
-            console.log(data.message)
             data.tiles.forEach(function(tile){
                 roomTiles.push(new Tile(tile.x_coord, tile.y_coord, tile.consumables, tile.enemy_set, tile.player_set, tile.weapons))
             })
             clearCanvas()
+            // console.log(data)
             $(".messages").text(data.message)
             draw(roomTiles)
         }
     });
 }
 
-// $(".start-game").on("click", newGame);
+function stats(players){
+    players.forEach(function(player) {
+        $( ".player-stats" ).append(`<li><h2>Player</h2></li>`)
+        $( ".player-stats" ).append(`<li>Name: ${player['name']}</li>`)
+        if (player['health'] < 1) {
+            $( ".player-stats" ).append(`<li>Health:<b style="color: red;">Dead!</b></li>`)
+        } else {
+            $( ".player-stats" ).append(`<li>Health: ${player['health']}</li>`)
+        }
+        if (player['weapon'] != null){
+            $( ".player-stats" ).append(`<li>Weapon: ${player['weapon']['name']}</li>`)
+        }
+        $( ".player-stats" ).append(`<li><h2>Inventory</h2></li>`)
+        if (player['inventory']['consumables'] != null){
+            player['inventory']['consumables'].forEach(function(consumable){
+                $( ".player-stats" ).append(`<li>Consumable: ${consumable['name']}</li>`)
+            })
+        }
+        if (player['inventory']['weapons'] != null){
+            player['inventory']['weapons'].forEach(function(weapon){
+                $( ".player-stats" ).append(`<li>Weapon: ${weapon['name']}</li>`)
+            })
+        }
+    })
+}
+
 $(".join-game").on("click", joinGame);
 $(".action-form").on("submit", action);

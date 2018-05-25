@@ -43,11 +43,12 @@ class Weapon(models.Model):
         if target.health <= 0:
             message += ' {} was slain!\n'.format(target.name)
             for weapon in target.inventory.weapons.all():
-                weapon.tiles.add(target.tile)
-                target.inventory.remove(weapon)
+                weapon.tile_set.add(target.tile)
+                target.inventory.weapons.remove(weapon)
             for consumable in target.inventory.consumables.all():
                 consumable.tiles.add(target.tile)
-                target.inventory.remove(consumable)
+                target.inventory.consumables.remove(consumable)
+            target.save()
             if hasattr(target, 'user'):
                 message += ' You have died.\n'
                 target.tile = target.origin.tile_set.order_by('?').first()
@@ -116,3 +117,12 @@ def create_enemy_inventory(sender, instance=None, **kwargs):
     """
     if not hasattr(instance, 'inventory'):
         instance.inventory = Inventory.objects.create()
+
+
+@receiver(models.signals.pre_save, sender='enemy.Enemy')
+def populate_enemy_weapon(sender, instance=None, **kwargs):
+    """
+    Generate tile mobs.
+    """
+    if Weapon.objects.count():
+        instance.weapon = Weapon.objects.order_by('?').first()

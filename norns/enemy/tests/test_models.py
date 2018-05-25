@@ -5,7 +5,6 @@ from model_mommy import mommy
 
 from player.models import Player
 from ..models import Enemy
-from gear.models import Weapon
 
 
 class TestModels(TestCase):
@@ -15,6 +14,7 @@ class TestModels(TestCase):
 
     fixtures = [
         'status/fixtures/fixture.json',
+        'gear/fixtures/fixture.json',
         'fixture',
     ]
 
@@ -25,7 +25,6 @@ class TestModels(TestCase):
         self.user = mommy.make(User)
         self.player = Player.objects.filter(user=self.user).first()
         self.enemy = mommy.make(Enemy)
-        self.enemy.weapon = Weapon.objects.first()
 
     def tearDown(self):
         """
@@ -64,6 +63,6 @@ class TestModels(TestCase):
         self.player.tile = tl_tile
         self.enemy.tile = br_tile
         self.enemy.weapon.reach = 1
-        message = ''
-        while message != 'died.':
-            message = self.enemy.do_combat().split()[-1]
+        message = 'yep'
+        while message.split()[-1] != 'died.':
+            message = self.enemy.do_combat()

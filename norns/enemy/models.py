@@ -2,6 +2,7 @@ from random import randint
 
 from django.db import models
 from django.dispatch import receiver
+from faker import Faker
 
 
 class EnemyType(models.Model):
@@ -138,11 +139,13 @@ def populate_enemies(sender, created=False, instance=None, **kwargs):
     """
     Generate tile mobs.
     """
+    fake = Faker()
+
     if created:
         roll = randint(0, 100)
         if roll > 2:
             return
-        Enemy.objects.create(tile=instance)
+        Enemy.objects.create(tile=instance, name=fake.first_name())
 
 
 @receiver(models.signals.pre_save, sender=Enemy)

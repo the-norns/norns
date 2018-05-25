@@ -64,6 +64,6 @@ class TestModels(TestCase):
         self.player.tile = tl_tile
         self.enemy.tile = br_tile
         self.enemy.weapon.reach = 1
-        message = ''
-        while message != 'died.':
-            message = self.enemy.do_combat().split()[-1]
+        message = 'yep'
+        while message.split()[-1] != 'died.':
+            message = self.enemy.do_combat()
